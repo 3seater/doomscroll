@@ -235,21 +235,26 @@ function App() {
       const videoData = circularVideos[index]
       videoEl.muted = !hasInteracted || mutedVideos.has(videoData.id)
       if (index === currentVideoIndex) {
-        // Reset to start and play only if the video is not already playing
-        if (videoEl.paused) {
-          videoEl.currentTime = 0
-          const playPromise = videoEl.play()
-          if (playPromise !== undefined) {
-            playPromise.catch(() => {
-              // Autoplay might be blocked, that's okay
-            })
+        // Only play if user hasn't manually paused this video
+        if (!pausedVideos.has(videoData.id)) {
+          if (videoEl.paused) {
+            videoEl.currentTime = 0
+            const playPromise = videoEl.play()
+            if (playPromise !== undefined) {
+              playPromise.catch(() => {
+                // Autoplay might be blocked, that's okay
+              })
+            }
           }
+        } else {
+          // User has manually paused, keep it paused
+          videoEl.pause()
         }
       } else {
         videoEl.pause()
       }
     })
-  }, [currentVideoIndex, hasInteracted, mutedVideos, circularVideos])
+  }, [currentVideoIndex, hasInteracted, mutedVideos, circularVideos, pausedVideos])
 
   // Handle video state when switching between messages/comments and TikTok
   useEffect(() => {
@@ -265,15 +270,19 @@ function App() {
           videoEl.currentTime = 0
         })
         
-        // Then play only the current video
+        // Then play only the current video (if not manually paused)
         const currentVideo = videoElements[currentVideoIndex] as HTMLVideoElement
         if (currentVideo) {
           const currentVideoData = circularVideos[currentVideoIndex]
           currentVideo.muted = !hasInteracted || mutedVideos.has(currentVideoData.id)
           currentVideo.currentTime = 0
-          currentVideo.play().catch(() => {
-            // Autoplay might be blocked
-          })
+          
+          // Only play if user hasn't manually paused this video
+          if (!pausedVideos.has(currentVideoData.id)) {
+            currentVideo.play().catch(() => {
+              // Autoplay might be blocked
+            })
+          }
         }
       }, 100)
     } else if (showMessages || showComments) {
