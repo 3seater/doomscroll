@@ -415,21 +415,29 @@ function App() {
       // Clamp index to circular buffer range
       index = Math.max(0, Math.min(index, circularVideos.length - 1))
       
-      // Instant wrap when reaching boundaries (no delay)
-      if (index === 0 && scrollTop <= videoHeight * 0.5) {
-        // User scrolled to first duplicate, instantly jump to real last video
-        container.scrollTo({
-          top: videos.length * videoHeight,
-          behavior: 'auto'
-        })
-        return
-      } else if (index === circularVideos.length - 1 && scrollTop >= (circularVideos.length - 1.5) * videoHeight) {
-        // User scrolled to last duplicate, instantly jump to real first video
-        container.scrollTo({
-          top: 1 * videoHeight,
-          behavior: 'auto'
-        })
-        return
+      // Seamless wrap when snapped to duplicate videos
+      const isSnapped = Math.abs(scrollTop - (index * videoHeight)) < 1 // Within 1px of snap position
+      
+      if (isSnapped) {
+        if (index === 0) {
+          // Snapped to first duplicate (showing last video), instantly jump to real last video
+          requestAnimationFrame(() => {
+            container.scrollTo({
+              top: videos.length * videoHeight,
+              behavior: 'auto'
+            })
+          })
+          return
+        } else if (index === circularVideos.length - 1) {
+          // Snapped to last duplicate (showing first video), instantly jump to real first video
+          requestAnimationFrame(() => {
+            container.scrollTo({
+              top: 1 * videoHeight,
+              behavior: 'auto'
+            })
+          })
+          return
+        }
       }
       
       setCurrentVideoIndex(index)
