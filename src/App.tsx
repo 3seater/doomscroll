@@ -187,6 +187,7 @@ function App() {
   const [currentVideoIndex, setCurrentVideoIndex] = useState(1) // Start at first real video (index 1 because of duplicate)
   const [likedVideos, setLikedVideos] = useState<Set<number>>(new Set())
   const [pausedVideos, setPausedVideos] = useState<Set<number>>(new Set())
+  const [mutedVideos, setMutedVideos] = useState<Set<number>>(new Set())
   const [glowColor, setGlowColor] = useState('100, 150, 255')
   const screenRef = useRef<HTMLDivElement>(null)
   const [showMessages, setShowMessages] = useState(false)
@@ -231,7 +232,8 @@ function App() {
     videoElements.forEach((video, index) => {
       const videoEl = video as HTMLVideoElement
       // Unmute after first interaction for audio, keep muted initially for autoplay
-      videoEl.muted = !hasInteracted
+      const videoData = circularVideos[index]
+      videoEl.muted = !hasInteracted || mutedVideos.has(videoData.id)
       if (index === currentVideoIndex) {
         // Reset to start and play
         videoEl.currentTime = 0
@@ -264,7 +266,8 @@ function App() {
         // Then play only the current video
         const currentVideo = videoElements[currentVideoIndex] as HTMLVideoElement
         if (currentVideo) {
-          currentVideo.muted = !hasInteracted
+          const currentVideoData = circularVideos[currentVideoIndex]
+          currentVideo.muted = !hasInteracted || mutedVideos.has(currentVideoData.id)
           currentVideo.currentTime = 0
           currentVideo.play().catch(() => {
             // Autoplay might be blocked
@@ -677,6 +680,29 @@ function App() {
       }
       return newLiked
     })
+  }
+
+  // Handle volume toggle
+  const toggleVolume = (videoId: number) => {
+    const isCurrentlyMuted = mutedVideos.has(videoId)
+    setMutedVideos(prev => {
+      const newMuted = new Set(prev)
+      if (isCurrentlyMuted) {
+        newMuted.delete(videoId)
+      } else {
+        newMuted.add(videoId)
+      }
+      return newMuted
+    })
+
+    // Immediately apply the change to the current video if it's playing
+    if (circularVideos[currentVideoIndex] && circularVideos[currentVideoIndex].id === videoId) {
+      const videoElements = document.querySelectorAll('.video-player')
+      const currentVideo = videoElements[currentVideoIndex] as HTMLVideoElement
+      if (currentVideo) {
+        currentVideo.muted = !isCurrentlyMuted
+      }
+    }
   }
 
   // Handle video play/pause on click
@@ -1194,6 +1220,17 @@ function App() {
                       <path d="M38 4H10v40l14-10 14 10V4z" stroke="white" strokeWidth="2.5" fill="white"/>
                     </svg>
                     <span className="count">{formatCount(video.bookmarks)}</span>
+                  </div>
+                  <div className="action-button" onClick={() => toggleVolume(video.id)}>
+                    <svg className="action-icon" viewBox="0 0 48 48" fill="white">
+                      {mutedVideos.has(video.id) ? (
+                        // Muted speaker icon
+                        <path d="M28 4L22 4 16 10 14 10 14 38 16 38 22 44 28 44zM20 14L24 14 24 36 20 36z"/>
+                      ) : (
+                        // Unmuted speaker icon with sound waves
+                        <path d="M28 4L22 4 16 10 14 10 14 38 16 38 22 44 28 44zM20 14L24 14 24 36 20 36zM32 16c0-2.2 1.8-4 4-4s4 1.8 4 4v16c0 2.2-1.8 4-4 4s-4-1.8-4-4V16zM36 14c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2s2-.9 2-2V16c0-1.1-.9-2-2-2z"/>
+                      )}
+                    </svg>
                   </div>
                   <div className="action-button">
                     <img src={forwardIcon} alt="Forward" className="action-icon-img" />
