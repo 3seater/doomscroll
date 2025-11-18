@@ -1137,6 +1137,9 @@ function App() {
 
   return (
     <div className="app-container">
+      {/* Animated grain overlay for gradient banding fix */}
+      <div className="grain-overlay"></div>
+      
       <div 
         className="iphone-frame"
         style={{
