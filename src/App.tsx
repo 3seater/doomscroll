@@ -414,6 +414,24 @@ function App() {
       
       // Clamp index to circular buffer range
       index = Math.max(0, Math.min(index, circularVideos.length - 1))
+      
+      // Instant wrap when reaching boundaries (no delay)
+      if (index === 0 && scrollTop <= videoHeight * 0.5) {
+        // User scrolled to first duplicate, instantly jump to real last video
+        container.scrollTo({
+          top: videos.length * videoHeight,
+          behavior: 'auto'
+        })
+        return
+      } else if (index === circularVideos.length - 1 && scrollTop >= (circularVideos.length - 1.5) * videoHeight) {
+        // User scrolled to last duplicate, instantly jump to real first video
+        container.scrollTo({
+          top: 1 * videoHeight,
+          behavior: 'auto'
+        })
+        return
+      }
+      
       setCurrentVideoIndex(index)
 
       // Update opacity for all video overlays
@@ -502,21 +520,8 @@ function App() {
         behavior: 'smooth'
       })
       
-      // Check if we need to wrap (at duplicate boundaries)
+      // Remove snapping class after animation
       setTimeout(() => {
-        if (nearest === 0) {
-          // At first duplicate (last video), wrap to real last video
-          container.scrollTo({
-            top: videos.length * videoHeight,
-            behavior: 'auto'
-          })
-        } else if (nearest === circularVideos.length - 1) {
-          // At last duplicate (first video), wrap to real first video
-          container.scrollTo({
-            top: 1 * videoHeight,
-            behavior: 'auto'
-          })
-        }
         container.classList.remove('snapping')
       }, 300)
     }
@@ -546,15 +551,6 @@ function App() {
           top: targetIndex * videoHeight,
           behavior: 'smooth'
         })
-        
-        // Handle wrap after scroll completes
-        setTimeout(() => {
-          if (targetIndex === 0) {
-            container.scrollTo({ top: videos.length * videoHeight, behavior: 'auto' })
-          } else if (targetIndex === circularVideos.length - 1) {
-            container.scrollTo({ top: 1 * videoHeight, behavior: 'auto' })
-          }
-        }, 300)
       }, 50)
     }
     
@@ -586,14 +582,9 @@ function App() {
         behavior: 'smooth'
       })
       
-      // Handle wrap after scroll completes
+      // Re-enable key scrolling after animation
       setTimeout(() => {
-        if (targetIndex === 0) {
-          container.scrollTo({ top: videos.length * videoHeight, behavior: 'auto' })
-        } else if (targetIndex === circularVideos.length - 1) {
-          container.scrollTo({ top: 1 * videoHeight, behavior: 'auto' })
-        }
-        isKeyScrolling = false // Re-enable key scrolling
+        isKeyScrolling = false
       }, 300)
     }
 
