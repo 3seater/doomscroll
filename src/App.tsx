@@ -774,20 +774,39 @@ function App() {
 
   const toggleCommentLike = async (commentId: number, commentFirebaseId: string) => {
     if (!database || !currentVideoComments) return
-    
+
+    const currentUser = getUserName()
+    if (!currentUser) return // User must be logged in to like
+
     try {
       const commentRef = ref(database, `comments/video_${currentVideoComments}/${commentFirebaseId}`)
       const commentSnapshot = await get(commentRef)
-      
+
       if (commentSnapshot.exists()) {
         const commentData = commentSnapshot.val()
         const currentLikes = commentData.likes || 0
-        const isLiked = likedComments.has(commentId)
-        
-        // Update likes in Firebase
-        const newLikes = isLiked ? Math.max(0, currentLikes - 1) : currentLikes + 1
-        await update(commentRef, { likes: newLikes })
-        
+        const likedBy = commentData.likedBy || []
+        const isLiked = likedBy.includes(currentUser)
+
+        // Update likedBy array in Firebase
+        let newLikedBy: string[]
+        let newLikes: number
+
+        if (isLiked) {
+          // Remove user from likedBy array
+          newLikedBy = likedBy.filter((user: string) => user !== currentUser)
+          newLikes = Math.max(0, currentLikes - 1)
+        } else {
+          // Add user to likedBy array
+          newLikedBy = [...likedBy, currentUser]
+          newLikes = currentLikes + 1
+        }
+
+        await update(commentRef, {
+          likes: newLikes,
+          likedBy: newLikedBy
+        })
+
         // Update local state
         setLikedComments(prev => {
           const newLiked = new Set(prev)
@@ -798,8 +817,8 @@ function App() {
           }
           return newLiked
         })
-        
-        console.log(`Comment ${isLiked ? 'unliked' : 'liked'}! New count: ${newLikes}`)
+
+        console.log(`Comment ${isLiked ? 'unliked' : 'liked'} by ${currentUser}! New count: ${newLikes}`)
       }
     } catch (error) {
       console.error('Error toggling comment like:', error)
@@ -1021,12 +1040,28 @@ function App() {
               ...prev,
               [currentVideoComments]: topLevelComments
             }))
+
+            // Update liked comments state based on current user's likes
+            const currentUser = getUserName()
+            if (currentUser) {
+              const userLikedComments = new Set<number>()
+              allComments.forEach(comment => {
+                const commentData = data[comment.firebaseId]
+                const likedBy = commentData.likedBy || []
+                if (likedBy.includes(currentUser)) {
+                  userLikedComments.add(comment.id)
+                }
+              })
+              setLikedComments(userLikedComments)
+            }
           } else {
             // No comments yet for this video
             setVideoComments(prev => ({
               ...prev,
               [currentVideoComments]: []
             }))
+            // Clear liked comments state when no comments
+            setLikedComments(new Set())
           }
         } catch (parseError) {
           console.error('Error parsing comments:', parseError)
@@ -1034,6 +1069,8 @@ function App() {
             ...prev,
             [currentVideoComments]: []
           }))
+          // Clear liked comments state on error
+          setLikedComments(new Set())
         }
       }, (error) => {
         console.error('Firebase comments read error:', error)
@@ -1042,6 +1079,8 @@ function App() {
           ...prev,
           [currentVideoComments]: []
         }))
+        // Clear liked comments state on error
+        setLikedComments(new Set())
       })
       
       return () => {
