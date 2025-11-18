@@ -1,6 +1,8 @@
 import { initializeApp } from "firebase/app";
-import { getDatabase, Database } from "firebase/database";
-import { getStorage, FirebaseStorage } from "firebase/storage";
+import { getDatabase } from "firebase/database";
+import { getStorage } from "firebase/storage";
+import type { Database } from "firebase/database";
+import type { FirebaseStorage } from "firebase/storage";
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
