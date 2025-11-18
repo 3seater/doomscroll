@@ -560,10 +560,10 @@ body {
   border-radius: 42px;
   display: flex !important;
   flex-flow: row nowrap;
-  justify-content: space-evenly;
+  justify-content: center;
   align-items: center;
-  padding: 0 10px;
-  gap: clamp(8px, 2vw, 16px);
+  padding: 0 20px;
+  gap: 16px;
   z-index: 9999 !important;
   box-sizing: border-box;
   overflow: visible;
@@ -655,11 +655,10 @@ body {
   color: inherit;
   cursor: pointer;
   transition: transform 0.15s ease;
-  flex-shrink: 1;
+  flex-shrink: 0;
   flex-grow: 0;
-  flex-basis: calc(25% - 8px);
-  max-width: 70px;
-  min-width: 45px;
+  flex-basis: auto;
+  width: 60px;
   pointer-events: auto !important;
   position: relative;
   z-index: 11;
@@ -675,13 +674,9 @@ a.dock-app {
 }
 
 .app-icon {
-  width: 100%;
-  aspect-ratio: 1;
-  max-width: 70px;
-  max-height: 70px;
-  min-width: 45px;
-  min-height: 45px;
-  border-radius: clamp(12px, 3vw, 16px);
+  width: 60px;
+  height: 60px;
+  border-radius: 16px;
   cursor: pointer;
   transition: transform 0.15s ease-out;
   box-shadow: 
@@ -767,18 +762,22 @@ a.dock-app {
   }
   
   .dock {
-    padding: 0 8px;
-    gap: clamp(6px, 1.5vw, 12px);
+    padding: 0 12px;
+    gap: 12px;
   }
   
   .dock-app {
-    flex-basis: calc(25% - 6px);
-    min-width: 50px;
+    width: 55px;
   }
   
   .app-icon {
-    min-width: 50px;
-    min-height: 50px;
+    width: 55px;
+    height: 55px;
+    border-radius: 14px;
+  }
+  
+  .app-icon-img {
+    object-fit: contain;
   }
 }
 
@@ -796,22 +795,24 @@ a.dock-app {
   }
   
   .dock {
-    padding: 0 6px;
-    gap: clamp(4px, 1vw, 8px);
+    padding: 0 10px;
+    gap: 10px;
     height: 80px !important;
   }
   
   .dock-app {
-    flex-basis: calc(25% - 4px);
-    min-width: 42px;
+    width: 50px;
     gap: 2px;
   }
   
   .app-icon {
-    min-width: 42px;
-    min-height: 42px;
-    max-width: 55px;
-    max-height: 55px;
+    width: 50px;
+    height: 50px;
+    border-radius: 13px;
+  }
+  
+  .app-icon-img {
+    object-fit: contain;
   }
 }
 
@@ -826,23 +827,24 @@ a.dock-app {
   }
   
   .dock {
-    padding: 0 4px;
-    gap: 4px;
+    padding: 0 8px;
+    gap: 8px;
     height: 75px !important;
   }
   
   .dock-app {
-    flex-basis: calc(25% - 3px);
-    min-width: 38px;
+    width: 45px;
     gap: 1px;
   }
   
   .app-icon {
-    min-width: 38px;
-    min-height: 38px;
-    max-width: 48px;
-    max-height: 48px;
-    border-radius: 10px;
+    width: 45px;
+    height: 45px;
+    border-radius: 12px;
+  }
+  
+  .app-icon-img {
+    object-fit: contain;
   }
 }
 
