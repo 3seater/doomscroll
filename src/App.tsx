@@ -35,6 +35,10 @@ import video26 from './assets/videos/Download (25).mp4'
 import video27 from './assets/videos/Download (26).mp4'
 import video28 from './assets/videos/Download (27).mp4'
 import video29 from './assets/videos/Download (28).mp4'
+import video30 from './assets/videos/Download (29).mp4'
+import video31 from './assets/videos/Download (30).mp4'
+import video32 from './assets/videos/Download (31).mp4'
+import video33 from './assets/videos/Download (32).mp4'
 
 // Import app icons
 import pumpfunIcon from './assets/iphone icons/pumpfun.png'
@@ -65,6 +69,25 @@ import profile10 from './assets/profile pictures/images (18).jpg'
 import profile11 from './assets/profile pictures/images (19).jpg'
 import profile12 from './assets/profile pictures/2401a9479bec9d8c575b38623160e1ef8bcf9105r1-736-735v2_hq.jpg'
 import profile13 from './assets/profile pictures/meme-pfp-02.jpg'
+import profile14 from './assets/profile pictures/images (20).jpg'
+import profile15 from './assets/profile pictures/images (21).jpg'
+import profile16 from './assets/profile pictures/images (22).jpg'
+import profile17 from './assets/profile pictures/images (23).jpg'
+import profile18 from './assets/profile pictures/images (24).jpg'
+import profile19 from './assets/profile pictures/images (25).jpg'
+import profile20 from './assets/profile pictures/images (26).jpg'
+import profile21 from './assets/profile pictures/images (27).jpg'
+import profile22 from './assets/profile pictures/2658-aesthetic-meme.png'
+import profile23 from './assets/profile pictures/36804a90f7b63462cad795655c2e5b949873def3_full.jpg'
+import profile24 from './assets/profile pictures/anime-pfp-sad-boy-40s0vjfpa8vt3ou3.jpg'
+import profile25 from './assets/profile pictures/meme-pfp-36.jpg'
+import profile26 from './assets/profile pictures/meme-pfp-42.jpg'
+import profile27 from './assets/profile pictures/meme-profile-picture-ueda8hwv4698wup7.webp'
+import profile28 from './assets/profile pictures/NfHIizP4.jpg'
+import profile29 from './assets/profile pictures/noFilter.webp'
+import profile30 from './assets/profile pictures/noFilter (1).webp'
+import profile31 from './assets/profile pictures/noFilter (2).webp'
+import profile32 from './assets/profile pictures/Xab2XCaz.jpg'
 
 interface VideoItem {
   id: number
@@ -157,22 +180,26 @@ function App() {
       { id: 11, username: '@rizz.master', caption: 'genuinely no way 💀😭', videoUrl: video11, avatarUrl: profile11, likes: randomCount(150000, 2800000), comments: randomCount(5000, 75000), bookmarks: randomCount(20000, 350000), shares: randomCount(50000, 750000) },
       { id: 12, username: '@lowkey.fire', caption: 'genuinely hits 🥀💀', videoUrl: video12, avatarUrl: profile12, likes: randomCount(150000, 2800000), comments: randomCount(5000, 75000), bookmarks: randomCount(20000, 350000), shares: randomCount(50000, 750000) },
       { id: 13, username: '@based.fr', caption: 'nahh genuinely fr 😭🙏', videoUrl: video13, avatarUrl: profile13, likes: randomCount(150000, 2800000), comments: randomCount(5000, 75000), bookmarks: randomCount(20000, 350000), shares: randomCount(50000, 750000) },
-      { id: 14, username: '@vibe.check', caption: 'genuinely crazy 💀', videoUrl: video14, avatarUrl: profile4, likes: randomCount(150000, 2800000), comments: randomCount(5000, 75000), bookmarks: randomCount(20000, 350000), shares: randomCount(50000, 750000) },
-      { id: 15, username: '@no.cap.zone', caption: 'genuinely 🥀😭', videoUrl: video15, avatarUrl: profile5, likes: randomCount(150000, 2800000), comments: randomCount(5000, 75000), bookmarks: randomCount(20000, 350000), shares: randomCount(50000, 750000) },
-      { id: 16, username: '@ethereal.energy', caption: 'genuinely obsessed 🙏💀', videoUrl: video16, avatarUrl: profile6, likes: randomCount(150000, 2800000), comments: randomCount(5000, 75000), bookmarks: randomCount(20000, 350000), shares: randomCount(50000, 750000) },
-      { id: 17, username: '@chaos.theory', caption: 'this genuinely it 😭', videoUrl: video17, avatarUrl: profile7, likes: randomCount(150000, 2800000), comments: randomCount(5000, 75000), bookmarks: randomCount(20000, 350000), shares: randomCount(50000, 750000) },
-      { id: 18, username: '@moonlight.faded', caption: 'genuinely unhinged 🥀', videoUrl: video18, avatarUrl: profile8, likes: randomCount(150000, 2800000), comments: randomCount(5000, 75000), bookmarks: randomCount(20000, 350000), shares: randomCount(50000, 750000) },
-      { id: 19, username: '@divine.timing', caption: 'nahh genuinely 💀🙏', videoUrl: video19, avatarUrl: profile9, likes: randomCount(150000, 2800000), comments: randomCount(5000, 75000), bookmarks: randomCount(20000, 350000), shares: randomCount(50000, 750000) },
-      { id: 20, username: '@synthetic.dreams', caption: 'genuinely cant 😭🥀', videoUrl: video20, avatarUrl: profile10, likes: randomCount(150000, 2800000), comments: randomCount(5000, 75000), bookmarks: randomCount(20000, 350000), shares: randomCount(50000, 750000) },
-      { id: 21, username: '@core.memory', caption: 'genuinely broke me 💀', videoUrl: video21, avatarUrl: profile11, likes: randomCount(150000, 2800000), comments: randomCount(5000, 75000), bookmarks: randomCount(20000, 350000), shares: randomCount(50000, 750000) },
-      { id: 22, username: '@analog.soul', caption: 'genuinely real 🙏😭', videoUrl: video22, avatarUrl: profile12, likes: randomCount(150000, 2800000), comments: randomCount(5000, 75000), bookmarks: randomCount(20000, 350000), shares: randomCount(50000, 750000) },
-      { id: 23, username: '@nocturnal.thoughts', caption: 'genuinely tho 🥀💀', videoUrl: video23, avatarUrl: profile13, likes: randomCount(150000, 2800000), comments: randomCount(5000, 75000), bookmarks: randomCount(20000, 350000), shares: randomCount(50000, 750000) },
-      { id: 24, username: '@velvet.underground', caption: 'genuinely fr fr 😭🙏', videoUrl: video24, avatarUrl: profile1, likes: randomCount(150000, 2800000), comments: randomCount(5000, 75000), bookmarks: randomCount(20000, 350000), shares: randomCount(50000, 750000) },
-      { id: 25, username: '@faded.frequencies', caption: 'nahh genuinely 💀', videoUrl: video25, avatarUrl: profile2, likes: randomCount(150000, 2800000), comments: randomCount(5000, 75000), bookmarks: randomCount(20000, 350000), shares: randomCount(50000, 750000) },
-      { id: 26, username: '@liminal.spaces', caption: 'genuinely different 🥀😭', videoUrl: video26, avatarUrl: profile3, likes: randomCount(150000, 2800000), comments: randomCount(5000, 75000), bookmarks: randomCount(20000, 350000), shares: randomCount(50000, 750000) },
-      { id: 27, username: '@abstract.feelings', caption: 'this genuinely hits 🙏', videoUrl: video27, avatarUrl: profile4, likes: randomCount(150000, 2800000), comments: randomCount(5000, 75000), bookmarks: randomCount(20000, 350000), shares: randomCount(50000, 750000) },
-      { id: 28, username: '@nostalgic.wave', caption: 'genuinely iconic 💀🥀', videoUrl: video28, avatarUrl: profile5, likes: randomCount(150000, 2800000), comments: randomCount(5000, 75000), bookmarks: randomCount(20000, 350000), shares: randomCount(50000, 750000) },
-      { id: 29, username: '@parallel.universe', caption: 'genuinely wild 😭🙏💀', videoUrl: video29, avatarUrl: profile6, likes: randomCount(150000, 2800000), comments: randomCount(5000, 75000), bookmarks: randomCount(20000, 350000), shares: randomCount(50000, 750000) },
+      { id: 14, username: '@vibe.check', caption: 'genuinely crazy 💀', videoUrl: video14, avatarUrl: profile14, likes: randomCount(150000, 2800000), comments: randomCount(5000, 75000), bookmarks: randomCount(20000, 350000), shares: randomCount(50000, 750000) },
+      { id: 15, username: '@no.cap.zone', caption: 'genuinely 🥀😭', videoUrl: video15, avatarUrl: profile15, likes: randomCount(150000, 2800000), comments: randomCount(5000, 75000), bookmarks: randomCount(20000, 350000), shares: randomCount(50000, 750000) },
+      { id: 16, username: '@ethereal.energy', caption: 'genuinely obsessed 🙏💀', videoUrl: video16, avatarUrl: profile16, likes: randomCount(150000, 2800000), comments: randomCount(5000, 75000), bookmarks: randomCount(20000, 350000), shares: randomCount(50000, 750000) },
+      { id: 17, username: '@chaos.theory', caption: 'this genuinely it 😭', videoUrl: video17, avatarUrl: profile17, likes: randomCount(150000, 2800000), comments: randomCount(5000, 75000), bookmarks: randomCount(20000, 350000), shares: randomCount(50000, 750000) },
+      { id: 18, username: '@moonlight.faded', caption: 'genuinely unhinged 🥀', videoUrl: video18, avatarUrl: profile18, likes: randomCount(150000, 2800000), comments: randomCount(5000, 75000), bookmarks: randomCount(20000, 350000), shares: randomCount(50000, 750000) },
+      { id: 19, username: '@divine.timing', caption: 'nahh genuinely 💀🙏', videoUrl: video19, avatarUrl: profile19, likes: randomCount(150000, 2800000), comments: randomCount(5000, 75000), bookmarks: randomCount(20000, 350000), shares: randomCount(50000, 750000) },
+      { id: 20, username: '@synthetic.dreams', caption: 'genuinely cant 😭🥀', videoUrl: video20, avatarUrl: profile20, likes: randomCount(150000, 2800000), comments: randomCount(5000, 75000), bookmarks: randomCount(20000, 350000), shares: randomCount(50000, 750000) },
+      { id: 21, username: '@core.memory', caption: 'genuinely broke me 💀', videoUrl: video21, avatarUrl: profile21, likes: randomCount(150000, 2800000), comments: randomCount(5000, 75000), bookmarks: randomCount(20000, 350000), shares: randomCount(50000, 750000) },
+      { id: 22, username: '@analog.soul', caption: 'genuinely real 🙏😭', videoUrl: video22, avatarUrl: profile22, likes: randomCount(150000, 2800000), comments: randomCount(5000, 75000), bookmarks: randomCount(20000, 350000), shares: randomCount(50000, 750000) },
+      { id: 23, username: '@nocturnal.thoughts', caption: 'genuinely tho 🥀💀', videoUrl: video23, avatarUrl: profile23, likes: randomCount(150000, 2800000), comments: randomCount(5000, 75000), bookmarks: randomCount(20000, 350000), shares: randomCount(50000, 750000) },
+      { id: 24, username: '@velvet.underground', caption: 'genuinely fr fr 😭🙏', videoUrl: video24, avatarUrl: profile24, likes: randomCount(150000, 2800000), comments: randomCount(5000, 75000), bookmarks: randomCount(20000, 350000), shares: randomCount(50000, 750000) },
+      { id: 25, username: '@faded.frequencies', caption: 'nahh genuinely 💀', videoUrl: video25, avatarUrl: profile25, likes: randomCount(150000, 2800000), comments: randomCount(5000, 75000), bookmarks: randomCount(20000, 350000), shares: randomCount(50000, 750000) },
+      { id: 26, username: '@liminal.spaces', caption: 'genuinely different 🥀😭', videoUrl: video26, avatarUrl: profile26, likes: randomCount(150000, 2800000), comments: randomCount(5000, 75000), bookmarks: randomCount(20000, 350000), shares: randomCount(50000, 750000) },
+      { id: 27, username: '@abstract.feelings', caption: 'this genuinely hits 🙏', videoUrl: video27, avatarUrl: profile27, likes: randomCount(150000, 2800000), comments: randomCount(5000, 75000), bookmarks: randomCount(20000, 350000), shares: randomCount(50000, 750000) },
+      { id: 28, username: '@nostalgic.wave', caption: 'genuinely iconic 💀🥀', videoUrl: video28, avatarUrl: profile28, likes: randomCount(150000, 2800000), comments: randomCount(5000, 75000), bookmarks: randomCount(20000, 350000), shares: randomCount(50000, 750000) },
+      { id: 29, username: '@parallel.universe', caption: 'genuinely wild 😭🙏💀', videoUrl: video29, avatarUrl: profile29, likes: randomCount(150000, 2800000), comments: randomCount(5000, 75000), bookmarks: randomCount(20000, 350000), shares: randomCount(50000, 750000) },
+      { id: 30, username: '@digital.void', caption: 'genuinely not real 🥀', videoUrl: video30, avatarUrl: profile30, likes: randomCount(150000, 2800000), comments: randomCount(5000, 75000), bookmarks: randomCount(20000, 350000), shares: randomCount(50000, 750000) },
+      { id: 31, username: '@ephemeral.moments', caption: 'nahh genuinely 😭💀', videoUrl: video31, avatarUrl: profile31, likes: randomCount(150000, 2800000), comments: randomCount(5000, 75000), bookmarks: randomCount(20000, 350000), shares: randomCount(50000, 750000) },
+      { id: 32, username: '@cosmic.chaos', caption: 'genuinely unmatched 🙏🥀', videoUrl: video32, avatarUrl: profile32, likes: randomCount(150000, 2800000), comments: randomCount(5000, 75000), bookmarks: randomCount(20000, 350000), shares: randomCount(50000, 750000) },
+      { id: 33, username: '@lost.frequency', caption: 'genuinely cant even 💀😭', videoUrl: video33, avatarUrl: profile1, likes: randomCount(150000, 2800000), comments: randomCount(5000, 75000), bookmarks: randomCount(20000, 350000), shares: randomCount(50000, 750000) },
     ]
     // Shuffle the videos on every load
     return shuffleArray(initialVideos)
@@ -188,6 +215,7 @@ function App() {
   const scrollContainerRef = useRef<HTMLDivElement>(null)
   const [currentVideoIndex, setCurrentVideoIndex] = useState(1) // Start at first real video (index 1 because of duplicate)
   const [likedVideos, setLikedVideos] = useState<Set<number>>(new Set())
+  const [bookmarkedVideos, setBookmarkedVideos] = useState<Set<number>>(new Set())
   const [pausedVideos, setPausedVideos] = useState<Set<number>>(new Set())
   const [mutedVideos, setMutedVideos] = useState<Set<number>>(new Set())
   const [glowColor, setGlowColor] = useState('100, 150, 255')
@@ -692,6 +720,19 @@ function App() {
         newLiked.add(videoId)
       }
       return newLiked
+    })
+  }
+
+  // Handle bookmark toggle
+  const toggleBookmark = (videoId: number) => {
+    setBookmarkedVideos(prev => {
+      const newBookmarked = new Set(prev)
+      if (newBookmarked.has(videoId)) {
+        newBookmarked.delete(videoId)
+      } else {
+        newBookmarked.add(videoId)
+      }
+      return newBookmarked
     })
   }
 
@@ -1353,9 +1394,12 @@ function App() {
                     <img src={commentsIcon} alt="Comments" className="action-icon-img comments-icon" />
                     <span className="count">{formatCount(video.comments)}</span>
                   </div>
-                  <div className="action-button">
-                    <svg className="action-icon" viewBox="0 0 48 48" fill="white">
-                      <path d="M38 4H10v40l14-10 14 10V4z" stroke="white" strokeWidth="2.5" fill="white"/>
+                  <div 
+                    className={`action-button bookmark-button ${bookmarkedVideos.has(video.id) ? 'bookmarked' : ''}`}
+                    onClick={() => toggleBookmark(video.id)}
+                  >
+                    <svg className="action-icon" viewBox="0 0 48 48" fill={bookmarkedVideos.has(video.id) ? '#FFD700' : 'white'}>
+                      <path d="M38 4H10v40l14-10 14 10V4z" stroke={bookmarkedVideos.has(video.id) ? '#FFD700' : 'white'} strokeWidth="2.5" fill={bookmarkedVideos.has(video.id) ? '#FFD700' : 'none'}/>
                     </svg>
                     <span className="count">{formatCount(video.bookmarks)}</span>
                   </div>
