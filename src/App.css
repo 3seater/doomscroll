@@ -409,7 +409,7 @@ body {
 .side-actions {
   position: absolute;
   right: 12px;
-  bottom: 130px;
+  bottom: clamp(120px, 15vh, 150px);
   display: flex;
   flex-direction: column;
   gap: 22px;
@@ -771,6 +771,15 @@ a.dock-app {
     height: 55px;
     border-radius: 14px;
   }
+  
+  .side-actions {
+    bottom: clamp(110px, 14vh, 130px);
+    gap: 18px;
+  }
+  
+  .video-info {
+    bottom: 95px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -802,6 +811,26 @@ a.dock-app {
     height: 50px;
     border-radius: 13px;
   }
+  
+  .side-actions {
+    bottom: clamp(100px, 13vh, 120px);
+    gap: 16px;
+    right: 10px;
+  }
+  
+  .action-icon {
+    width: 28px;
+    height: 28px;
+  }
+  
+  .avatar {
+    width: 42px;
+    height: 42px;
+  }
+  
+  .video-info {
+    bottom: 85px;
+  }
 }
 
 /* Extra small devices */
@@ -829,6 +858,30 @@ a.dock-app {
     width: 45px;
     height: 45px;
     border-radius: 12px;
+  }
+  
+  .side-actions {
+    bottom: clamp(90px, 12vh, 110px);
+    gap: 14px;
+    right: 8px;
+  }
+  
+  .action-icon {
+    width: 26px;
+    height: 26px;
+  }
+  
+  .avatar {
+    width: 38px;
+    height: 38px;
+  }
+  
+  .video-info {
+    bottom: 75px;
+  }
+  
+  .count {
+    font-size: 11px;
   }
 }
 
