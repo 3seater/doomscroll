@@ -843,11 +843,11 @@ a.dock-app {
   }
 
   .iphone-frame {
-    width: min(410px, 75vw);
+    width: min(410px, 70vw);
     height: auto;
     aspect-ratio: 410 / 830;
-    max-height: 50vh; /* Fit above Safari browser bar */
-    font-size: clamp(0.6px, 0.15vw, 0.9px);
+    max-height: 38vh; /* MUCH smaller to fit above Safari bar */
+    font-size: clamp(0.45px, 0.12vw, 0.7px);
   }
   
   .dock {
@@ -882,11 +882,11 @@ a.dock-app {
   }
 
   .iphone-frame {
-    width: 75vw;
+    width: 65vw;
     height: auto;
     aspect-ratio: 410 / 830;
-    max-height: 48vh; /* Fit above Safari browser bar */
-    font-size: clamp(0.5px, 0.13vw, 0.8px);
+    max-height: 36vh; /* Fit above Safari browser bar */
+    font-size: clamp(0.4px, 0.11vw, 0.65px);
   }
   
   .dock {

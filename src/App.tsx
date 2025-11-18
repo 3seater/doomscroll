@@ -247,7 +247,7 @@ function App() {
     // Hide loading screen after initial render
     const timer = setTimeout(() => {
       setIsInitialLoading(false)
-    }, 1500) // Show loading for minimum 1.5s for smooth transition
+    }, 800) // Show loading for minimum 0.8s for faster perceived load
 
     return () => clearTimeout(timer)
   }, [])
@@ -1373,8 +1373,8 @@ function App() {
           {/* Scrollable Video Feed */}
           <div className="video-feed" ref={scrollContainerRef}>
             {circularVideos.map((video, index) => {
-              // Only preload current video and adjacent videos (prev/next)
-              const isCurrentOrAdjacent = Math.abs(index - currentVideoIndex) <= 1;
+              // Only preload current video for faster mobile loading
+              const isCurrent = index === currentVideoIndex;
               
               return (
               <div key={`${video.id}-${index}`} className="video-container">
@@ -1383,7 +1383,7 @@ function App() {
                   src={video.videoUrl}
                   loop
                   playsInline
-                  preload={isCurrentOrAdjacent ? "auto" : "none"}
+                  preload={isCurrent ? "auto" : "none"}
                   crossOrigin="anonymous"
                   onClick={(e) => toggleVideoPlayPause(e, video.id)}
                 />
