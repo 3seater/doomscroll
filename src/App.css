@@ -1,0 +1,1382 @@
+.comment-thread {
+  margin-bottom: 20px;
+}
+
+.comment-thread:last-child {
+  margin-bottom: 0;
+}
+/* Universal box-sizing for cross-platform compatibility */
+*, *::before, *::after {
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+}
+
+.app-container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #000000;
+  position: relative;
+}
+
+
+/* iPhone Frame */
+.iphone-frame {
+  position: relative;
+  width: 410px;
+  height: 830px;
+  font-size: 1.2px;
+  z-index: 10;
+  transition: filter 0.15s ease-out;
+}
+
+.iphone-frame *,
+.iphone-frame *::before,
+.iphone-frame *::after {
+  box-sizing: border-box;
+}
+
+/* Override for flex containers */
+.iphone-frame .imessage-container,
+.iphone-frame .imessage-header,
+.iphone-frame .chat-info,
+.iphone-frame .messages-list,
+.iphone-frame .input-wrapper {
+  display: flex !important;
+}
+
+.side {
+  background: #000;
+  border-radius: 60em;
+  box-shadow: 
+    inset 0 0 1em 1em #1a3a52,
+    0em 0em 1em 2em rgba(255, 255, 255, 1) inset,
+    0em 0em 1em 5em rgba(65, 114, 159, 0.8) inset,
+    0 8px 30px rgba(0, 0, 0, 0.3);
+  height: 100%;
+  padding: 12em 12em;
+  width: 100%;
+  position: relative;
+}
+
+.line::after,
+.line::before {
+  content: '';
+  position: absolute;
+  border: solid rgba(255, 255, 255, 0.4);
+  border-width: 0 5em;
+  height: 5em;
+  left: 0;
+  width: 100%;
+  z-index: 10;
+}
+
+.line::after {
+  top: 69em;
+}
+
+.line::before {
+  bottom: 71em;
+}
+
+.header {
+  background: #000;
+  border-bottom-left-radius: 18em;
+  border-bottom-right-radius: 18em;
+  height: 28em;
+  left: 50%;
+  margin-left: -62em;
+  position: absolute;
+  top: 12em;
+  width: 124em;
+  z-index: 101;
+}
+
+.sensor-1::after,
+.sensor-1::before {
+  content: '';
+  position: absolute;
+}
+
+.sensor-1::after {
+  background: #444;
+  border-radius: 50%;
+  height: 6em;
+  width: 6em;
+  left: 12.5em;
+  top: 10.5em;
+  box-shadow: 0em 0em 2em 1em #000080 inset;
+}
+
+.sensor-1::before {
+  background: rgb(20, 20, 20);
+  border-radius: 50%;
+  height: 12em;
+  width: 12em;
+  left: 10em;
+  top: 8em;
+}
+
+.sensor-2::before {
+  content: '';
+  position: absolute;
+  background: #131313;
+  border-radius: 1.5em;
+  height: 3em;
+  width: 54em;
+  left: 50%;
+  margin-left: -27em;
+  top: 10em;
+}
+
+.volume-button {
+  background-color: #41729f;
+  box-shadow: 
+    inset 0 0 1em 0.5em #1a3a52,
+    0em 0em 3em 2em rgba(255, 255, 255, 0.4) inset;
+  border-top-left-radius: 1.5em;
+  border-bottom-left-radius: 1.5em;
+  height: 26em;
+  left: -3em;
+  position: absolute;
+  top: 122em;
+  width: 3em;
+  z-index: 5;
+}
+
+.volume-button::after,
+.volume-button::before {
+  content: '';
+  position: absolute;
+  background-color: #41729f;
+  box-shadow: 
+    inset 0 0 1em 0.5em #1a3a52,
+    0em 0em 3em 2em rgba(255, 255, 255, 0.4) inset;
+  border-top-left-radius: 1.5em;
+  border-bottom-left-radius: 1.5em;
+  height: 50em;
+  left: 0;
+  width: 3em;
+}
+
+.volume-button::after {
+  top: 48em;
+}
+
+.volume-button::before {
+  top: 112em;
+}
+
+.power-button {
+  background-color: #41729f;
+  box-shadow: 
+    inset 0 0 1em 0.5em #1a3a52,
+    0em 0em 3em 2em rgba(255, 255, 255, 0.4) inset;
+  border-top-right-radius: 1.5em;
+  border-bottom-right-radius: 1.5em;
+  height: 75em;
+  right: -3em;
+  position: absolute;
+  top: 175em;
+  width: 3em;
+  z-index: 5;
+}
+
+.iphone-screen {
+  background: #000;
+  border-radius: 46em;
+  position: relative;
+  height: calc(100% - 2em);
+  width: calc(100% - 2em);
+  margin: 1em auto 0;
+  overflow: hidden;
+  pointer-events: auto;
+  isolation: isolate;
+  transform: translateZ(0);
+}
+
+/* Status Bar */
+.status-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 25px 0 25px;
+  color: white;
+  font-size: 15px;
+  font-weight: 600;
+  z-index: 100;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.3) 50%, transparent 100%);
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  pointer-events: none;
+  transform: translateZ(0);
+}
+
+.time {
+  margin-left: 0;
+  letter-spacing: -0.3px;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+}
+
+.status-icons {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.status-icon {
+  opacity: 0.95;
+  height: 12px;
+  width: auto;
+}
+
+/* Top Navigation */
+.top-nav {
+  position: absolute;
+  top: 50px;
+  left: 0;
+  right: 0;
+  height: 44px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+  z-index: 100;
+  pointer-events: none;
+  transform: translateZ(0);
+}
+
+.nav-item {
+  pointer-events: auto;
+}
+
+.nav-item {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 17px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.2s ease;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+  position: relative;
+  letter-spacing: -0.2px;
+}
+
+.nav-item.active {
+  color: white;
+  font-weight: 600;
+  font-size: 18px;
+}
+
+.nav-item.active::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 32px;
+  height: 3px;
+  background: white;
+  border-radius: 2px;
+}
+
+/* Video Feed */
+.video-feed {
+  width: 100%;
+  height: 100%;
+  overflow-y: scroll;
+  scroll-snap-type: y proximity;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  overscroll-behavior-y: contain;
+  scroll-padding: 0;
+  will-change: scroll-position;
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  touch-action: pan-y;
+  -ms-touch-action: pan-y;
+  position: relative;
+  z-index: 1;
+  pointer-events: auto !important;
+}
+
+.video-feed:active {
+  cursor: grabbing;
+}
+
+.video-feed.dragging {
+  scroll-behavior: auto !important;
+  -webkit-scroll-behavior: auto !important;
+  -moz-scroll-behavior: auto !important;
+}
+
+.video-feed.snapping {
+  scroll-behavior: smooth !important;
+}
+
+.video-feed::-webkit-scrollbar {
+  display: none;
+}
+
+.video-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  pointer-events: auto;
+}
+
+/* Video Player */
+.video-player {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  background: #000;
+  cursor: pointer;
+  pointer-events: auto;
+  transition: opacity 0.3s ease;
+}
+
+.video-player.paused {
+  opacity: 0.9;
+}
+
+/* Play Button Overlay */
+.play-button-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 10;
+  opacity: 0.15;
+  transition: opacity 0.3s ease;
+}
+
+.play-button-overlay svg {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
+}
+
+/* Side Actions */
+.side-actions {
+  position: absolute;
+  right: 12px;
+  bottom: 130px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  z-index: 50;
+  transition: opacity 0.1s linear;
+  pointer-events: auto;
+}
+
+.action-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: transform 0.15s ease-out;
+  pointer-events: auto;
+  position: relative;
+}
+
+.like-button.liked .action-icon {
+  animation: likeBounce 0.6s ease;
+}
+
+@keyframes likeBounce {
+  0% { transform: scale(1); }
+  15% { transform: scale(1.3); }
+  30% { transform: scale(0.95); }
+  45% { transform: scale(1.15); }
+  60% { transform: scale(0.98); }
+  75% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.action-button:active {
+  transform: scale(0.9);
+}
+
+.avatar-section {
+  position: relative;
+  margin-bottom: 8px;
+}
+
+.avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 2px solid white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  object-fit: cover;
+  display: block;
+}
+
+.plus-button {
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 20px;
+  background: #fe2c55;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 1;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+.action-icon {
+  width: 32px;
+  height: 32px;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+}
+
+.action-icon-img {
+  width: 32px;
+  height: 32px;
+  filter: brightness(0) invert(1) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+}
+
+.comments-icon {
+  width: 40px;
+  height: 40px;
+}
+
+.count {
+  color: white;
+  font-size: 12px;
+  font-weight: 600;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+  letter-spacing: -0.1px;
+  margin-top: 2px;
+}
+
+/* Video Info */
+.video-info {
+  position: absolute;
+  bottom: 110px;
+  left: 16px;
+  right: 80px;
+  z-index: 50;
+  color: white;
+  transition: opacity 0.1s linear;
+  pointer-events: none;
+}
+
+.username {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+}
+
+.caption {
+  font-size: 15px;
+  margin-bottom: 12px;
+  line-height: 1.5;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+  font-weight: 400;
+}
+
+.audio-info {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  gap: 6px;
+  opacity: 0.95;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+}
+
+/* Dock */
+.dock {
+  position: absolute !important;
+  bottom: 8px !important;
+  left: 16px !important;
+  right: 16px !important;
+  height: 92px !important;
+  background: rgba(220, 220, 220, 0.3);
+  backdrop-filter: blur(60px) saturate(180%);
+  -webkit-backdrop-filter: blur(60px) saturate(180%);
+  border-radius: 42px;
+  display: flex !important;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+  padding: 0 20px;
+  gap: 16px;
+  z-index: 9999 !important;
+  box-sizing: border-box;
+  overflow: visible;
+  pointer-events: auto !important;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+  visibility: visible !important;
+  opacity: 1 !important;
+  transform: translateZ(999px) !important;
+  will-change: transform;
+  isolation: isolate;
+}
+
+/* Firefox-specific backdrop filter fallback */
+@-moz-document url-prefix() {
+  .dock {
+    background: rgba(220, 220, 220, 0.8) !important;
+    display: flex !important;
+    z-index: 10000 !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  }
+  
+  .dock-app {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+  
+  .app-icon {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+  
+  .app-icon-img {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+  
+  /* iMessage UI fixes */
+  .imessage-container {
+    display: flex !important;
+  }
+  
+  .imessage-header {
+    display: flex !important;
+  }
+  
+  .chat-info {
+    display: flex !important;
+    flex: 1 !important;
+  }
+  
+  .chat-name,
+  .chat-members {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+  
+  .messages-list {
+    display: flex !important;
+  }
+  
+  .message-input-container {
+    display: block !important;
+    visibility: visible !important;
+  }
+  
+  .input-wrapper {
+    display: flex !important;
+  }
+  
+  .send-button {
+    display: flex !important;
+    visibility: visible !important;
+  }
+}
+
+.dock-app {
+  display: flex !important;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  text-decoration: none !important;
+  color: inherit;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+  flex-shrink: 0;
+  flex: 0 0 auto;
+  min-width: 60px;
+  width: 60px;
+  pointer-events: auto !important;
+  position: relative;
+  z-index: 11;
+  transform: translateZ(0);
+}
+
+a.dock-app {
+  display: flex !important;
+}
+
+.dock-app:hover {
+  transform: scale(1.05) translateZ(0);
+}
+
+.app-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: transform 0.15s ease-out;
+  box-shadow: 
+    0 4px 16px rgba(0, 0, 0, 0.25),
+    0 2px 4px rgba(0, 0, 0, 0.15);
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+  display: block !important;
+  pointer-events: auto;
+}
+
+.app-icon-img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover;
+  display: block !important;
+  position: relative;
+  pointer-events: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+  max-width: none !important;
+  max-height: none !important;
+  min-width: 60px;
+  min-height: 60px;
+}
+
+
+.app-icon:active {
+  transform: scale(0.92);
+}
+
+.app-1 {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.app-2 {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.app-3 {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+.app-4 {
+  background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+}
+
+/* Responsive adjustments */
+@media (max-height: 900px) {
+  .iphone-frame {
+    width: 369px;
+    height: 747px;
+    font-size: 1.08px;
+  }
+}
+
+@media (max-height: 800px) {
+  .iphone-frame {
+    width: 328px;
+    height: 664px;
+    font-size: 0.96px;
+  }
+}
+
+/* iMessage UI */
+.imessage-container {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  background: #000;
+  z-index: 9999 !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  transform: translateZ(999px) !important;
+  isolation: isolate;
+}
+
+.imessage-header {
+  display: flex !important;
+  align-items: center;
+  padding: 50px 16px 10px;
+  background: rgba(20, 20, 20, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 0.5px solid rgba(255, 255, 255, 0.1);
+  gap: 12px;
+  position: relative !important;
+  z-index: 10000 !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  transform: translateZ(1000px) !important;
+}
+
+.back-button {
+  background: none;
+  border: none;
+  padding: 12px 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  min-width: 50px;
+  margin-left: -8px;
+  transition: opacity 0.2s;
+}
+
+.back-button:hover {
+  opacity: 0.7;
+}
+
+.back-button:active {
+  opacity: 0.4;
+}
+
+.chat-info {
+  flex: 1;
+  text-align: center;
+  display: flex !important;
+  flex-direction: column;
+  align-items: center;
+  position: relative !important;
+  z-index: 10001 !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  transform: translateZ(1001px) !important;
+}
+
+.header-spacer {
+  width: 50px;
+}
+
+.chat-name {
+  font-size: 17px !important;
+  font-weight: 600 !important;
+  color: #fff !important;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  position: relative !important;
+  z-index: 10002 !important;
+  transform: translateZ(1002px) !important;
+}
+
+.chat-members {
+  font-size: 12px !important;
+  color: rgba(255, 255, 255, 0.6) !important;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+  margin-top: 2px;
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  position: relative !important;
+  z-index: 10002 !important;
+  transform: translateZ(1002px) !important;
+}
+
+.messages-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex !important;
+  flex-direction: column;
+  gap: 8px;
+  background: #000;
+  position: relative !important;
+  z-index: 10000 !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  transform: translateZ(1000px) !important;
+}
+
+.messages-list::-webkit-scrollbar {
+  display: none;
+}
+
+.message-wrapper {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 4px;
+}
+
+.message-wrapper.user {
+  align-items: flex-end;
+}
+
+.message-wrapper.other {
+  align-items: flex-start;
+}
+
+.message-sender {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.5);
+  margin-bottom: 2px;
+  margin-left: 12px;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+}
+
+.message-bubble {
+  max-width: 70%;
+  padding: 10px 14px;
+  border-radius: 18px;
+  font-size: 15px;
+  line-height: 1.4;
+  word-wrap: break-word;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+}
+
+.message-bubble.user {
+  background: #007AFF;
+  color: #fff;
+  border-bottom-right-radius: 4px;
+}
+
+.message-bubble.other {
+  background: rgba(60, 60, 67, 0.6);
+  color: #fff;
+  border-bottom-left-radius: 4px;
+}
+
+.message-input-container {
+  padding: 8px 12px 24px !important;
+  background: rgba(20, 20, 20, 0.95) !important;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 0.5px solid rgba(255, 255, 255, 0.1);
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  position: relative !important;
+  z-index: 10001 !important;
+  transform: translateZ(1001px) !important;
+}
+
+.input-wrapper {
+  display: flex !important;
+  align-items: center;
+  gap: 8px;
+  background: rgba(60, 60, 67, 0.6) !important;
+  border-radius: 20px;
+  padding: 8px 12px;
+  position: relative !important;
+  z-index: 10002 !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  transform: translateZ(1002px) !important;
+}
+
+.message-input {
+  flex: 1;
+  background: none;
+  border: none;
+  outline: none;
+  color: #fff !important;
+  font-size: 16px !important;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  position: relative !important;
+  z-index: 10003 !important;
+}
+
+.message-input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.send-button {
+  background: none;
+  border: none;
+  padding: 4px;
+  cursor: pointer;
+  color: #007AFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s;
+}
+
+.send-button:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.send-button:not(:disabled):active {
+  opacity: 0.6;
+}
+
+/* Username Setup Modal - iOS Style */
+.username-modal-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(20px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  border-radius: 46em;
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.username-modal {
+  background: rgba(242, 242, 247, 0.98);
+  backdrop-filter: blur(40px) saturate(180%);
+  border-radius: 14px;
+  padding: 0;
+  width: 85%;
+  max-width: 280px;
+  text-align: center;
+  animation: modalSlideUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+}
+
+@keyframes modalSlideUp {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.username-modal h2 {
+  color: #000;
+  font-size: 17px;
+  margin: 0;
+  font-weight: 600;
+  padding: 20px 16px 2px 16px;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+  letter-spacing: -0.2px;
+}
+
+.username-modal p {
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 13px;
+  margin: 0;
+  padding: 0 16px 16px 16px;
+  line-height: 1.4;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+}
+
+.username-input {
+  width: calc(100% - 32px);
+  padding: 11px 12px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 0.5px solid rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  color: #000;
+  font-size: 17px;
+  outline: none;
+  transition: all 0.2s;
+  margin: 0 16px 16px 16px;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.username-input:focus {
+  background: rgba(255, 255, 255, 1);
+  border-color: #007AFF;
+  box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+}
+
+.username-input::placeholder {
+  color: rgba(60, 60, 67, 0.3);
+}
+
+.username-modal-buttons {
+  display: flex;
+  border-top: 0.5px solid rgba(0, 0, 0, 0.1);
+  margin: 0;
+}
+
+.username-cancel-btn,
+.username-submit-btn {
+  flex: 1;
+  padding: 11px;
+  border-radius: 0;
+  border: none;
+  background: transparent;
+  font-size: 17px;
+  font-weight: 400;
+  cursor: pointer;
+  transition: background 0.15s;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+  letter-spacing: -0.2px;
+}
+
+.username-cancel-btn {
+  color: #007AFF;
+  border-right: 0.5px solid rgba(0, 0, 0, 0.1);
+}
+
+.username-cancel-btn:active {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.username-submit-btn {
+  color: #007AFF;
+  font-weight: 600;
+}
+
+.username-submit-btn:active:not(:disabled) {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.username-submit-btn:disabled {
+  color: rgba(0, 122, 255, 0.3);
+  cursor: not-allowed;
+}
+
+.username-submit-full {
+  border-right: none;
+  border-radius: 0 0 14px 14px;
+}
+
+/* Comments Overlay */
+.comments-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 30%;
+  background: white;
+  border-radius: 20px 20px 0 0;
+  z-index: 1000;
+  animation: slideUp 0.3s ease-out;
+  display: flex;
+  flex-direction: column;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+.comments-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+.comments-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 16px;
+  border-bottom: 0.5px solid rgba(22, 24, 35, 0.12);
+  position: relative;
+}
+
+.comments-count {
+  font-size: 16px;
+  font-weight: 600;
+  color: #161823;
+}
+
+.comments-close {
+  position: absolute;
+  right: 16px;
+  background: none;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  color: #161823;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background 0.2s;
+}
+
+.comments-close:hover {
+  background: rgba(22, 24, 35, 0.06);
+}
+
+.comments-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px 16px;
+}
+
+.comments-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+  color: rgba(22, 24, 35, 0.5);
+}
+
+.comments-empty p {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+  color: rgba(22, 24, 35, 0.75);
+}
+
+.comments-empty span {
+  font-size: 14px;
+}
+
+.comment-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.comment-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  object-fit: cover;
+}
+
+.comment-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.comment-username {
+  font-size: 14px;
+  font-weight: 600;
+  color: #161823;
+  margin-bottom: 4px;
+}
+
+.comment-text {
+  font-size: 15px;
+  color: #161823;
+  line-height: 1.4;
+  word-wrap: break-word;
+  word-break: break-word;
+  white-space: pre-wrap;
+}
+
+.comment-footer {
+  display: flex;
+  gap: 16px;
+  margin-top: 8px;
+  font-size: 14px;
+  color: rgba(22, 24, 35, 0.5);
+}
+
+.comment-time {
+  font-weight: 400;
+}
+
+.comment-likes {
+  font-weight: 500;
+}
+
+.comment-reply {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(22, 24, 35, 0.5);
+  cursor: pointer;
+}
+
+.comment-reply:hover {
+  color: rgba(22, 24, 35, 0.75);
+}
+
+.comment-like-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.comment-like-btn {
+  background: none;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: transform 0.2s;
+}
+
+.comment-like-btn:active {
+  transform: scale(0.9);
+}
+
+.comment-like-btn.liked svg {
+  fill: #fe2c55;
+  stroke: #fe2c55;
+}
+
+.comment-like-count {
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(22, 24, 35, 0.75);
+}
+
+.comment-input-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 16px;
+  border-top: 0.5px solid rgba(22, 24, 35, 0.12);
+  background: white;
+}
+
+.replying-to {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background: rgba(22, 24, 35, 0.06);
+  border-radius: 8px;
+  font-size: 13px;
+  color: rgba(22, 24, 35, 0.75);
+}
+
+.replying-to button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  color: rgba(22, 24, 35, 0.5);
+  padding: 0 4px;
+}
+
+.replying-to button:hover {
+  color: rgba(22, 24, 35, 0.75);
+}
+
+.comment-replies {
+  margin-left: 40px;
+  margin-top: 12px;
+  padding-left: 12px;
+  border-left: 2px solid rgba(22, 24, 35, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.comment-item.reply {
+  margin-top: 0;
+  padding: 10px 12px;
+  background: rgba(22, 24, 35, 0.03);
+  border-radius: 12px;
+}
+
+.comment-item.reply .comment-avatar {
+  width: 28px;
+  height: 28px;
+}
+
+.comment-input {
+  flex: 1;
+  padding: 10px 16px;
+  border: 1px solid rgba(22, 24, 35, 0.12);
+  border-radius: 20px;
+  font-size: 15px;
+  outline: none;
+  background: rgba(22, 24, 35, 0.06);
+  transition: all 0.2s;
+}
+
+.comment-input:focus {
+  background: white;
+  border-color: rgba(22, 24, 35, 0.2);
+}
+
+.comment-post-btn {
+  padding: 8px 16px;
+  background: none;
+  border: none;
+  color: #fe2c55;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.comment-post-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.comment-post-btn:active:not(:disabled) {
+  opacity: 0.7;
+}
