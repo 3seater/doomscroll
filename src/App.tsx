@@ -1141,10 +1141,10 @@ function App() {
         className="iphone-frame"
         style={{
           filter: `
-            drop-shadow(0 0 60px rgba(${glowColor}, 0.32))
-            drop-shadow(0 0 100px rgba(${glowColor}, 0.24))
-            drop-shadow(0 0 140px rgba(${glowColor}, 0.16))
-            drop-shadow(0 0 200px rgba(${glowColor}, 0.12))
+            drop-shadow(0 0 60px rgba(${glowColor}, 0.38))
+            drop-shadow(0 0 100px rgba(${glowColor}, 0.29))
+            drop-shadow(0 0 140px rgba(${glowColor}, 0.19))
+            drop-shadow(0 0 200px rgba(${glowColor}, 0.14))
           `
         }}
       >
