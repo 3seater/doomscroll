@@ -29,17 +29,21 @@ body {
   -moz-osx-font-smoothing: grayscale;
   touch-action: none; /* Disable all touch scrolling on mobile */
   overscroll-behavior: none; /* Prevent pull-to-refresh */
+  padding-bottom: env(safe-area-inset-bottom); /* Safari safe area */
 }
 
 .app-container {
   width: 100vw;
   height: 100vh;
+  height: calc(100vh - env(safe-area-inset-bottom)); /* Account for Safari bar */
   min-height: -webkit-fill-available; /* Safari mobile friendly */
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: #000000;
-  position: relative;
+  position: fixed;
+  top: 0;
+  left: 0;
   overflow: hidden;
   touch-action: none; /* Disable all touch scrolling */
   overscroll-behavior: none; /* Prevent bounce/pull-to-refresh */
@@ -383,13 +387,13 @@ body {
   width: 100%;
   height: 100%;
   overflow-y: scroll;
-  scroll-snap-type: y proximity;
+  scroll-snap-type: y mandatory; /* Changed from proximity for better snap */
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
   -ms-overflow-style: none;
   overscroll-behavior-y: contain;
   scroll-padding: 0;
-  will-change: scroll-position;
+  will-change: transform; /* GPU acceleration */
   cursor: grab;
   user-select: none;
   -webkit-user-select: none;
@@ -400,6 +404,10 @@ body {
   position: relative;
   z-index: 1;
   pointer-events: auto !important;
+  /* Performance optimizations for smooth scrolling */
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 .video-feed:active {
@@ -835,11 +843,11 @@ a.dock-app {
   }
 
   .iphone-frame {
-    width: min(410px, 85vw);
+    width: min(410px, 75vw);
     height: auto;
     aspect-ratio: 410 / 830;
-    max-height: 65vh; /* 25% smaller for mobile */
-    font-size: clamp(0.8px, 0.2vw, 1.2px);
+    max-height: 50vh; /* Fit above Safari browser bar */
+    font-size: clamp(0.6px, 0.15vw, 0.9px);
   }
   
   .dock {
@@ -874,11 +882,11 @@ a.dock-app {
   }
 
   .iphone-frame {
-    width: 90vw;
+    width: 75vw;
     height: auto;
     aspect-ratio: 410 / 830;
-    max-height: 60vh; /* 25% smaller for mobile */
-    font-size: clamp(0.7px, 0.18vw, 1px);
+    max-height: 48vh; /* Fit above Safari browser bar */
+    font-size: clamp(0.5px, 0.13vw, 0.8px);
   }
   
   .dock {
