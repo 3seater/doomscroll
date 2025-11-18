@@ -235,19 +235,21 @@ function App() {
       const videoData = circularVideos[index]
       videoEl.muted = !hasInteracted || mutedVideos.has(videoData.id)
       if (index === currentVideoIndex) {
-        // Reset to start and play
-        videoEl.currentTime = 0
-        const playPromise = videoEl.play()
-        if (playPromise !== undefined) {
-          playPromise.catch(() => {
-            // Autoplay might be blocked, that's okay
-          })
+        // Reset to start and play only if the video is not already playing
+        if (videoEl.paused) {
+          videoEl.currentTime = 0
+          const playPromise = videoEl.play()
+          if (playPromise !== undefined) {
+            playPromise.catch(() => {
+              // Autoplay might be blocked, that's okay
+            })
+          }
         }
       } else {
         videoEl.pause()
       }
     })
-  }, [currentVideoIndex, hasInteracted])
+  }, [currentVideoIndex, hasInteracted, mutedVideos, circularVideos])
 
   // Handle video state when switching between messages/comments and TikTok
   useEffect(() => {
@@ -707,9 +709,13 @@ function App() {
 
   // Handle video play/pause on click
   const toggleVideoPlayPause = (e: React.MouseEvent<HTMLVideoElement>, videoId: number) => {
+    e.stopPropagation() // Prevent event bubbling
     const video = e.currentTarget
+    
     if (video.paused) {
-      video.play()
+      video.play().catch(() => {
+        // Handle play error silently
+      })
       setPausedVideos(prev => {
         const newSet = new Set(prev)
         newSet.delete(videoId)
