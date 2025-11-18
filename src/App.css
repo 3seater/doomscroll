@@ -12,6 +12,21 @@
   -moz-box-sizing: border-box;
 }
 
+/* Prevent mobile zoom and improve touch */
+html {
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  touch-action: manipulation;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 .app-container {
   width: 100vw;
   height: 100vh;
@@ -28,6 +43,8 @@
   position: relative;
   width: 410px;
   height: 830px;
+  max-width: 95vw;
+  max-height: 95vh;
   font-size: 1.2px;
   z-index: 10;
   transition: filter 0.15s ease-out;
@@ -714,6 +731,8 @@ a.dock-app {
   .iphone-frame {
     width: 369px;
     height: 747px;
+    max-width: 95vw;
+    max-height: 95vh;
     font-size: 1.08px;
   }
 }
@@ -722,7 +741,84 @@ a.dock-app {
   .iphone-frame {
     width: 328px;
     height: 664px;
+    max-width: 95vw;
+    max-height: 95vh;
     font-size: 0.96px;
+  }
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+  .iphone-frame {
+    width: min(410px, 85vw);
+    height: auto;
+    aspect-ratio: 410 / 830;
+    max-height: 90vh;
+    font-size: clamp(0.8px, 0.2vw, 1.2px);
+  }
+  
+  .app-container {
+    padding: 20px 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .iphone-frame {
+    width: 90vw;
+    height: auto;
+    aspect-ratio: 410 / 830;
+    max-height: 85vh;
+    font-size: clamp(0.7px, 0.18vw, 1px);
+  }
+  
+  .app-container {
+    padding: 15px 0;
+  }
+}
+
+/* Extra small devices */
+@media (max-width: 360px) {
+  .iphone-frame {
+    width: 92vw;
+    height: auto;
+    aspect-ratio: 410 / 830;
+    max-height: 80vh;
+    font-size: 0.6px;
+  }
+}
+
+/* Landscape mobile */
+@media (max-height: 500px) and (orientation: landscape) {
+  .iphone-frame {
+    width: auto;
+    height: 85vh;
+    max-width: 45vw;
+    aspect-ratio: 410 / 830;
+  }
+  
+  .app-container {
+    padding: 10px;
+  }
+}
+
+/* Ultra-wide displays */
+@media (min-width: 1920px) {
+  .iphone-frame {
+    width: 410px;
+    height: 830px;
+    max-width: 25vw;
+    max-height: 90vh;
+  }
+}
+
+/* 4K and above */
+@media (min-width: 2560px) {
+  .iphone-frame {
+    width: 500px;
+    height: 1012px;
+    max-width: 20vw;
+    max-height: 85vh;
+    font-size: 1.46px;
   }
 }
 
