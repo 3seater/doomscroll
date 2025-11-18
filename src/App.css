@@ -35,7 +35,6 @@ body {
 .app-container {
   width: 100vw;
   height: 100vh;
-  height: calc(100vh - env(safe-area-inset-bottom)); /* Account for Safari bar */
   min-height: -webkit-fill-available; /* Safari mobile friendly */
   display: flex;
   justify-content: center;
@@ -47,6 +46,7 @@ body {
   overflow: hidden;
   touch-action: none; /* Disable all touch scrolling */
   overscroll-behavior: none; /* Prevent bounce/pull-to-refresh */
+  padding-bottom: 100px; /* Extra space for Safari browser bar */
 }
 
 /* Loading Screen */
@@ -842,12 +842,17 @@ a.dock-app {
     display: none !important;
   }
 
+  .app-container {
+    padding-bottom: 120px; /* More space for Safari bar */
+  }
+
   .iphone-frame {
-    width: min(410px, 70vw);
+    width: min(410px, 60vw);
     height: auto;
     aspect-ratio: 410 / 830;
-    max-height: 38vh; /* MUCH smaller to fit above Safari bar */
-    font-size: clamp(0.45px, 0.12vw, 0.7px);
+    max-height: 28vh; /* Much smaller to fit above Safari browser bar */
+    margin-bottom: 20px; /* Extra margin from bottom */
+    font-size: clamp(0.35px, 0.1vw, 0.6px);
   }
   
   .dock {
@@ -881,12 +886,17 @@ a.dock-app {
     display: none !important;
   }
 
+  .app-container {
+    padding-bottom: 140px; /* Even more space for Safari bar on smaller screens */
+  }
+
   .iphone-frame {
-    width: 65vw;
+    width: 55vw;
     height: auto;
     aspect-ratio: 410 / 830;
-    max-height: 36vh; /* Fit above Safari browser bar */
-    font-size: clamp(0.4px, 0.11vw, 0.65px);
+    max-height: 26vh; /* Even smaller to ensure it fits above Safari bar */
+    margin-bottom: 30px; /* Extra margin */
+    font-size: clamp(0.3px, 0.09vw, 0.55px);
   }
   
   .dock {
@@ -934,12 +944,17 @@ a.dock-app {
     display: none !important;
   }
 
+  .app-container {
+    padding-bottom: 150px; /* Maximum space for Safari bar */
+  }
+
   .iphone-frame {
-    width: 92vw;
+    width: 50vw;
     height: auto;
     aspect-ratio: 410 / 830;
-    max-height: 55vh; /* 25% smaller for mobile */
-    font-size: 0.6px;
+    max-height: 24vh; /* Very small to fit above Safari bar */
+    margin-bottom: 40px; /* Extra margin */
+    font-size: 0.28px;
   }
   
   .dock {
