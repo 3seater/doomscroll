@@ -226,6 +226,7 @@ function App() {
   const [uploadingImage, setUploadingImage] = useState(false)
   const [showUsernameSetup, setShowUsernameSetup] = useState(false)
   const [usernameInput, setUsernameInput] = useState('')
+  const [isInitialLoading, setIsInitialLoading] = useState(true)
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const [hasInteracted, setHasInteracted] = useState(false)
   const [showComments, setShowComments] = useState(false)
@@ -242,6 +243,13 @@ function App() {
     if (!username) {
       setShowUsernameSetup(true)
     }
+
+    // Hide loading screen after initial render
+    const timer = setTimeout(() => {
+      setIsInitialLoading(false)
+    }, 1500) // Show loading for minimum 1.5s for smooth transition
+
+    return () => clearTimeout(timer)
   }, [])
 
   // Initialize scroll position to first real video (skip duplicate at index 0)
@@ -1299,6 +1307,16 @@ function App() {
 
   return (
     <div className="app-container">
+      {/* Loading Screen */}
+      {isInitialLoading && (
+        <div className="loading-screen">
+          <div className="loading-content">
+            <div className="loading-spinner"></div>
+            <p className="loading-text">genuinely</p>
+          </div>
+        </div>
+      )}
+
       {/* Animated grain overlay for gradient banding fix */}
       <Grain opacity={0.03} blendMode="screen" />
       
