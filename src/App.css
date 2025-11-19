@@ -19,6 +19,7 @@ html {
   touch-action: manipulation;
   margin: 0;
   padding: 0;
+  height: -webkit-fill-available; /* iOS specific fix - stops content going under Safari bar */
 }
 
 body {
@@ -29,12 +30,16 @@ body {
   -moz-osx-font-smoothing: grayscale;
   touch-action: none; /* Disable all touch scrolling on mobile */
   overscroll-behavior: none; /* Prevent pull-to-refresh */
-  padding-bottom: env(safe-area-inset-bottom); /* Safari safe area */
+  min-height: 100vh; /* Fallback for browsers that don't support dvh */
+  min-height: 100dvh; /* Dynamic Viewport Height - accounts for Safari bar */
+  height: 100vh; /* Fallback */
+  height: 100dvh; /* Dynamic height - ONLY visible area above Safari bar */
 }
 
 .app-container {
   width: 100vw;
-  height: 100vh;
+  height: 100vh; /* Fallback */
+  height: 100dvh; /* Dynamic Viewport Height - ONLY the visible area */
   min-height: -webkit-fill-available; /* Safari mobile friendly */
   display: flex;
   justify-content: center;
@@ -46,7 +51,6 @@ body {
   overflow: hidden;
   touch-action: none; /* Disable all touch scrolling */
   overscroll-behavior: none; /* Prevent bounce/pull-to-refresh */
-  padding-bottom: 100px; /* Extra space for Safari browser bar */
 }
 
 /* Loading Screen */
@@ -842,17 +846,12 @@ a.dock-app {
     display: none !important;
   }
 
-  .app-container {
-    padding-bottom: 120px; /* More space for Safari bar */
-  }
-
   .iphone-frame {
-    width: min(410px, 60vw);
+    width: min(410px, 70vw);
     height: auto;
     aspect-ratio: 410 / 830;
-    max-height: 28vh; /* Much smaller to fit above Safari browser bar */
-    margin-bottom: 20px; /* Extra margin from bottom */
-    font-size: clamp(0.35px, 0.1vw, 0.6px);
+    max-height: 75dvh; /* Use dvh - viewport is now correctly sized above Safari bar */
+    font-size: clamp(0.5px, 0.14vw, 0.8px);
   }
   
   .dock {
@@ -886,17 +885,12 @@ a.dock-app {
     display: none !important;
   }
 
-  .app-container {
-    padding-bottom: 140px; /* Even more space for Safari bar on smaller screens */
-  }
-
   .iphone-frame {
-    width: 55vw;
+    width: 70vw;
     height: auto;
     aspect-ratio: 410 / 830;
-    max-height: 26vh; /* Even smaller to ensure it fits above Safari bar */
-    margin-bottom: 30px; /* Extra margin */
-    font-size: clamp(0.3px, 0.09vw, 0.55px);
+    max-height: 78dvh; /* Use dvh - viewport correctly sized for visible area */
+    font-size: clamp(0.45px, 0.12vw, 0.7px);
   }
   
   .dock {
@@ -944,17 +938,12 @@ a.dock-app {
     display: none !important;
   }
 
-  .app-container {
-    padding-bottom: 150px; /* Maximum space for Safari bar */
-  }
-
   .iphone-frame {
-    width: 50vw;
+    width: 75vw;
     height: auto;
     aspect-ratio: 410 / 830;
-    max-height: 24vh; /* Very small to fit above Safari bar */
-    margin-bottom: 40px; /* Extra margin */
-    font-size: 0.28px;
+    max-height: 80dvh; /* Use dvh - viewport correctly sized for visible area */
+    font-size: 0.5px;
   }
   
   .dock {
