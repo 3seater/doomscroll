@@ -1219,7 +1219,7 @@ a.dock-app {
 
 .message-input-container {
   padding: 8px 12px 24px !important;
-  background: #000 !important;
+  background: linear-gradient(to bottom, rgba(20, 20, 20, 0.95) 0%, rgba(10, 10, 10, 0.98) 100%) !important;
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-top: 0.5px solid rgba(255, 255, 255, 0.1);
