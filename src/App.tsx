@@ -5,44 +5,11 @@ import { ref, push, onValue, query, orderByChild, limitToLast, get, update } fro
 import { ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage'
 import Grain from './components/Grain'
 
-// Import local videos
-import video1 from './assets/videos/Download (11).mp4'
-import video2 from './assets/videos/Download (13).mp4'
-import video3 from './assets/videos/SnapTik-dot-Kim-1fafd7d075cac7219f5b08bec7c67655.mp4'
-import video4 from './assets/videos/SnapTik-dot-Kim-279a3e690b1294bbef6cd3114d3af933 (1).mp4'
-import video5 from './assets/videos/SnapTik-dot-Kim-63b4077f6c48fcd289ecef67a022228c.mp4'
-import video6 from './assets/videos/SnapTik-dot-Kim-6a92d566ecafbe6230777e33f8673913.mp4'
-import video7 from './assets/videos/SnapTik-dot-Kim-f766df1f811efcb75f8bb3a8c49f1614.mp4'
-import video8 from './assets/videos/Download (2).mp4'
-import video9 from './assets/videos/Download (3).mp4'
-import video10 from './assets/videos/Download (4).mp4'
-import video11 from './assets/videos/Download (7).mp4'
-import video12 from './assets/videos/Download (5).mp4'
-import video13 from './assets/videos/Download (8).mp4'
-import video14 from './assets/videos/Download (10).mp4'
-import video15 from './assets/videos/Download (12).mp4'
-import video16 from './assets/videos/Download (14).mp4'
-import video17 from './assets/videos/Download (15).mp4'
-import video18 from './assets/videos/Download (16).mp4'
-import video19 from './assets/videos/Download (17).mp4'
-import video20 from './assets/videos/Download (18).mp4'
-import video21 from './assets/videos/Download (20).mp4'
-import video22 from './assets/videos/Download (21).mp4'
-import video23 from './assets/videos/Download (22).mp4'
-import video24 from './assets/videos/Download (23).mp4'
-import video25 from './assets/videos/Download (24).mp4'
-import video26 from './assets/videos/Download (25).mp4'
-import video27 from './assets/videos/Download (26).mp4'
-import video28 from './assets/videos/Download (27).mp4'
-import video29 from './assets/videos/Download (28).mp4'
-import video30 from './assets/videos/Download (29).mp4'
-import video31 from './assets/videos/Download (30).mp4'
-import video32 from './assets/videos/Download (31).mp4'
-import video33 from './assets/videos/Download (32).mp4'
+// Placeholder image data URL (dark gray placeholder)
+const placeholderImage = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjcwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMWExYTFhIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyNCIgZmlsbD0iI2ZmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkRPT01TQ1JPTC5OT1c8L3RleHQ+PC9zdmc+'
 
 // Import app icons
 import pumpfunIcon from './assets/iphone icons/pumpfun.png'
-import tiktokIcon from './assets/iphone icons/tiktok.png'
 import xIcon from './assets/iphone icons/x.png'
 import messagesIcon from './assets/iphone icons/messages.png'
 
@@ -56,44 +23,46 @@ import wifiIcon from './assets/iphone icons/🧩 Status Bar › Wi-Fi Icon.svg'
 import batteryIcon from './assets/iphone icons/🧩 Status Bar › Battery Icon.svg'
 
 // Import profile pictures
-import profile1 from './assets/profile pictures/G3rOWA4W8AAMQQ5.jpg'
-import profile2 from './assets/profile pictures/images (13).jpg'
-import profile3 from './assets/profile pictures/images (14).jpg'
-import profile4 from './assets/profile pictures/images (15).jpg'
-import profile5 from './assets/profile pictures/images (16).jpg'
-import profile6 from './assets/profile pictures/images (17).jpg'
-import profile7 from './assets/profile pictures/IMG_7617.jpg'
-import profile8 from './assets/profile pictures/IMG_7722.jpg'
-import profile9 from './assets/profile pictures/Pepe_With_Crack.webp'
-import profile10 from './assets/profile pictures/images (18).jpg'
-import profile11 from './assets/profile pictures/images (19).jpg'
-import profile12 from './assets/profile pictures/2401a9479bec9d8c575b38623160e1ef8bcf9105r1-736-735v2_hq.jpg'
-import profile13 from './assets/profile pictures/meme-pfp-02.jpg'
-import profile14 from './assets/profile pictures/images (20).jpg'
-import profile15 from './assets/profile pictures/images (21).jpg'
-import profile16 from './assets/profile pictures/images (22).jpg'
-import profile17 from './assets/profile pictures/images (23).jpg'
-import profile18 from './assets/profile pictures/images (24).jpg'
-import profile19 from './assets/profile pictures/images (25).jpg'
-import profile20 from './assets/profile pictures/images (26).jpg'
-import profile21 from './assets/profile pictures/images (27).jpg'
-import profile22 from './assets/profile pictures/2658-aesthetic-meme.png'
-import profile23 from './assets/profile pictures/36804a90f7b63462cad795655c2e5b949873def3_full.jpg'
-import profile24 from './assets/profile pictures/anime-pfp-sad-boy-40s0vjfpa8vt3ou3.jpg'
-import profile25 from './assets/profile pictures/meme-pfp-36.jpg'
-import profile26 from './assets/profile pictures/meme-pfp-42.jpg'
-import profile27 from './assets/profile pictures/meme-profile-picture-ueda8hwv4698wup7.webp'
-import profile28 from './assets/profile pictures/NfHIizP4.jpg'
-import profile29 from './assets/profile pictures/noFilter.webp'
-import profile30 from './assets/profile pictures/noFilter (1).webp'
-import profile31 from './assets/profile pictures/noFilter (2).webp'
-import profile32 from './assets/profile pictures/Xab2XCaz.jpg'
+import profile1 from './assets/profile pictures/06f0b02f4838a79ac9f58e5a0eaeb325.jpg'
+import profile2 from './assets/profile pictures/0737d3e94b1859ac0d1ad785cf052e63.jpg'
+import profile3 from './assets/profile pictures/1275afea85213b579fae7f22243edfd0.jpg'
+import profile4 from './assets/profile pictures/1f0a2813877c65540f0cfe8e9687b2c8.jpg'
+import profile5 from './assets/profile pictures/2401a9479bec9d8c575b38623160e1ef8bcf9105r1-736-735v2_hq.jpg'
+import profile6 from './assets/profile pictures/2658-aesthetic-meme.png'
+import profile7 from './assets/profile pictures/2eb8a0fa6240e6bd4a09ca6f2b3ebb25.jpg'
+import profile8 from './assets/profile pictures/37a8ea80a2ecbf7c5ecff296b8b7a605.jpg'
+import profile9 from './assets/profile pictures/7382b2e8e8c7be98240ef28a2506800e.jpg'
+import profile10 from './assets/profile pictures/774e4b14693723862753a56aad66a3fb.jpg'
+import profile11 from './assets/profile pictures/a035f92eadd9453ed5a802427fef6a2e.jpg'
+import profile12 from './assets/profile pictures/a9d6431343baffcf254ac58b262fe7d2.jpg'
+import profile13 from './assets/profile pictures/anime-pfp-sad-boy-40s0vjfpa8vt3ou3.jpg'
+import profile14 from './assets/profile pictures/c1bb48f37654992b02b563dd2b15db23.jpg'
+import profile15 from './assets/profile pictures/c947ac5849abaf57398cf7c5c87a753b.jpg'
+import profile16 from './assets/profile pictures/cb04e0cbcf80112be43ce0cdf92eab63.jpg'
+import profile17 from './assets/profile pictures/ccc800669c4c22d6e5f9f0b2adb75256.jpg'
+import profile18 from './assets/profile pictures/f8a0f48239a5cf91bf58be436519f82e.jpg'
+import profile19 from './assets/profile pictures/fb9ad76aaa7e798f81215fe272437da7.jpg'
+import profile20 from './assets/profile pictures/images (14).jpg'
+import profile21 from './assets/profile pictures/images (15).jpg'
+import profile22 from './assets/profile pictures/images (16).jpg'
+import profile23 from './assets/profile pictures/images (17).jpg'
+import profile24 from './assets/profile pictures/images (18).jpg'
+import profile25 from './assets/profile pictures/images (19).jpg'
+import profile26 from './assets/profile pictures/images (20).jpg'
+import profile27 from './assets/profile pictures/images (22).jpg'
+import profile28 from './assets/profile pictures/images (23).jpg'
+import profile29 from './assets/profile pictures/images (24).jpg'
+import profile30 from './assets/profile pictures/images (25).jpg'
+import profile31 from './assets/profile pictures/images (26).jpg'
+import profile32 from './assets/profile pictures/images (27).jpg'
+import profile33 from './assets/profile pictures/IMG_7617.jpg'
 
 interface VideoItem {
   id: number
   username: string
   caption: string
   videoUrl: string
+  imageUrl?: string // For placeholder images
   avatarUrl: string
   likes: number
   comments: number
@@ -149,7 +118,7 @@ const formatTimeAgo = (date: Date): string => {
 
 // Get all available profile pictures
 const getAllProfilePictures = () => {
-  return [profile1, profile2, profile3, profile4, profile5, profile6, profile7, profile8, profile9, profile10, profile11, profile12, profile13]
+  return [profile1, profile2, profile3, profile4, profile5, profile6, profile7, profile8, profile9, profile10, profile11, profile12, profile13, profile14, profile15, profile16, profile17, profile18, profile19, profile20, profile21, profile22, profile23, profile24, profile25, profile26, profile27, profile28, profile29, profile30, profile31, profile32, profile33]
 }
 
 // Shuffle array
@@ -165,41 +134,41 @@ const shuffleArray = <T,>(array: T[]): T[] => {
 
 function App() {
   const [videos] = useState<VideoItem[]>(() => {
-    // Create initial video array
+    // Create initial video array with placeholder images - BRAINROT EDITION
     const initialVideos = [
-      { id: 1, username: '@cosmic.vibes', caption: 'nahh genuinely 😭', videoUrl: video1, avatarUrl: profile1, likes: randomCount(150000, 2800000), comments: randomCount(5000, 75000), bookmarks: randomCount(20000, 350000), shares: randomCount(50000, 750000) },
-      { id: 2, username: '@midnight_dreamer', caption: 'genuinely fr 💀', videoUrl: video2, avatarUrl: profile2, likes: randomCount(150000, 2800000), comments: randomCount(5000, 75000), bookmarks: randomCount(20000, 350000), shares: randomCount(50000, 750000) },
-      { id: 3, username: '@neon.aesthetic', caption: 'genuinely tweaking 🙏', videoUrl: video3, avatarUrl: profile3, likes: randomCount(150000, 2800000), comments: randomCount(5000, 75000), bookmarks: randomCount(20000, 350000), shares: randomCount(50000, 750000) },
-      { id: 4, username: '@lostinthemusic', caption: 'genuinely 🥀', videoUrl: video4, avatarUrl: profile4, likes: randomCount(150000, 2800000), comments: randomCount(5000, 75000), bookmarks: randomCount(20000, 350000), shares: randomCount(50000, 750000) },
-      { id: 5, username: '@rxlly.wav', caption: 'genuinely cant rn 😭💀', videoUrl: video5, avatarUrl: profile5, likes: randomCount(150000, 2800000), comments: randomCount(5000, 75000), bookmarks: randomCount(20000, 350000), shares: randomCount(50000, 750000) },
-      { id: 6, username: '@goldenhour.clips', caption: 'this is genuinely it 🙏', videoUrl: video6, avatarUrl: profile6, likes: randomCount(150000, 2800000), comments: randomCount(5000, 75000), bookmarks: randomCount(20000, 350000), shares: randomCount(50000, 750000) },
-      { id: 7, username: '@404.notfound', caption: 'genuinely unreal 🥀😭', videoUrl: video7, avatarUrl: profile7, likes: randomCount(150000, 2800000), comments: randomCount(5000, 75000), bookmarks: randomCount(20000, 350000), shares: randomCount(50000, 750000) },
-      { id: 8, username: '@vapor_aesthetics', caption: 'genuinely wild 💀🙏', videoUrl: video8, avatarUrl: profile8, likes: randomCount(150000, 2800000), comments: randomCount(5000, 75000), bookmarks: randomCount(20000, 350000), shares: randomCount(50000, 750000) },
-      { id: 9, username: '@memequeen420', caption: 'nahh this genuinely 😭', videoUrl: video9, avatarUrl: profile9, likes: randomCount(150000, 2800000), comments: randomCount(5000, 75000), bookmarks: randomCount(20000, 350000), shares: randomCount(50000, 750000) },
-      { id: 10, username: '@skibidi.ohio', caption: 'genuinely insane 🥀', videoUrl: video10, avatarUrl: profile10, likes: randomCount(150000, 2800000), comments: randomCount(5000, 75000), bookmarks: randomCount(20000, 350000), shares: randomCount(50000, 750000) },
-      { id: 11, username: '@rizz.master', caption: 'genuinely no way 💀😭', videoUrl: video11, avatarUrl: profile11, likes: randomCount(150000, 2800000), comments: randomCount(5000, 75000), bookmarks: randomCount(20000, 350000), shares: randomCount(50000, 750000) },
-      { id: 12, username: '@lowkey.fire', caption: 'genuinely hits 🥀💀', videoUrl: video12, avatarUrl: profile12, likes: randomCount(150000, 2800000), comments: randomCount(5000, 75000), bookmarks: randomCount(20000, 350000), shares: randomCount(50000, 750000) },
-      { id: 13, username: '@based.fr', caption: 'nahh genuinely fr 😭🙏', videoUrl: video13, avatarUrl: profile13, likes: randomCount(150000, 2800000), comments: randomCount(5000, 75000), bookmarks: randomCount(20000, 350000), shares: randomCount(50000, 750000) },
-      { id: 14, username: '@vibe.check', caption: 'genuinely crazy 💀', videoUrl: video14, avatarUrl: profile14, likes: randomCount(150000, 2800000), comments: randomCount(5000, 75000), bookmarks: randomCount(20000, 350000), shares: randomCount(50000, 750000) },
-      { id: 15, username: '@no.cap.zone', caption: 'genuinely 🥀😭', videoUrl: video15, avatarUrl: profile15, likes: randomCount(150000, 2800000), comments: randomCount(5000, 75000), bookmarks: randomCount(20000, 350000), shares: randomCount(50000, 750000) },
-      { id: 16, username: '@ethereal.energy', caption: 'genuinely obsessed 🙏💀', videoUrl: video16, avatarUrl: profile16, likes: randomCount(150000, 2800000), comments: randomCount(5000, 75000), bookmarks: randomCount(20000, 350000), shares: randomCount(50000, 750000) },
-      { id: 17, username: '@chaos.theory', caption: 'this genuinely it 😭', videoUrl: video17, avatarUrl: profile17, likes: randomCount(150000, 2800000), comments: randomCount(5000, 75000), bookmarks: randomCount(20000, 350000), shares: randomCount(50000, 750000) },
-      { id: 18, username: '@moonlight.faded', caption: 'genuinely unhinged 🥀', videoUrl: video18, avatarUrl: profile18, likes: randomCount(150000, 2800000), comments: randomCount(5000, 75000), bookmarks: randomCount(20000, 350000), shares: randomCount(50000, 750000) },
-      { id: 19, username: '@divine.timing', caption: 'nahh genuinely 💀🙏', videoUrl: video19, avatarUrl: profile19, likes: randomCount(150000, 2800000), comments: randomCount(5000, 75000), bookmarks: randomCount(20000, 350000), shares: randomCount(50000, 750000) },
-      { id: 20, username: '@synthetic.dreams', caption: 'genuinely cant 😭🥀', videoUrl: video20, avatarUrl: profile20, likes: randomCount(150000, 2800000), comments: randomCount(5000, 75000), bookmarks: randomCount(20000, 350000), shares: randomCount(50000, 750000) },
-      { id: 21, username: '@core.memory', caption: 'genuinely broke me 💀', videoUrl: video21, avatarUrl: profile21, likes: randomCount(150000, 2800000), comments: randomCount(5000, 75000), bookmarks: randomCount(20000, 350000), shares: randomCount(50000, 750000) },
-      { id: 22, username: '@analog.soul', caption: 'genuinely real 🙏😭', videoUrl: video22, avatarUrl: profile22, likes: randomCount(150000, 2800000), comments: randomCount(5000, 75000), bookmarks: randomCount(20000, 350000), shares: randomCount(50000, 750000) },
-      { id: 23, username: '@nocturnal.thoughts', caption: 'genuinely tho 🥀💀', videoUrl: video23, avatarUrl: profile23, likes: randomCount(150000, 2800000), comments: randomCount(5000, 75000), bookmarks: randomCount(20000, 350000), shares: randomCount(50000, 750000) },
-      { id: 24, username: '@velvet.underground', caption: 'genuinely fr fr 😭🙏', videoUrl: video24, avatarUrl: profile24, likes: randomCount(150000, 2800000), comments: randomCount(5000, 75000), bookmarks: randomCount(20000, 350000), shares: randomCount(50000, 750000) },
-      { id: 25, username: '@faded.frequencies', caption: 'nahh genuinely 💀', videoUrl: video25, avatarUrl: profile25, likes: randomCount(150000, 2800000), comments: randomCount(5000, 75000), bookmarks: randomCount(20000, 350000), shares: randomCount(50000, 750000) },
-      { id: 26, username: '@liminal.spaces', caption: 'genuinely different 🥀😭', videoUrl: video26, avatarUrl: profile26, likes: randomCount(150000, 2800000), comments: randomCount(5000, 75000), bookmarks: randomCount(20000, 350000), shares: randomCount(50000, 750000) },
-      { id: 27, username: '@abstract.feelings', caption: 'this genuinely hits 🙏', videoUrl: video27, avatarUrl: profile27, likes: randomCount(150000, 2800000), comments: randomCount(5000, 75000), bookmarks: randomCount(20000, 350000), shares: randomCount(50000, 750000) },
-      { id: 28, username: '@nostalgic.wave', caption: 'genuinely iconic 💀🥀', videoUrl: video28, avatarUrl: profile28, likes: randomCount(150000, 2800000), comments: randomCount(5000, 75000), bookmarks: randomCount(20000, 350000), shares: randomCount(50000, 750000) },
-      { id: 29, username: '@parallel.universe', caption: 'genuinely wild 😭🙏💀', videoUrl: video29, avatarUrl: profile29, likes: randomCount(150000, 2800000), comments: randomCount(5000, 75000), bookmarks: randomCount(20000, 350000), shares: randomCount(50000, 750000) },
-      { id: 30, username: '@digital.void', caption: 'genuinely not real 🥀', videoUrl: video30, avatarUrl: profile30, likes: randomCount(150000, 2800000), comments: randomCount(5000, 75000), bookmarks: randomCount(20000, 350000), shares: randomCount(50000, 750000) },
-      { id: 31, username: '@ephemeral.moments', caption: 'nahh genuinely 😭💀', videoUrl: video31, avatarUrl: profile31, likes: randomCount(150000, 2800000), comments: randomCount(5000, 75000), bookmarks: randomCount(20000, 350000), shares: randomCount(50000, 750000) },
-      { id: 32, username: '@cosmic.chaos', caption: 'genuinely unmatched 🙏🥀', videoUrl: video32, avatarUrl: profile32, likes: randomCount(150000, 2800000), comments: randomCount(5000, 75000), bookmarks: randomCount(20000, 350000), shares: randomCount(50000, 750000) },
-      { id: 33, username: '@lost.frequency', caption: 'genuinely cant even 💀😭', videoUrl: video33, avatarUrl: profile1, likes: randomCount(150000, 2800000), comments: randomCount(5000, 75000), bookmarks: randomCount(20000, 350000), shares: randomCount(50000, 750000) },
+      { id: 1, username: '@rizzgoblin', caption: 'skibidi toilet ohio rizz 💀😭💀😭💀😭', videoUrl: '', imageUrl: placeholderImage, avatarUrl: profile1, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 2, username: '@gyattywarlock', caption: 'gyatt rizzler paying fanum tax 🥀💀', videoUrl: '', imageUrl: placeholderImage, avatarUrl: profile2, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 3, username: '@zynmage420', caption: 'gigachad mewing sigma grindset 👁️👄👁️', videoUrl: '', imageUrl: placeholderImage, avatarUrl: profile3, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 4, username: '@fanumfiend', caption: 'ohio final boss 67 skibidi 🗿💯', videoUrl: '', imageUrl: placeholderImage, avatarUrl: profile4, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 5, username: '@ohioOverseer', caption: 'grimace shake got me acting NPC 😭💔💀', videoUrl: '', imageUrl: placeholderImage, avatarUrl: profile5, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 6, username: '@rotlord.exe', caption: 'goofy ahh sigma rizzler 💀😭', videoUrl: '', imageUrl: placeholderImage, avatarUrl: profile6, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 7, username: '@goblincig69', caption: 'skibidi rizzler 67 ohio moment 🥀😭', videoUrl: '', imageUrl: placeholderImage, avatarUrl: profile7, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 8, username: '@zootedhamster', caption: 'fanum tax gyatt rizz combo 👉👈', videoUrl: '', imageUrl: placeholderImage, avatarUrl: profile8, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 9, username: '@hamsterhooligan', caption: 'mewing sigma gigachad grindset 💀🗿', videoUrl: '', imageUrl: placeholderImage, avatarUrl: profile9, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 10, username: '@skibidipriest', caption: 'ohio skibidi toilet 67 rizz 😭💀😭💀😭💀', videoUrl: '', imageUrl: placeholderImage, avatarUrl: profile10, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 11, username: '@npcprophet', caption: 'NPC grimace shake moment 🥀💯', videoUrl: '', imageUrl: placeholderImage, avatarUrl: profile11, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 12, username: '@munchmessiah', caption: 'goofy ahh rizzler sigma 💀😭', videoUrl: '', imageUrl: placeholderImage, avatarUrl: profile12, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 13, username: '@sigmafreakazoid', caption: 'sigma gyatt fanum tax rizz 👁️👄👁️', videoUrl: '', imageUrl: placeholderImage, avatarUrl: profile13, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 14, username: '@jitteryjunkie', caption: '67 ohio skibidi toilet rizz 😭💔💀', videoUrl: '', imageUrl: placeholderImage, avatarUrl: profile14, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 15, username: '@midbossmoment', caption: 'mewing gigachad sigma grindset 🗿💯', videoUrl: '', imageUrl: placeholderImage, avatarUrl: profile15, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 16, username: '@motherlesspookie', caption: 'grimace shake NPC behavior 🥀😭', videoUrl: '', imageUrl: placeholderImage, avatarUrl: profile16, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 17, username: '@degensummoner', caption: 'skibidi rizz 67 ohio moment 💀😭💀😭💀😭', videoUrl: '', imageUrl: placeholderImage, avatarUrl: profile17, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 18, username: '@capybaraCartel', caption: 'fanum tax sigma rizzler 👉👈', videoUrl: '', imageUrl: placeholderImage, avatarUrl: profile18, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 19, username: '@ragepixie', caption: 'ohio gigachad 67 skibidi 🥀💀', videoUrl: '', imageUrl: placeholderImage, avatarUrl: profile19, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 20, username: '@sillygoathazard', caption: 'goofy ahh mewing sigma 😭💔💀', videoUrl: '', imageUrl: placeholderImage, avatarUrl: profile20, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 21, username: '@lightSkinOverload', caption: 'NPC skibidi toilet ohio 🗿💯', videoUrl: '', imageUrl: placeholderImage, avatarUrl: profile21, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 22, username: '@gyattynation', caption: 'gyatt rizz fanum tax moment 👁️👄👁️', videoUrl: '', imageUrl: placeholderImage, avatarUrl: profile22, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 23, username: '@rizzreceptacle', caption: 'sigma 67 ohio skibidi rizz 😭🥀', videoUrl: '', imageUrl: placeholderImage, avatarUrl: profile23, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 24, username: '@creeprizzlord', caption: 'grimace shake rizzler sigma 💀😭', videoUrl: '', imageUrl: placeholderImage, avatarUrl: profile24, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 25, username: '@mommygyattmilk', caption: 'mewing fanum tax gyatt 🥀💀', videoUrl: '', imageUrl: placeholderImage, avatarUrl: profile25, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 26, username: '@doubletapdaemon', caption: 'skibidi gigachad mewing sigma 😭💀😭💀😭💀', videoUrl: '', imageUrl: placeholderImage, avatarUrl: profile26, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 27, username: '@delusionalnpc', caption: 'ohio NPC 67 skibidi moment 👉👈', videoUrl: '', imageUrl: placeholderImage, avatarUrl: profile27, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 28, username: '@rottingwithrizz', caption: 'goofy ahh gyatt rizz fanum tax 🗿💯', videoUrl: '', imageUrl: placeholderImage, avatarUrl: profile28, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 29, username: '@rizzeduprodent', caption: 'sigma rizz 67 ohio skibidi 🥀😭', videoUrl: '', imageUrl: placeholderImage, avatarUrl: profile29, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 30, username: '@ohioMFSupreme', caption: 'fanum tax gigachad mewing 😭💔💀', videoUrl: '', imageUrl: placeholderImage, avatarUrl: profile30, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 31, username: '@doomscrollDruid', caption: 'NPC ohio skibidi toilet 67 💀😭', videoUrl: '', imageUrl: placeholderImage, avatarUrl: profile31, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 32, username: '@brainrotBandit', caption: 'grimace shake sigma rizzler 👁️👄👁️', videoUrl: '', imageUrl: placeholderImage, avatarUrl: profile32, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 33, username: '@mrmelatonin2mg', caption: 'mewing 67 rizz ohio skibidi 🥀💀', videoUrl: '', imageUrl: placeholderImage, avatarUrl: profile33, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
     ]
     // Shuffle the videos on every load
     return shuffleArray(initialVideos)
@@ -269,6 +238,9 @@ function App() {
   useEffect(() => {
     const videoElements = document.querySelectorAll('.video-player')
     videoElements.forEach((video, index) => {
+      // Skip if it's an image (img element)
+      if (video.tagName === 'IMG') return
+      
       const videoEl = video as HTMLVideoElement
       // Unmute after first interaction for audio, keep muted initially for autoplay
       const videoData = circularVideos[index]
@@ -302,32 +274,35 @@ function App() {
       setTimeout(() => {
         const videoElements = document.querySelectorAll('.video-player')
         
-        // First, pause and reset ALL videos
+        // First, pause and reset ALL videos (skip images)
         videoElements.forEach((video) => {
+          if (video.tagName === 'IMG') return
           const videoEl = video as HTMLVideoElement
           videoEl.pause()
           videoEl.currentTime = 0
         })
         
-        // Then play only the current video (if not manually paused)
-        const currentVideo = videoElements[currentVideoIndex] as HTMLVideoElement
-        if (currentVideo) {
+        // Then play only the current video (if not manually paused and it's a video)
+        const currentVideo = videoElements[currentVideoIndex]
+        if (currentVideo && currentVideo.tagName === 'VIDEO') {
           const currentVideoData = circularVideos[currentVideoIndex]
-          currentVideo.muted = !hasInteracted || mutedVideos.has(currentVideoData.id)
-          currentVideo.currentTime = 0
+          const videoEl = currentVideo as HTMLVideoElement
+          videoEl.muted = !hasInteracted || mutedVideos.has(currentVideoData.id)
+          videoEl.currentTime = 0
           
           // Only play if user hasn't manually paused this video
           if (!pausedVideos.has(currentVideoData.id)) {
-            currentVideo.play().catch(() => {
+            videoEl.play().catch(() => {
               // Autoplay might be blocked
             })
           }
         }
       }, 100)
     } else if (showMessages || showComments) {
-      // Going to messages or comments - pause all videos
+      // Going to messages or comments - pause all videos (skip images)
       const videoElements = document.querySelectorAll('.video-player')
       videoElements.forEach((video) => {
+        if (video.tagName === 'IMG') return
         const videoEl = video as HTMLVideoElement
         videoEl.pause()
       })
@@ -340,15 +315,19 @@ function App() {
       const videoElements = document.querySelectorAll('.video-player')
       if (videoElements.length === 0) return
 
-      const firstVideo = videoElements[0] as HTMLVideoElement
+      const firstVideo = videoElements[0]
+      // Skip if it's an image
+      if (firstVideo.tagName === 'IMG') return
+      
+      const videoEl = firstVideo as HTMLVideoElement
       
       const attemptPlay = () => {
-        firstVideo.muted = true // Start muted for Chrome autoplay
-        firstVideo.currentTime = 0
-        firstVideo.play().catch(() => {
+        videoEl.muted = true // Start muted for Chrome autoplay
+        videoEl.currentTime = 0
+        videoEl.play().catch(() => {
           // If autoplay fails, wait for user interaction
           const playOnInteract = () => {
-            firstVideo.play()
+            videoEl.play()
             setHasInteracted(true)
             document.removeEventListener('click', playOnInteract)
             document.removeEventListener('touchstart', playOnInteract)
@@ -359,10 +338,10 @@ function App() {
       }
 
       // Wait for video to be ready
-      if (firstVideo.readyState >= 3) {
+      if (videoEl.readyState >= 3) {
         attemptPlay()
       } else {
-        firstVideo.addEventListener('canplay', attemptPlay, { once: true })
+        videoEl.addEventListener('canplay', attemptPlay, { once: true })
       }
     }
 
@@ -381,15 +360,19 @@ function App() {
     const sampleColors = () => {
       const videoElements = document.querySelectorAll('.video-player')
       // Use currentVideoIndex which now points to circular buffer
-      const currentVideo = videoElements[currentVideoIndex] as HTMLVideoElement
+      const currentVideo = videoElements[currentVideoIndex]
       
-      if (!currentVideo || currentVideo.readyState < 2) return
+      // Skip if it's an image or not a video element
+      if (!currentVideo || currentVideo.tagName === 'IMG') return
+      
+      const videoEl = currentVideo as HTMLVideoElement
+      if (videoEl.readyState < 2) return
 
       canvas.width = 80
       canvas.height = 80
       
       try {
-        ctx.drawImage(currentVideo, 0, 0, 80, 80)
+        ctx.drawImage(videoEl, 0, 0, 80, 80)
         const imageData = ctx.getImageData(0, 0, 80, 80).data
         
         let r = 0, g = 0, b = 0, count = 0
@@ -766,12 +749,13 @@ function App() {
       return newMuted
     })
 
-    // Immediately apply the change to the current video if it's playing
+    // Immediately apply the change to the current video if it's playing (skip images)
     if (circularVideos[currentVideoIndex] && circularVideos[currentVideoIndex].id === videoId) {
       const videoElements = document.querySelectorAll('.video-player')
-      const currentVideo = videoElements[currentVideoIndex] as HTMLVideoElement
-      if (currentVideo) {
-        currentVideo.muted = !isCurrentlyMuted
+      const currentVideo = videoElements[currentVideoIndex]
+      if (currentVideo && currentVideo.tagName === 'VIDEO') {
+        const videoEl = currentVideo as HTMLVideoElement
+        videoEl.muted = !isCurrentlyMuted
       }
     }
   }
@@ -780,6 +764,9 @@ function App() {
   const toggleVideoPlayPause = (e: React.MouseEvent<HTMLVideoElement>, videoId: number) => {
     e.stopPropagation() // Prevent event bubbling
     const video = e.currentTarget
+    
+    // Only handle video elements, not images
+    if (video.tagName !== 'VIDEO') return
     
     if (video.paused) {
       video.play().catch(() => {
@@ -1321,7 +1308,7 @@ function App() {
         <div className="loading-screen">
           <div className="loading-content">
             <div className="loading-spinner"></div>
-            <p className="loading-text">genuinely</p>
+            <p className="loading-text">doomscroll.now</p>
           </div>
         </div>
       )}
@@ -1387,18 +1374,27 @@ function App() {
               
               return (
               <div key={`${video.id}-${index}`} className="video-container">
-                <video 
-                  className={`video-player ${pausedVideos.has(video.id) ? 'paused' : ''}`}
-                  src={video.videoUrl}
-                  loop
-                  playsInline
-                  preload={isCurrent ? "auto" : "none"}
-                  crossOrigin="anonymous"
-                  onClick={(e) => toggleVideoPlayPause(e, video.id)}
-                />
+                {video.imageUrl ? (
+                  <img 
+                    className="video-player"
+                    src={video.imageUrl}
+                    alt={video.caption}
+                    style={{ objectFit: 'cover', width: '100%', height: '100%', pointerEvents: 'none' }}
+                  />
+                ) : (
+                  <video 
+                    className={`video-player ${pausedVideos.has(video.id) ? 'paused' : ''}`}
+                    src={video.videoUrl}
+                    loop
+                    playsInline
+                    preload={isCurrent ? "auto" : "none"}
+                    crossOrigin="anonymous"
+                    onClick={(e) => toggleVideoPlayPause(e, video.id)}
+                  />
+                )}
                 
-                {/* Play Button Overlay */}
-                {pausedVideos.has(video.id) && (
+                {/* Play Button Overlay - only show for videos */}
+                {!video.imageUrl && pausedVideos.has(video.id) && (
                   <div className="play-button-overlay">
                     <svg viewBox="0 0 24 24" fill="white">
                       <path d="M8 5v14l11-7z"/>
@@ -1471,20 +1467,19 @@ function App() {
             })}
           </div>
 
-          {/* Bottom Dock - Hidden when comments open */}
+          {/* Bottom Dock - Always show except when comments open */}
           {!showComments && (
             <div className="dock">
-              <a href="https://pump.fun/coin/21dCU5jcTDTdqohD5XjXGxEibEm7QpjJe24FkBAPpump" target="_blank" rel="noopener noreferrer" className="dock-app">
+              <a href="https://pump.fun" target="_blank" rel="noopener noreferrer" className="dock-app">
                 <div className="app-icon">
                   <img src={pumpfunIcon} alt="Pumpfun" className="app-icon-img" />
                 </div>
               </a>
-              <a href="https://www.tiktok.com/search?q=genuinely&t=1762812929391" target="_blank" rel="noopener noreferrer" className="dock-app">
-                <div className="app-icon">
-                  <img src={tiktokIcon} alt="TikTok" className="app-icon-img" />
+              <div className="dock-app">
+                <div className="app-icon" style={{ backgroundColor: '#1a1a1a' }}>
                 </div>
-              </a>
-              <a href="https://x.com/genuinelysol" target="_blank" rel="noopener noreferrer" className="dock-app">
+              </div>
+              <a href="https://twitter.com/tryDoomscroll" target="_blank" rel="noopener noreferrer" className="dock-app">
                 <div className="app-icon">
                   <img src={xIcon} alt="X" className="app-icon-img" />
                 </div>
@@ -1508,7 +1503,7 @@ function App() {
                   </svg>
                 </button>
                 <div className="chat-info">
-                  <div className="chat-name">genuinely chat</div>
+                  <div className="chat-name">doomscroll chat</div>
                   <div className="chat-members">{messages.length} messages</div>
                 </div>
                 <div className="header-spacer"></div>
@@ -1534,6 +1529,7 @@ function App() {
                 ))}
                 <div ref={messagesEndRef} />
               </div>
+
 
               {/* Message Input */}
               <div className="message-input-container">
@@ -1585,14 +1581,37 @@ function App() {
                   </button>
                 </div>
               </div>
+
+              {/* Bottom Dock - Always show in messages */}
+              <div className="dock">
+                <a href="https://pump.fun" target="_blank" rel="noopener noreferrer" className="dock-app">
+                  <div className="app-icon">
+                    <img src={pumpfunIcon} alt="Pumpfun" className="app-icon-img" />
+                  </div>
+                </a>
+                <div className="dock-app">
+                  <div className="app-icon" style={{ backgroundColor: '#1a1a1a' }}>
+                  </div>
+                </div>
+                <a href="https://twitter.com/tryDoomscroll" target="_blank" rel="noopener noreferrer" className="dock-app">
+                  <div className="app-icon">
+                    <img src={xIcon} alt="X" className="app-icon-img" />
+                  </div>
+                </a>
+                <div className="dock-app" onClick={openMessages}>
+                  <div className="app-icon">
+                    <img src={messagesIcon} alt="Messages" className="app-icon-img" />
+                  </div>
+                </div>
+              </div>
             </div>
           )}
-          
+
           {/* Username Setup Modal */}
           {showUsernameSetup && (
             <div className="username-modal-overlay">
               <div className="username-modal">
-                <h2>Welcome to Genuinely</h2>
+                <h2>Welcome to doomscroll.now</h2>
                 <p>Choose your username to get started</p>
                 <input
                   type="text"
