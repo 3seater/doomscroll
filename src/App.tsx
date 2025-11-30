@@ -1518,7 +1518,7 @@ function App() {
             </div>
 
             {/* iMessage UI */}
-            <div className="imessage-container" style={{ bottom: '110px' }}>
+            <div className="imessage-container">
               {/* Messages Header */}
               <div className="imessage-header">
                 <button className="back-button" onClick={() => setShowMessages(false)}>
@@ -1527,7 +1527,7 @@ function App() {
                   </svg>
                 </button>
                 <div className="chat-info">
-                  <div className="chat-name">doomscroll chat</div>
+                  <div className="chat-name">doomscrollers</div>
                   <div className="chat-members">{messages.length} messages</div>
                 </div>
                 <div className="header-spacer"></div>
