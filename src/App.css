@@ -1137,6 +1137,7 @@ a.dock-app {
   flex: 1;
   overflow-y: auto;
   padding: 16px;
+  padding-bottom: 120px !important;
   display: flex !important;
   flex-direction: column;
   gap: 8px;
@@ -1146,6 +1147,7 @@ a.dock-app {
   visibility: visible !important;
   opacity: 1 !important;
   transform: translateZ(1000px) !important;
+  min-height: 0 !important;
 }
 
 .messages-list::-webkit-scrollbar {
