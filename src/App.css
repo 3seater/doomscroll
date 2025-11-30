@@ -1140,7 +1140,7 @@ a.dock-app {
   display: flex !important;
   flex-direction: column;
   gap: 8px;
-  background: transparent !important;
+  background: #000 !important;
   position: relative !important;
   z-index: 10000 !important;
   visibility: visible !important;
