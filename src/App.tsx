@@ -1493,8 +1493,32 @@ function App() {
           )}
           </>
           ) : (
-            /* iMessage UI */
-            <div className="imessage-container">
+            <>
+            {/* Bottom Dock - Always show in messages */}
+            <div className="dock">
+              <a href="https://pump.fun" target="_blank" rel="noopener noreferrer" className="dock-app">
+                <div className="app-icon">
+                  <img src={pumpfunIcon} alt="Pumpfun" className="app-icon-img" />
+                </div>
+              </a>
+              <div className="dock-app">
+                <div className="app-icon" style={{ backgroundColor: '#1a1a1a' }}>
+                </div>
+              </div>
+              <a href="https://twitter.com/tryDoomscroll" target="_blank" rel="noopener noreferrer" className="dock-app">
+                <div className="app-icon">
+                  <img src={xIcon} alt="X" className="app-icon-img" />
+                </div>
+              </a>
+              <div className="dock-app" onClick={openMessages}>
+                <div className="app-icon">
+                  <img src={messagesIcon} alt="Messages" className="app-icon-img" />
+                </div>
+              </div>
+            </div>
+
+            {/* iMessage UI */}
+            <div className="imessage-container" style={{ bottom: '110px' }}>
               {/* Messages Header */}
               <div className="imessage-header">
                 <button className="back-button" onClick={() => setShowMessages(false)}>
@@ -1581,30 +1605,8 @@ function App() {
                   </button>
                 </div>
               </div>
-
-              {/* Bottom Dock - Always show in messages */}
-              <div className="dock">
-                <a href="https://pump.fun" target="_blank" rel="noopener noreferrer" className="dock-app">
-                  <div className="app-icon">
-                    <img src={pumpfunIcon} alt="Pumpfun" className="app-icon-img" />
-                  </div>
-                </a>
-                <div className="dock-app">
-                  <div className="app-icon" style={{ backgroundColor: '#1a1a1a' }}>
-                  </div>
-                </div>
-                <a href="https://twitter.com/tryDoomscroll" target="_blank" rel="noopener noreferrer" className="dock-app">
-                  <div className="app-icon">
-                    <img src={xIcon} alt="X" className="app-icon-img" />
-                  </div>
-                </a>
-                <div className="dock-app" onClick={openMessages}>
-                  <div className="app-icon">
-                    <img src={messagesIcon} alt="Messages" className="app-icon-img" />
-                  </div>
-                </div>
-              </div>
             </div>
+            </>
           )}
 
           {/* Username Setup Modal */}
