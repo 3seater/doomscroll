@@ -1482,10 +1482,11 @@ function App() {
                       )}
                     </svg>
                   </div>
-                  <div className="action-button">
+                  {/* DISABLED: Forward/share action button - Uncomment below to re-enable */}
+                  {/* <div className="action-button">
                     <img src={forwardIcon} alt="Forward" className="action-icon-img" />
                     <span className="count">{formatCount(video.shares)}</span>
-                  </div>
+                  </div> */}
                 </div>
 
                 {/* Bottom Info */}
