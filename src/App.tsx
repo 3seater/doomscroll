@@ -1347,7 +1347,8 @@ function App() {
       )}
 
       {/* Animated grain overlay for gradient banding fix */}
-      <Grain opacity={0.03} blendMode="screen" />
+      {/* DISABLED: Uncomment below to re-enable grain/noise effect */}
+      {/* <Grain opacity={0.03} blendMode="screen" /> */}
       
       <div 
         className="iphone-frame"
