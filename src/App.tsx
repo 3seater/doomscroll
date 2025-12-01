@@ -8,6 +8,17 @@ import Grain from './components/Grain'
 // Placeholder image data URL (dark gray placeholder)
 const placeholderImage = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjcwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMWExYTFhIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyNCIgZmlsbD0iI2ZmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkRPT01TQ1JPTC5OT1c8L3RleHQ+PC9zdmc+'
 
+// Import new TikTok videos
+import video1 from './assets/videos/1.mp4'
+import video2 from './assets/videos/2.mp4'
+import video3 from './assets/videos/3.mp4'
+import video4 from './assets/videos/4.mp4'
+import video5 from './assets/videos/5.mp4'
+import video6 from './assets/videos/6.mp4'
+import video7 from './assets/videos/7.mp4'
+import video8 from './assets/videos/8.mp4'
+import video9 from './assets/videos/9.mp4'
+
 // Import app icons
 import pumpfunIcon from './assets/iphone icons/pumpfun.png'
 import xIcon from './assets/iphone icons/x.png'
@@ -136,15 +147,15 @@ function App() {
   const [videos] = useState<VideoItem[]>(() => {
     // Create initial video array with placeholder images - BRAINROT EDITION
     const initialVideos = [
-      { id: 1, username: '@rizzgoblin', caption: 'skibidi toilet ohio rizz 💀😭💀😭💀😭', videoUrl: '', imageUrl: placeholderImage, avatarUrl: profile1, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
-      { id: 2, username: '@gyattywarlock', caption: 'gyatt rizzler paying fanum tax 🥀💀', videoUrl: '', imageUrl: placeholderImage, avatarUrl: profile2, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
-      { id: 3, username: '@zynmage420', caption: 'gigachad mewing sigma grindset 👁️👄👁️', videoUrl: '', imageUrl: placeholderImage, avatarUrl: profile3, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
-      { id: 4, username: '@fanumfiend', caption: 'ohio final boss 67 skibidi 🗿💯', videoUrl: '', imageUrl: placeholderImage, avatarUrl: profile4, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
-      { id: 5, username: '@ohioOverseer', caption: 'grimace shake got me acting NPC 😭💔💀', videoUrl: '', imageUrl: placeholderImage, avatarUrl: profile5, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
-      { id: 6, username: '@rotlord.exe', caption: 'goofy ahh sigma rizzler 💀😭', videoUrl: '', imageUrl: placeholderImage, avatarUrl: profile6, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
-      { id: 7, username: '@goblincig69', caption: 'skibidi rizzler 67 ohio moment 🥀😭', videoUrl: '', imageUrl: placeholderImage, avatarUrl: profile7, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
-      { id: 8, username: '@zootedhamster', caption: 'fanum tax gyatt rizz combo 👉👈', videoUrl: '', imageUrl: placeholderImage, avatarUrl: profile8, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
-      { id: 9, username: '@hamsterhooligan', caption: 'mewing sigma gigachad grindset 💀🗿', videoUrl: '', imageUrl: placeholderImage, avatarUrl: profile9, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 1, username: '@rizzgoblin', caption: 'skibidi toilet ohio rizz 💀😭💀😭💀😭', videoUrl: video1, avatarUrl: profile1, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 2, username: '@gyattywarlock', caption: 'gyatt rizzler paying fanum tax 🥀💀', videoUrl: video2, avatarUrl: profile2, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 3, username: '@zynmage420', caption: 'gigachad mewing sigma grindset 👁️👄👁️', videoUrl: video3, avatarUrl: profile3, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 4, username: '@fanumfiend', caption: 'ohio final boss 67 skibidi 🗿💯', videoUrl: video4, avatarUrl: profile4, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 5, username: '@ohioOverseer', caption: 'grimace shake got me acting NPC 😭💔💀', videoUrl: video5, avatarUrl: profile5, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 6, username: '@rotlord.exe', caption: 'goofy ahh sigma rizzler 💀😭', videoUrl: video6, avatarUrl: profile6, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 7, username: '@goblincig69', caption: 'skibidi rizzler 67 ohio moment 🥀😭', videoUrl: video7, avatarUrl: profile7, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 8, username: '@zootedhamster', caption: 'fanum tax gyatt rizz combo 👉👈', videoUrl: video8, avatarUrl: profile8, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 9, username: '@hamsterhooligan', caption: 'mewing sigma gigachad grindset 💀🗿', videoUrl: video9, avatarUrl: profile9, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
       { id: 10, username: '@skibidipriest', caption: 'ohio skibidi toilet 67 rizz 😭💀😭💀😭💀', videoUrl: '', imageUrl: placeholderImage, avatarUrl: profile10, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
       { id: 11, username: '@npcprophet', caption: 'NPC grimace shake moment 🥀💯', videoUrl: '', imageUrl: placeholderImage, avatarUrl: profile11, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
       { id: 12, username: '@munchmessiah', caption: 'goofy ahh rizzler sigma 💀😭', videoUrl: '', imageUrl: placeholderImage, avatarUrl: profile12, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
