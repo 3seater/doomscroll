@@ -20,8 +20,23 @@ import video8 from './assets/videos/8.mp4'
 import video9 from './assets/videos/9.mp4'
 import video10 from './assets/videos/Download (11).mp4'
 
-// Array of all available videos (will cycle through these)
+// Array of all available videos
 const availableVideos = [video1, video2, video3, video4, video5, video6, video7, video8, video9, video10]
+
+// Function to create a shuffled array of videos that fills all 33 slots without duplicates until all videos are used
+function createShuffledVideoArray(videoCount: number): string[] {
+  // Calculate how many full cycles we need
+  const cycles = Math.ceil(videoCount / availableVideos.length)
+  // Create array with all videos repeated enough times
+  const repeatedVideos: string[] = []
+  for (let i = 0; i < cycles; i++) {
+    repeatedVideos.push(...availableVideos)
+  }
+  // Take only the number we need
+  const videosToUse = repeatedVideos.slice(0, videoCount)
+  // Shuffle the array
+  return shuffleArray(videosToUse)
+}
 
 // Import app icons
 import pumpfunIcon from './assets/iphone icons/pumpfun.png'
@@ -150,44 +165,46 @@ const shuffleArray = <T,>(array: T[]): T[] => {
 
 function App() {
   const [videos] = useState<VideoItem[]>(() => {
-    // Create initial video array - all videos use actual video files, cycling through available videos
+    // Create shuffled video array (no duplicates until all videos are shown)
+    const shuffledVideoUrls = createShuffledVideoArray(33)
+    
+    // Create initial video array with shuffled videos
     const initialVideos = [
-      { id: 1, username: '@rizzgoblin', caption: 'skibidi toilet ohio rizz 💀😭💀😭💀😭', videoUrl: availableVideos[0], avatarUrl: profile1, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
-      { id: 2, username: '@gyattywarlock', caption: 'gyatt rizzler paying fanum tax 🥀💀', videoUrl: availableVideos[1], avatarUrl: profile2, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
-      { id: 3, username: '@zynmage420', caption: 'gigachad mewing sigma grindset 👁️👄👁️', videoUrl: availableVideos[2], avatarUrl: profile3, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
-      { id: 4, username: '@fanumfiend', caption: 'ohio final boss 67 skibidi 🗿💯', videoUrl: availableVideos[3], avatarUrl: profile4, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
-      { id: 5, username: '@ohioOverseer', caption: 'grimace shake got me acting NPC 😭💔💀', videoUrl: availableVideos[4], avatarUrl: profile5, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
-      { id: 6, username: '@rotlord.exe', caption: 'goofy ahh sigma rizzler 💀😭', videoUrl: availableVideos[5], avatarUrl: profile6, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
-      { id: 7, username: '@goblincig69', caption: 'skibidi rizzler 67 ohio moment 🥀😭', videoUrl: availableVideos[6], avatarUrl: profile7, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
-      { id: 8, username: '@zootedhamster', caption: 'fanum tax gyatt rizz combo 👉👈', videoUrl: availableVideos[7], avatarUrl: profile8, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
-      { id: 9, username: '@hamsterhooligan', caption: 'mewing sigma gigachad grindset 💀🗿', videoUrl: availableVideos[8], avatarUrl: profile9, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
-      { id: 10, username: '@skibidipriest', caption: 'ohio skibidi toilet 67 rizz 😭💀😭💀😭💀', videoUrl: availableVideos[9], avatarUrl: profile10, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
-      { id: 11, username: '@npcprophet', caption: 'NPC grimace shake moment 🥀💯', videoUrl: availableVideos[0], avatarUrl: profile11, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
-      { id: 12, username: '@munchmessiah', caption: 'goofy ahh rizzler sigma 💀😭', videoUrl: availableVideos[1], avatarUrl: profile12, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
-      { id: 13, username: '@sigmafreakazoid', caption: 'sigma gyatt fanum tax rizz 👁️👄👁️', videoUrl: availableVideos[2], avatarUrl: profile13, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
-      { id: 14, username: '@jitteryjunkie', caption: '67 ohio skibidi toilet rizz 😭💔💀', videoUrl: availableVideos[3], avatarUrl: profile14, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
-      { id: 15, username: '@midbossmoment', caption: 'mewing gigachad sigma grindset 🗿💯', videoUrl: availableVideos[4], avatarUrl: profile15, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
-      { id: 16, username: '@motherlesspookie', caption: 'grimace shake NPC behavior 🥀😭', videoUrl: availableVideos[5], avatarUrl: profile16, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
-      { id: 17, username: '@degensummoner', caption: 'skibidi rizz 67 ohio moment 💀😭💀😭💀😭', videoUrl: availableVideos[6], avatarUrl: profile17, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
-      { id: 18, username: '@capybaraCartel', caption: 'fanum tax sigma rizzler 👉👈', videoUrl: availableVideos[7], avatarUrl: profile18, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
-      { id: 19, username: '@ragepixie', caption: 'ohio gigachad 67 skibidi 🥀💀', videoUrl: availableVideos[8], avatarUrl: profile19, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
-      { id: 20, username: '@sillygoathazard', caption: 'goofy ahh mewing sigma 😭💔💀', videoUrl: availableVideos[9], avatarUrl: profile20, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
-      { id: 21, username: '@lightSkinOverload', caption: 'NPC skibidi toilet ohio 🗿💯', videoUrl: availableVideos[0], avatarUrl: profile21, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
-      { id: 22, username: '@gyattynation', caption: 'gyatt rizz fanum tax moment 👁️👄👁️', videoUrl: availableVideos[1], avatarUrl: profile22, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
-      { id: 23, username: '@rizzreceptacle', caption: 'sigma 67 ohio skibidi rizz 😭🥀', videoUrl: availableVideos[2], avatarUrl: profile23, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
-      { id: 24, username: '@creeprizzlord', caption: 'grimace shake rizzler sigma 💀😭', videoUrl: availableVideos[3], avatarUrl: profile24, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
-      { id: 25, username: '@mommygyattmilk', caption: 'mewing fanum tax gyatt 🥀💀', videoUrl: availableVideos[4], avatarUrl: profile25, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
-      { id: 26, username: '@doubletapdaemon', caption: 'skibidi gigachad mewing sigma 😭💀😭💀😭💀', videoUrl: availableVideos[5], avatarUrl: profile26, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
-      { id: 27, username: '@delusionalnpc', caption: 'ohio NPC 67 skibidi moment 👉👈', videoUrl: availableVideos[6], avatarUrl: profile27, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
-      { id: 28, username: '@rottingwithrizz', caption: 'goofy ahh gyatt rizz fanum tax 🗿💯', videoUrl: availableVideos[7], avatarUrl: profile28, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
-      { id: 29, username: '@rizzeduprodent', caption: 'sigma rizz 67 ohio skibidi 🥀😭', videoUrl: availableVideos[8], avatarUrl: profile29, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
-      { id: 30, username: '@ohioMFSupreme', caption: 'fanum tax gigachad mewing 😭💔💀', videoUrl: availableVideos[9], avatarUrl: profile30, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
-      { id: 31, username: '@doomscrollDruid', caption: 'NPC ohio skibidi toilet 67 💀😭', videoUrl: availableVideos[0], avatarUrl: profile31, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
-      { id: 32, username: '@brainrotBandit', caption: 'grimace shake sigma rizzler 👁️👄👁️', videoUrl: availableVideos[1], avatarUrl: profile32, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
-      { id: 33, username: '@mrmelatonin2mg', caption: 'mewing 67 rizz ohio skibidi 🥀💀', videoUrl: availableVideos[2], avatarUrl: profile33, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 1, username: '@rizzgoblin', caption: 'skibidi toilet ohio rizz 💀😭💀😭💀😭', videoUrl: shuffledVideoUrls[0], avatarUrl: profile1, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 2, username: '@gyattywarlock', caption: 'gyatt rizzler paying fanum tax 🥀💀', videoUrl: shuffledVideoUrls[1], avatarUrl: profile2, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 3, username: '@zynmage420', caption: 'gigachad mewing sigma grindset 👁️👄👁️', videoUrl: shuffledVideoUrls[2], avatarUrl: profile3, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 4, username: '@fanumfiend', caption: 'ohio final boss 67 skibidi 🗿💯', videoUrl: shuffledVideoUrls[3], avatarUrl: profile4, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 5, username: '@ohioOverseer', caption: 'grimace shake got me acting NPC 😭💔💀', videoUrl: shuffledVideoUrls[4], avatarUrl: profile5, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 6, username: '@rotlord.exe', caption: 'goofy ahh sigma rizzler 💀😭', videoUrl: shuffledVideoUrls[5], avatarUrl: profile6, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 7, username: '@goblincig69', caption: 'skibidi rizzler 67 ohio moment 🥀😭', videoUrl: shuffledVideoUrls[6], avatarUrl: profile7, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 8, username: '@zootedhamster', caption: 'fanum tax gyatt rizz combo 👉👈', videoUrl: shuffledVideoUrls[7], avatarUrl: profile8, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 9, username: '@hamsterhooligan', caption: 'mewing sigma gigachad grindset 💀🗿', videoUrl: shuffledVideoUrls[8], avatarUrl: profile9, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 10, username: '@skibidipriest', caption: 'ohio skibidi toilet 67 rizz 😭💀😭💀😭💀', videoUrl: shuffledVideoUrls[9], avatarUrl: profile10, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 11, username: '@npcprophet', caption: 'NPC grimace shake moment 🥀💯', videoUrl: shuffledVideoUrls[10], avatarUrl: profile11, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 12, username: '@munchmessiah', caption: 'goofy ahh rizzler sigma 💀😭', videoUrl: shuffledVideoUrls[11], avatarUrl: profile12, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 13, username: '@sigmafreakazoid', caption: 'sigma gyatt fanum tax rizz 👁️👄👁️', videoUrl: shuffledVideoUrls[12], avatarUrl: profile13, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 14, username: '@jitteryjunkie', caption: '67 ohio skibidi toilet rizz 😭💔💀', videoUrl: shuffledVideoUrls[13], avatarUrl: profile14, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 15, username: '@midbossmoment', caption: 'mewing gigachad sigma grindset 🗿💯', videoUrl: shuffledVideoUrls[14], avatarUrl: profile15, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 16, username: '@motherlesspookie', caption: 'grimace shake NPC behavior 🥀😭', videoUrl: shuffledVideoUrls[15], avatarUrl: profile16, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 17, username: '@degensummoner', caption: 'skibidi rizz 67 ohio moment 💀😭💀😭💀😭', videoUrl: shuffledVideoUrls[16], avatarUrl: profile17, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 18, username: '@capybaraCartel', caption: 'fanum tax sigma rizzler 👉👈', videoUrl: shuffledVideoUrls[17], avatarUrl: profile18, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 19, username: '@ragepixie', caption: 'ohio gigachad 67 skibidi 🥀💀', videoUrl: shuffledVideoUrls[18], avatarUrl: profile19, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 20, username: '@sillygoathazard', caption: 'goofy ahh mewing sigma 😭💔💀', videoUrl: shuffledVideoUrls[19], avatarUrl: profile20, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 21, username: '@lightSkinOverload', caption: 'NPC skibidi toilet ohio 🗿💯', videoUrl: shuffledVideoUrls[20], avatarUrl: profile21, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 22, username: '@gyattynation', caption: 'gyatt rizz fanum tax moment 👁️👄👁️', videoUrl: shuffledVideoUrls[21], avatarUrl: profile22, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 23, username: '@rizzreceptacle', caption: 'sigma 67 ohio skibidi rizz 😭🥀', videoUrl: shuffledVideoUrls[22], avatarUrl: profile23, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 24, username: '@creeprizzlord', caption: 'grimace shake rizzler sigma 💀😭', videoUrl: shuffledVideoUrls[23], avatarUrl: profile24, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 25, username: '@mommygyattmilk', caption: 'mewing fanum tax gyatt 🥀💀', videoUrl: shuffledVideoUrls[24], avatarUrl: profile25, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 26, username: '@doubletapdaemon', caption: 'skibidi gigachad mewing sigma 😭💀😭💀😭💀', videoUrl: shuffledVideoUrls[25], avatarUrl: profile26, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 27, username: '@delusionalnpc', caption: 'ohio NPC 67 skibidi moment 👉👈', videoUrl: shuffledVideoUrls[26], avatarUrl: profile27, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 28, username: '@rottingwithrizz', caption: 'goofy ahh gyatt rizz fanum tax 🗿💯', videoUrl: shuffledVideoUrls[27], avatarUrl: profile28, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 29, username: '@rizzeduprodent', caption: 'sigma rizz 67 ohio skibidi 🥀😭', videoUrl: shuffledVideoUrls[28], avatarUrl: profile29, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 30, username: '@ohioMFSupreme', caption: 'fanum tax gigachad mewing 😭💔💀', videoUrl: shuffledVideoUrls[29], avatarUrl: profile30, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 31, username: '@doomscrollDruid', caption: 'NPC ohio skibidi toilet 67 💀😭', videoUrl: shuffledVideoUrls[30], avatarUrl: profile31, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 32, username: '@brainrotBandit', caption: 'grimace shake sigma rizzler 👁️👄👁️', videoUrl: shuffledVideoUrls[31], avatarUrl: profile32, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 33, username: '@mrmelatonin2mg', caption: 'mewing 67 rizz ohio skibidi 🥀💀', videoUrl: shuffledVideoUrls[32], avatarUrl: profile33, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
     ]
-    // Shuffle the videos on every load
-    return shuffleArray(initialVideos)
+    return initialVideos
   })
 
   // Create circular buffer by adding duplicates at boundaries
