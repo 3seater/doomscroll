@@ -18,9 +18,14 @@ import video6 from './assets/videos/6.mp4'
 import video7 from './assets/videos/7.mp4'
 import video8 from './assets/videos/8.mp4'
 import video9 from './assets/videos/9.mp4'
+import video10 from './assets/videos/Download (11).mp4'
+
+// Array of all available videos (will cycle through these)
+const availableVideos = [video1, video2, video3, video4, video5, video6, video7, video8, video9, video10]
 
 // Import app icons
 import pumpfunIcon from './assets/iphone icons/pumpfun.png'
+import tiktokIcon from './assets/iphone icons/tiktok.png'
 import xIcon from './assets/iphone icons/x.png'
 import messagesIcon from './assets/iphone icons/messages.png'
 
@@ -1486,10 +1491,11 @@ function App() {
                   <img src={pumpfunIcon} alt="Pumpfun" className="app-icon-img" />
                 </div>
               </a>
-              <div className="dock-app">
-                <div className="app-icon" style={{ backgroundColor: '#1a1a1a' }}>
+              <a href="https://www.tiktok.com" target="_blank" rel="noopener noreferrer" className="dock-app">
+                <div className="app-icon">
+                  <img src={tiktokIcon} alt="TikTok" className="app-icon-img" />
                 </div>
-              </div>
+              </a>
               <a href="https://twitter.com/tryDoomscroll" target="_blank" rel="noopener noreferrer" className="dock-app">
                 <div className="app-icon">
                   <img src={xIcon} alt="X" className="app-icon-img" />
@@ -1512,10 +1518,11 @@ function App() {
                   <img src={pumpfunIcon} alt="Pumpfun" className="app-icon-img" />
                 </div>
               </a>
-              <div className="dock-app">
-                <div className="app-icon" style={{ backgroundColor: '#1a1a1a' }}>
+              <a href="https://www.tiktok.com" target="_blank" rel="noopener noreferrer" className="dock-app">
+                <div className="app-icon">
+                  <img src={tiktokIcon} alt="TikTok" className="app-icon-img" />
                 </div>
-              </div>
+              </a>
               <a href="https://twitter.com/tryDoomscroll" target="_blank" rel="noopener noreferrer" className="dock-app">
                 <div className="app-icon">
                   <img src={xIcon} alt="X" className="app-icon-img" />
