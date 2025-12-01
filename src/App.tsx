@@ -1508,11 +1508,11 @@ function App() {
                   <img src={pumpfunIcon} alt="Pumpfun" className="app-icon-img" />
                 </div>
               </a>
-              <a href="https://www.tiktok.com" target="_blank" rel="noopener noreferrer" className="dock-app">
+              <div className="dock-app" onClick={() => { setShowMessages(false); setShowComments(false); }}>
                 <div className="app-icon">
                   <img src={tiktokIcon} alt="TikTok" className="app-icon-img" />
                 </div>
-              </a>
+              </div>
               <a href="https://twitter.com/tryDoomscroll" target="_blank" rel="noopener noreferrer" className="dock-app">
                 <div className="app-icon">
                   <img src={xIcon} alt="X" className="app-icon-img" />
@@ -1535,11 +1535,11 @@ function App() {
                   <img src={pumpfunIcon} alt="Pumpfun" className="app-icon-img" />
                 </div>
               </a>
-              <a href="https://www.tiktok.com" target="_blank" rel="noopener noreferrer" className="dock-app">
+              <div className="dock-app" onClick={() => { setShowMessages(false); setShowComments(false); }}>
                 <div className="app-icon">
                   <img src={tiktokIcon} alt="TikTok" className="app-icon-img" />
                 </div>
-              </a>
+              </div>
               <a href="https://twitter.com/tryDoomscroll" target="_blank" rel="noopener noreferrer" className="dock-app">
                 <div className="app-icon">
                   <img src={xIcon} alt="X" className="app-icon-img" />
