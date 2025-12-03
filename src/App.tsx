@@ -286,7 +286,7 @@ function App() {
     // Hide loading screen after initial render
     const timer = setTimeout(() => {
       setIsInitialLoading(false)
-    }, 800) // Show loading for minimum 0.8s for faster perceived load
+    }, 2500) // Show loading for minimum 2.5s
 
     return () => clearTimeout(timer)
   }, [])
@@ -1378,7 +1378,7 @@ function App() {
         <div className="loading-screen">
           <div className="loading-content">
             <div className="loading-spinner"></div>
-            <p className="loading-text">doomscroll.now</p>
+            <p className="loading-text">doomscroling...</p>
           </div>
         </div>
       )}
