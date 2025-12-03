@@ -90,6 +90,9 @@ import cellularIcon from './assets/iphone icons/🧩 Status Bar › Cellular Ico
 import wifiIcon from './assets/iphone icons/🧩 Status Bar › Wi-Fi Icon.svg'
 import batteryIcon from './assets/iphone icons/🧩 Status Bar › Battery Icon.svg'
 
+// Import preloader logo
+import preloaderLogo from './assets/preloader/text white.png'
+
 // Import profile pictures
 import profile1 from './assets/profile pictures/06f0b02f4838a79ac9f58e5a0eaeb325.jpg'
 import profile2 from './assets/profile pictures/0737d3e94b1859ac0d1ad785cf052e63.jpg'
@@ -1378,7 +1381,7 @@ function App() {
         <div className="loading-screen">
           <div className="loading-content">
             <div className="loading-spinner"></div>
-            <p className="loading-text">doomscroling...</p>
+            <img src={preloaderLogo} alt="doomscroll" className="preloader-logo" />
           </div>
         </div>
       )}
