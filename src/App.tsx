@@ -18,28 +18,28 @@ import video6 from './assets/videos/6.mp4'
 import video7 from './assets/videos/7.mp4'
 import video8 from './assets/videos/8.mp4'
 import video9 from './assets/videos/9.mp4'
-import video10 from './assets/videos/Download (11).mp4'
-import video11 from './assets/videos/Download (40).mp4'
-import video12 from './assets/videos/Download (41).mp4'
-import video13 from './assets/videos/Download (42).mp4'
-import video14 from './assets/videos/Download (43).mp4'
-import video15 from './assets/videos/Download (44).mp4'
-import video16 from './assets/videos/Download (45).mp4'
-import video17 from './assets/videos/Download (46).mp4'
-import video18 from './assets/videos/Download (47).mp4'
-import video19 from './assets/videos/Download (48).mp4'
-import video20 from './assets/videos/Download (49).mp4'
-import video21 from './assets/videos/Download (50).mp4'
-import video22 from './assets/videos/Download (51).mp4'
-import video23 from './assets/videos/Download (52).mp4'
-import video24 from './assets/videos/Download (53).mp4'
-import video25 from './assets/videos/Download (54).mp4'
-import video26 from './assets/videos/Download (55).mp4'
-import video27 from './assets/videos/Download (56).mp4'
-import video28 from './assets/videos/Download (57).mp4'
-import video29 from './assets/videos/Download (58).mp4'
-import video30 from './assets/videos/Download (59).mp4'
-import video31 from './assets/videos/SnapTik-dot-Kim-6ca6f812b4d0541be0115122c859be5b.mp4'
+import video10 from './assets/videos/10.mp4'
+import video11 from './assets/videos/11.mp4'
+import video12 from './assets/videos/12.mp4'
+import video13 from './assets/videos/13.mp4'
+import video14 from './assets/videos/14.mp4'
+import video15 from './assets/videos/15.mp4'
+import video16 from './assets/videos/16.mp4'
+import video17 from './assets/videos/17.mp4'
+import video18 from './assets/videos/18.mp4'
+import video19 from './assets/videos/19.mp4'
+import video20 from './assets/videos/20.mp4'
+import video21 from './assets/videos/21.mp4'
+import video22 from './assets/videos/22.mp4'
+import video23 from './assets/videos/23.mp4'
+import video24 from './assets/videos/24.mp4'
+import video25 from './assets/videos/25.mp4'
+import video26 from './assets/videos/26.mp4'
+import video27 from './assets/videos/27.mp4'
+import video28 from './assets/videos/28.mp4'
+import video29 from './assets/videos/29.mp4'
+import video30 from './assets/videos/30.mp4'
+import video31 from './assets/videos/31.mp4'
 
 // Array of all available videos
 const availableVideos = [
@@ -48,19 +48,31 @@ const availableVideos = [
   video21, video22, video23, video24, video25, video26, video27, video28, video29, video30, video31
 ]
 
-// Function to create a shuffled array of videos that fills all 33 slots without duplicates until all videos are used
+// Function to create a shuffled array of videos that ensures all videos play once before any repeats
+// The order is randomized on each user load, but no video appears twice until all videos have been shown
 function createShuffledVideoArray(videoCount: number): string[] {
+  // First, shuffle all available videos to randomize the order on user load
+  const shuffledAllVideos = shuffleArray([...availableVideos])
+  
   // Calculate how many full cycles we need
-  const cycles = Math.ceil(videoCount / availableVideos.length)
-  // Create array with all videos repeated enough times
+  const cycles = Math.ceil(videoCount / shuffledAllVideos.length)
+  
+  // Create array with shuffled videos repeated enough times
   const repeatedVideos: string[] = []
   for (let i = 0; i < cycles; i++) {
-    repeatedVideos.push(...availableVideos)
+    // First cycle uses the shuffled array, subsequent cycles shuffle again for variety
+    if (i === 0) {
+      repeatedVideos.push(...shuffledAllVideos)
+    } else {
+      // After all videos have been shown once, shuffle again for the next cycle
+      repeatedVideos.push(...shuffleArray([...availableVideos]))
+    }
   }
+  
   // Take only the number we need
   const videosToUse = repeatedVideos.slice(0, videoCount)
-  // Shuffle the array
-  return shuffleArray(videosToUse)
+  
+  return videosToUse
 }
 
 // Import app icons
