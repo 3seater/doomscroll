@@ -19,9 +19,34 @@ import video7 from './assets/videos/7.mp4'
 import video8 from './assets/videos/8.mp4'
 import video9 from './assets/videos/9.mp4'
 import video10 from './assets/videos/Download (11).mp4'
+import video11 from './assets/videos/Download (40).mp4'
+import video12 from './assets/videos/Download (41).mp4'
+import video13 from './assets/videos/Download (42).mp4'
+import video14 from './assets/videos/Download (43).mp4'
+import video15 from './assets/videos/Download (44).mp4'
+import video16 from './assets/videos/Download (45).mp4'
+import video17 from './assets/videos/Download (46).mp4'
+import video18 from './assets/videos/Download (47).mp4'
+import video19 from './assets/videos/Download (48).mp4'
+import video20 from './assets/videos/Download (49).mp4'
+import video21 from './assets/videos/Download (50).mp4'
+import video22 from './assets/videos/Download (51).mp4'
+import video23 from './assets/videos/Download (52).mp4'
+import video24 from './assets/videos/Download (53).mp4'
+import video25 from './assets/videos/Download (54).mp4'
+import video26 from './assets/videos/Download (55).mp4'
+import video27 from './assets/videos/Download (56).mp4'
+import video28 from './assets/videos/Download (57).mp4'
+import video29 from './assets/videos/Download (58).mp4'
+import video30 from './assets/videos/Download (59).mp4'
+import video31 from './assets/videos/SnapTik-dot-Kim-6ca6f812b4d0541be0115122c859be5b.mp4'
 
 // Array of all available videos
-const availableVideos = [video1, video2, video3, video4, video5, video6, video7, video8, video9, video10]
+const availableVideos = [
+  video1, video2, video3, video4, video5, video6, video7, video8, video9, video10,
+  video11, video12, video13, video14, video15, video16, video17, video18, video19, video20,
+  video21, video22, video23, video24, video25, video26, video27, video28, video29, video30, video31
+]
 
 // Function to create a shuffled array of videos that fills all 33 slots without duplicates until all videos are used
 function createShuffledVideoArray(videoCount: number): string[] {
