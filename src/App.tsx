@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
 import './App.css'
 import { database, storage } from './firebase'
-import { ref, push, onValue, query, orderByChild, limitToLast, get, update } from 'firebase/database'
+import { ref, push, onValue, query, orderByChild, limitToLast, get, update, set } from 'firebase/database'
 import { ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage'
 import Grain from './components/Grain'
 
@@ -205,44 +205,85 @@ const shuffleArray = <T,>(array: T[]): T[] => {
 
 function App() {
   const [videos] = useState<VideoItem[]>(() => {
+    // Captions mapped to video file numbers (1-31)
+    const captionsByVideoNumber: { [key: number]: string } = {
+      1: 'type yes to affirm',
+      2: '67 💀',
+      3: 'Yakub NEEDS you to clutch the 1v4',
+      4: '💀😭',
+      5: 'activating baby oil retrieval protocol',
+      6: 'he fr hittin all the notes 😭',
+      7: 'supply drop got me bricked up',
+      8: '💀💀💀💀',
+      9: 'im picking up fr',
+      10: 'genuinely 😭🥀',
+      11: 'yaaaaas diva',
+      12: 'IM NEVER PAYIN MY TAXES',
+      13: '#WEARECHARLIEKIRK',
+      14: 'UHHHHHHHHHHHHHHHHHHH',
+      15: 'UHHHHHHHH 😭',
+      16: 'blueberry gaygo',
+      17: 'fuck u nigga',
+      18: 'Unc is bamboozled 😭🥀💀',
+      19: 'we can go rizz for rizz',
+      20: '67 🤣🤣🤣',
+      21: 'ling dong goonie goonie goo',
+      22: '#beandiesel',
+      23: 'bro got that dawg in him',
+      24: 'wobbly wiggly',
+      25: '💀💀😭',
+      26: 'real',
+      27: 'bro doesent know bron 😭',
+      28: '😭',
+      29: 'type yes to affirm',
+      30: 'congratulations you are getting deported',
+      31: 'ching chong ping pong'
+    }
+    
     // Create shuffled video array (no duplicates until all videos are shown)
     const shuffledVideoUrls = createShuffledVideoArray(33)
     
-    // Create initial video array with shuffled videos
+    // Function to get video number from video URL by finding its index in availableVideos
+    const getVideoNumber = (videoUrl: string): number => {
+      const index = availableVideos.indexOf(videoUrl)
+      return index + 1 // video1 = 1, video2 = 2, etc.
+    }
+    
+    // Create initial video array with shuffled videos, matching captions to file numbers
     const initialVideos = [
-      { id: 1, username: '@rizzgoblin', caption: 'skibidi toilet ohio rizz 💀😭💀😭💀😭', videoUrl: shuffledVideoUrls[0], avatarUrl: profile1, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
-      { id: 2, username: '@gyattywarlock', caption: 'gyatt rizzler paying fanum tax 🥀💀', videoUrl: shuffledVideoUrls[1], avatarUrl: profile2, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
-      { id: 3, username: '@zynmage420', caption: 'gigachad mewing sigma grindset 👁️👄👁️', videoUrl: shuffledVideoUrls[2], avatarUrl: profile3, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
-      { id: 4, username: '@fanumfiend', caption: 'ohio final boss 67 skibidi 🗿💯', videoUrl: shuffledVideoUrls[3], avatarUrl: profile4, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
-      { id: 5, username: '@ohioOverseer', caption: 'grimace shake got me acting NPC 😭💔💀', videoUrl: shuffledVideoUrls[4], avatarUrl: profile5, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
-      { id: 6, username: '@rotlord.exe', caption: 'goofy ahh sigma rizzler 💀😭', videoUrl: shuffledVideoUrls[5], avatarUrl: profile6, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
-      { id: 7, username: '@goblincig69', caption: 'skibidi rizzler 67 ohio moment 🥀😭', videoUrl: shuffledVideoUrls[6], avatarUrl: profile7, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
-      { id: 8, username: '@zootedhamster', caption: 'fanum tax gyatt rizz combo 👉👈', videoUrl: shuffledVideoUrls[7], avatarUrl: profile8, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
-      { id: 9, username: '@hamsterhooligan', caption: 'mewing sigma gigachad grindset 💀🗿', videoUrl: shuffledVideoUrls[8], avatarUrl: profile9, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
-      { id: 10, username: '@skibidipriest', caption: 'ohio skibidi toilet 67 rizz 😭💀😭💀😭💀', videoUrl: shuffledVideoUrls[9], avatarUrl: profile10, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
-      { id: 11, username: '@npcprophet', caption: 'NPC grimace shake moment 🥀💯', videoUrl: shuffledVideoUrls[10], avatarUrl: profile11, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
-      { id: 12, username: '@munchmessiah', caption: 'goofy ahh rizzler sigma 💀😭', videoUrl: shuffledVideoUrls[11], avatarUrl: profile12, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
-      { id: 13, username: '@sigmafreakazoid', caption: 'sigma gyatt fanum tax rizz 👁️👄👁️', videoUrl: shuffledVideoUrls[12], avatarUrl: profile13, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
-      { id: 14, username: '@jitteryjunkie', caption: '67 ohio skibidi toilet rizz 😭💔💀', videoUrl: shuffledVideoUrls[13], avatarUrl: profile14, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
-      { id: 15, username: '@midbossmoment', caption: 'mewing gigachad sigma grindset 🗿💯', videoUrl: shuffledVideoUrls[14], avatarUrl: profile15, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
-      { id: 16, username: '@motherlesspookie', caption: 'grimace shake NPC behavior 🥀😭', videoUrl: shuffledVideoUrls[15], avatarUrl: profile16, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
-      { id: 17, username: '@degensummoner', caption: 'skibidi rizz 67 ohio moment 💀😭💀😭💀😭', videoUrl: shuffledVideoUrls[16], avatarUrl: profile17, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
-      { id: 18, username: '@capybaraCartel', caption: 'fanum tax sigma rizzler 👉👈', videoUrl: shuffledVideoUrls[17], avatarUrl: profile18, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
-      { id: 19, username: '@ragepixie', caption: 'ohio gigachad 67 skibidi 🥀💀', videoUrl: shuffledVideoUrls[18], avatarUrl: profile19, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
-      { id: 20, username: '@sillygoathazard', caption: 'goofy ahh mewing sigma 😭💔💀', videoUrl: shuffledVideoUrls[19], avatarUrl: profile20, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
-      { id: 21, username: '@lightSkinOverload', caption: 'NPC skibidi toilet ohio 🗿💯', videoUrl: shuffledVideoUrls[20], avatarUrl: profile21, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
-      { id: 22, username: '@gyattynation', caption: 'gyatt rizz fanum tax moment 👁️👄👁️', videoUrl: shuffledVideoUrls[21], avatarUrl: profile22, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
-      { id: 23, username: '@rizzreceptacle', caption: 'sigma 67 ohio skibidi rizz 😭🥀', videoUrl: shuffledVideoUrls[22], avatarUrl: profile23, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
-      { id: 24, username: '@creeprizzlord', caption: 'grimace shake rizzler sigma 💀😭', videoUrl: shuffledVideoUrls[23], avatarUrl: profile24, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
-      { id: 25, username: '@mommygyattmilk', caption: 'mewing fanum tax gyatt 🥀💀', videoUrl: shuffledVideoUrls[24], avatarUrl: profile25, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
-      { id: 26, username: '@doubletapdaemon', caption: 'skibidi gigachad mewing sigma 😭💀😭💀😭💀', videoUrl: shuffledVideoUrls[25], avatarUrl: profile26, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
-      { id: 27, username: '@delusionalnpc', caption: 'ohio NPC 67 skibidi moment 👉👈', videoUrl: shuffledVideoUrls[26], avatarUrl: profile27, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
-      { id: 28, username: '@rottingwithrizz', caption: 'goofy ahh gyatt rizz fanum tax 🗿💯', videoUrl: shuffledVideoUrls[27], avatarUrl: profile28, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
-      { id: 29, username: '@rizzeduprodent', caption: 'sigma rizz 67 ohio skibidi 🥀😭', videoUrl: shuffledVideoUrls[28], avatarUrl: profile29, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
-      { id: 30, username: '@ohioMFSupreme', caption: 'fanum tax gigachad mewing 😭💔💀', videoUrl: shuffledVideoUrls[29], avatarUrl: profile30, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
-      { id: 31, username: '@doomscrollDruid', caption: 'NPC ohio skibidi toilet 67 💀😭', videoUrl: shuffledVideoUrls[30], avatarUrl: profile31, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
-      { id: 32, username: '@brainrotBandit', caption: 'grimace shake sigma rizzler 👁️👄👁️', videoUrl: shuffledVideoUrls[31], avatarUrl: profile32, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
-      { id: 33, username: '@mrmelatonin2mg', caption: 'mewing 67 rizz ohio skibidi 🥀💀', videoUrl: shuffledVideoUrls[32], avatarUrl: profile33, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 1, username: '@rizzgoblin', caption: captionsByVideoNumber[getVideoNumber(shuffledVideoUrls[0])] || '', videoUrl: shuffledVideoUrls[0], avatarUrl: profile1, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 2, username: '@gyattywarlock', caption: captionsByVideoNumber[getVideoNumber(shuffledVideoUrls[1])] || '', videoUrl: shuffledVideoUrls[1], avatarUrl: profile2, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 3, username: '@zynmage420', caption: captionsByVideoNumber[getVideoNumber(shuffledVideoUrls[2])] || '', videoUrl: shuffledVideoUrls[2], avatarUrl: profile3, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 4, username: '@fanumfiend', caption: captionsByVideoNumber[getVideoNumber(shuffledVideoUrls[3])] || '', videoUrl: shuffledVideoUrls[3], avatarUrl: profile4, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 5, username: '@ohioOverseer', caption: captionsByVideoNumber[getVideoNumber(shuffledVideoUrls[4])] || '', videoUrl: shuffledVideoUrls[4], avatarUrl: profile5, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 6, username: '@rotlord.exe', caption: captionsByVideoNumber[getVideoNumber(shuffledVideoUrls[5])] || '', videoUrl: shuffledVideoUrls[5], avatarUrl: profile6, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 7, username: '@goblincig69', caption: captionsByVideoNumber[getVideoNumber(shuffledVideoUrls[6])] || '', videoUrl: shuffledVideoUrls[6], avatarUrl: profile7, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 8, username: '@zootedhamster', caption: captionsByVideoNumber[getVideoNumber(shuffledVideoUrls[7])] || '', videoUrl: shuffledVideoUrls[7], avatarUrl: profile8, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 9, username: '@hamsterhooligan', caption: captionsByVideoNumber[getVideoNumber(shuffledVideoUrls[8])] || '', videoUrl: shuffledVideoUrls[8], avatarUrl: profile9, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 10, username: '@skibidipriest', caption: captionsByVideoNumber[getVideoNumber(shuffledVideoUrls[9])] || '', videoUrl: shuffledVideoUrls[9], avatarUrl: profile10, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 11, username: '@npcprophet', caption: captionsByVideoNumber[getVideoNumber(shuffledVideoUrls[10])] || '', videoUrl: shuffledVideoUrls[10], avatarUrl: profile11, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 12, username: '@munchmessiah', caption: captionsByVideoNumber[getVideoNumber(shuffledVideoUrls[11])] || '', videoUrl: shuffledVideoUrls[11], avatarUrl: profile12, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 13, username: '@sigmafreakazoid', caption: captionsByVideoNumber[getVideoNumber(shuffledVideoUrls[12])] || '', videoUrl: shuffledVideoUrls[12], avatarUrl: profile13, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 14, username: '@jitteryjunkie', caption: captionsByVideoNumber[getVideoNumber(shuffledVideoUrls[13])] || '', videoUrl: shuffledVideoUrls[13], avatarUrl: profile14, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 15, username: '@midbossmoment', caption: captionsByVideoNumber[getVideoNumber(shuffledVideoUrls[14])] || '', videoUrl: shuffledVideoUrls[14], avatarUrl: profile15, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 16, username: '@motherlesspookie', caption: captionsByVideoNumber[getVideoNumber(shuffledVideoUrls[15])] || '', videoUrl: shuffledVideoUrls[15], avatarUrl: profile16, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 17, username: '@degensummoner', caption: captionsByVideoNumber[getVideoNumber(shuffledVideoUrls[16])] || '', videoUrl: shuffledVideoUrls[16], avatarUrl: profile17, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 18, username: '@capybaraCartel', caption: captionsByVideoNumber[getVideoNumber(shuffledVideoUrls[17])] || '', videoUrl: shuffledVideoUrls[17], avatarUrl: profile18, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 19, username: '@ragepixie', caption: captionsByVideoNumber[getVideoNumber(shuffledVideoUrls[18])] || '', videoUrl: shuffledVideoUrls[18], avatarUrl: profile19, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 20, username: '@sillygoathazard', caption: captionsByVideoNumber[getVideoNumber(shuffledVideoUrls[19])] || '', videoUrl: shuffledVideoUrls[19], avatarUrl: profile20, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 21, username: '@lightSkinOverload', caption: captionsByVideoNumber[getVideoNumber(shuffledVideoUrls[20])] || '', videoUrl: shuffledVideoUrls[20], avatarUrl: profile21, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 22, username: '@gyattynation', caption: captionsByVideoNumber[getVideoNumber(shuffledVideoUrls[21])] || '', videoUrl: shuffledVideoUrls[21], avatarUrl: profile22, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 23, username: '@rizzreceptacle', caption: captionsByVideoNumber[getVideoNumber(shuffledVideoUrls[22])] || '', videoUrl: shuffledVideoUrls[22], avatarUrl: profile23, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 24, username: '@creeprizzlord', caption: captionsByVideoNumber[getVideoNumber(shuffledVideoUrls[23])] || '', videoUrl: shuffledVideoUrls[23], avatarUrl: profile24, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 25, username: '@mommygyattmilk', caption: captionsByVideoNumber[getVideoNumber(shuffledVideoUrls[24])] || '', videoUrl: shuffledVideoUrls[24], avatarUrl: profile25, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 26, username: '@doubletapdaemon', caption: captionsByVideoNumber[getVideoNumber(shuffledVideoUrls[25])] || '', videoUrl: shuffledVideoUrls[25], avatarUrl: profile26, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 27, username: '@delusionalnpc', caption: captionsByVideoNumber[getVideoNumber(shuffledVideoUrls[26])] || '', videoUrl: shuffledVideoUrls[26], avatarUrl: profile27, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 28, username: '@rottingwithrizz', caption: captionsByVideoNumber[getVideoNumber(shuffledVideoUrls[27])] || '', videoUrl: shuffledVideoUrls[27], avatarUrl: profile28, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 29, username: '@rizzeduprodent', caption: captionsByVideoNumber[getVideoNumber(shuffledVideoUrls[28])] || '', videoUrl: shuffledVideoUrls[28], avatarUrl: profile29, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 30, username: '@ohioMFSupreme', caption: captionsByVideoNumber[getVideoNumber(shuffledVideoUrls[29])] || '', videoUrl: shuffledVideoUrls[29], avatarUrl: profile30, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 31, username: '@doomscrollDruid', caption: captionsByVideoNumber[getVideoNumber(shuffledVideoUrls[30])] || '', videoUrl: shuffledVideoUrls[30], avatarUrl: profile31, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 32, username: '@brainrotBandit', caption: captionsByVideoNumber[getVideoNumber(shuffledVideoUrls[31])] || '', videoUrl: shuffledVideoUrls[31], avatarUrl: profile32, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
+      { id: 33, username: '@mrmelatonin2mg', caption: captionsByVideoNumber[getVideoNumber(shuffledVideoUrls[32])] || '', videoUrl: shuffledVideoUrls[32], avatarUrl: profile33, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
     ]
     return initialVideos
   })
@@ -258,6 +299,7 @@ function App() {
   const [currentVideoIndex, setCurrentVideoIndex] = useState(1) // Start at first real video (index 1 because of duplicate)
   const [likedVideos, setLikedVideos] = useState<Set<number>>(new Set())
   const [bookmarkedVideos, setBookmarkedVideos] = useState<Set<number>>(new Set())
+  const [videoStats, setVideoStats] = useState<{ [videoId: number]: { likes: number; bookmarks: number } }>({})
   const [pausedVideos, setPausedVideos] = useState<Set<number>>(new Set())
   const [mutedVideos, setMutedVideos] = useState<Set<number>>(new Set())
   const [glowColor, setGlowColor] = useState('100, 150, 255')
@@ -286,10 +328,11 @@ function App() {
       setShowUsernameSetup(true)
     }
 
-    // Hide loading screen after initial render
+    // Hide loading screen after initial render - ensure content is ready
+    // Wait a bit longer to ensure content is fully rendered and visible
     const timer = setTimeout(() => {
       setIsInitialLoading(false)
-    }, 2500) // Show loading for minimum 2.5s
+    }, 2500) // Show logo for 2.5s, then fade out
 
     return () => clearTimeout(timer)
   }, [])
@@ -783,30 +826,126 @@ function App() {
     }
   }, [videos.length, showMessages, showComments, hasInteracted, circularVideos.length])
 
-  // Handle like toggle
-  const toggleLike = (videoId: number) => {
-    setLikedVideos(prev => {
-      const newLiked = new Set(prev)
-      if (newLiked.has(videoId)) {
-        newLiked.delete(videoId)
+  // Handle like toggle with Firebase sync
+  const toggleLike = async (videoId: number) => {
+    if (!database) {
+      console.error('Firebase not initialized')
+      return
+    }
+
+    const currentUser = getUserName()
+    if (!currentUser) {
+      alert('Please set a username first')
+      return
+    }
+
+    const isLiked = likedVideos.has(videoId)
+    const videoKey = `video_${videoId}`
+    const likeRef = ref(database, `videoLikes/${videoKey}/${currentUser}`)
+    const statsRef = ref(database, `videoStats/${videoKey}`)
+
+    try {
+      // Update local state immediately for instant feedback
+      setLikedVideos(prev => {
+        const newLiked = new Set(prev)
+        if (isLiked) {
+          newLiked.delete(videoId)
+        } else {
+          newLiked.add(videoId)
+        }
+        return newLiked
+      })
+
+      // Update Firebase
+      if (isLiked) {
+        // Unlike: remove user from likes and decrement count
+        await update(likeRef, null)
+        const currentStats = videoStats[videoId] || { likes: 0, bookmarks: 0 }
+        await update(statsRef, {
+          likes: Math.max(0, currentStats.likes - 1)
+        })
       } else {
-        newLiked.add(videoId)
+        // Like: add user to likes and increment count
+        await update(likeRef, true)
+        const currentStats = videoStats[videoId] || { likes: 0, bookmarks: 0 }
+        await update(statsRef, {
+          likes: currentStats.likes + 1
+        })
       }
-      return newLiked
-    })
+    } catch (error) {
+      console.error('Error toggling like:', error)
+      // Revert local state on error
+      setLikedVideos(prev => {
+        const newLiked = new Set(prev)
+        if (isLiked) {
+          newLiked.add(videoId)
+        } else {
+          newLiked.delete(videoId)
+        }
+        return newLiked
+      })
+    }
   }
 
-  // Handle bookmark toggle
-  const toggleBookmark = (videoId: number) => {
-    setBookmarkedVideos(prev => {
-      const newBookmarked = new Set(prev)
-      if (newBookmarked.has(videoId)) {
-        newBookmarked.delete(videoId)
+  // Handle bookmark toggle with Firebase sync
+  const toggleBookmark = async (videoId: number) => {
+    if (!database) {
+      console.error('Firebase not initialized')
+      return
+    }
+
+    const currentUser = getUserName()
+    if (!currentUser) {
+      alert('Please set a username first')
+      return
+    }
+
+    const isBookmarked = bookmarkedVideos.has(videoId)
+    const videoKey = `video_${videoId}`
+    const bookmarkRef = ref(database, `videoBookmarks/${videoKey}/${currentUser}`)
+    const statsRef = ref(database, `videoStats/${videoKey}`)
+
+    try {
+      // Update local state immediately for instant feedback
+      setBookmarkedVideos(prev => {
+        const newBookmarked = new Set(prev)
+        if (isBookmarked) {
+          newBookmarked.delete(videoId)
+        } else {
+          newBookmarked.add(videoId)
+        }
+        return newBookmarked
+      })
+
+      // Update Firebase
+      if (isBookmarked) {
+        // Unbookmark: remove user from bookmarks and decrement count
+        await update(bookmarkRef, null)
+        const currentStats = videoStats[videoId] || { likes: 0, bookmarks: 0 }
+        await update(statsRef, {
+          bookmarks: Math.max(0, currentStats.bookmarks - 1)
+        })
       } else {
-        newBookmarked.add(videoId)
+        // Bookmark: add user to bookmarks and increment count
+        await update(bookmarkRef, true)
+        const currentStats = videoStats[videoId] || { likes: 0, bookmarks: 0 }
+        await update(statsRef, {
+          bookmarks: currentStats.bookmarks + 1
+        })
       }
-      return newBookmarked
-    })
+    } catch (error) {
+      console.error('Error toggling bookmark:', error)
+      // Revert local state on error
+      setBookmarkedVideos(prev => {
+        const newBookmarked = new Set(prev)
+        if (isBookmarked) {
+          newBookmarked.add(videoId)
+        } else {
+          newBookmarked.delete(videoId)
+        }
+        return newBookmarked
+      })
+    }
   }
 
   // Handle volume toggle
@@ -1374,17 +1513,83 @@ function App() {
     }
   }, [showComments, currentVideoComments])
 
+  // Load video likes and bookmarks from Firebase on mount
+  useEffect(() => {
+    if (!database) return
+
+    const currentUser = getUserName()
+    if (!currentUser) return
+
+    // Load user's liked videos
+    const likesRef = ref(database, 'videoLikes')
+    const likesUnsubscribe = onValue(likesRef, (snapshot) => {
+      const data = snapshot.val()
+      if (data) {
+        const userLikedVideos = new Set<number>()
+        Object.keys(data).forEach(videoKey => {
+          const videoId = parseInt(videoKey.replace('video_', ''))
+          if (data[videoKey] && data[videoKey][currentUser]) {
+            userLikedVideos.add(videoId)
+          }
+        })
+        setLikedVideos(userLikedVideos)
+      }
+    }, (error) => {
+      console.error('Error loading likes:', error)
+    })
+
+    // Load user's bookmarked videos
+    const bookmarksRef = ref(database, 'videoBookmarks')
+    const bookmarksUnsubscribe = onValue(bookmarksRef, (snapshot) => {
+      const data = snapshot.val()
+      if (data) {
+        const userBookmarkedVideos = new Set<number>()
+        Object.keys(data).forEach(videoKey => {
+          const videoId = parseInt(videoKey.replace('video_', ''))
+          if (data[videoKey] && data[videoKey][currentUser]) {
+            userBookmarkedVideos.add(videoId)
+          }
+        })
+        setBookmarkedVideos(userBookmarkedVideos)
+      }
+    }, (error) => {
+      console.error('Error loading bookmarks:', error)
+    })
+
+    // Load video stats (like/bookmark counts)
+    const statsRef = ref(database, 'videoStats')
+    const statsUnsubscribe = onValue(statsRef, (snapshot) => {
+      const data = snapshot.val()
+      if (data) {
+        const stats: { [videoId: number]: { likes: number; bookmarks: number } } = {}
+        Object.keys(data).forEach(videoKey => {
+          const videoId = parseInt(videoKey.replace('video_', ''))
+          stats[videoId] = {
+            likes: data[videoKey].likes || 0,
+            bookmarks: data[videoKey].bookmarks || 0
+          }
+        })
+        setVideoStats(stats)
+      }
+    }, (error) => {
+      console.error('Error loading video stats:', error)
+    })
+
+    return () => {
+      likesUnsubscribe()
+      bookmarksUnsubscribe()
+      statsUnsubscribe()
+    }
+  }, [database])
+
   return (
     <div className="app-container">
       {/* Loading Screen */}
-      {isInitialLoading && (
-        <div className="loading-screen">
-          <div className="loading-content">
-            <div className="loading-spinner"></div>
-            <img src={preloaderLogo} alt="doomscroll" className="preloader-logo" />
-          </div>
+      <div className={`loading-screen ${!isInitialLoading ? 'hidden' : ''}`}>
+        <div className="loading-content">
+          <img src={preloaderLogo} alt="doomscroll" className="preloader-logo" />
         </div>
-      )}
+      </div>
 
       {/* Animated grain overlay for gradient banding fix */}
       {/* DISABLED: Uncomment below to re-enable grain/noise effect */}
@@ -1398,7 +1603,10 @@ function App() {
             drop-shadow(0 0 100px rgba(${glowColor}, 0.29))
             drop-shadow(0 0 140px rgba(${glowColor}, 0.19))
             drop-shadow(0 0 200px rgba(${glowColor}, 0.14))
-          `
+          `,
+          opacity: isInitialLoading ? 1 : 1,
+          visibility: isInitialLoading ? 'visible' : 'visible',
+          display: isInitialLoading ? 'block' : 'block'
         }}
       >
         {/* Side Buttons */}
@@ -1489,7 +1697,7 @@ function App() {
                     <svg className="action-icon" viewBox="0 0 48 48" fill={likedVideos.has(video.id) ? '#fe2c55' : 'white'}>
                       <path d="M34.6 3.1c-4.5 0-7.9 1.8-10.6 5.6-2.7-3.7-6.1-5.5-10.6-5.5C6 3.1 0 9.6 0 17.6c0 7.3 5.4 12 10.6 16.5.6.5 1.3 1.1 1.9 1.7l2.3 2c4.4 3.9 6.6 5.9 7.6 6.5.5.3 1.1.5 1.6.5s1.1-.2 1.6-.5c1-.6 2.8-2.2 7.8-6.8l2-1.8c.7-.6 1.3-1.2 2-1.7C42.7 29.6 48 25 48 17.6c0-8-6-14.5-13.4-14.5z"></path>
                     </svg>
-                    <span className="count">{formatCount(video.likes)}</span>
+                    <span className="count">{formatCount(videoStats[video.id]?.likes ?? video.likes)}</span>
                   </div>
                   <div className="action-button" onClick={() => openComments(video.id)}>
                     <img src={commentsIcon} alt="Comments" className="action-icon-img comments-icon" />
@@ -1502,7 +1710,7 @@ function App() {
                     <svg className="action-icon" viewBox="0 0 48 48" fill={bookmarkedVideos.has(video.id) ? '#fe2c55' : 'white'}>
                       <path d="M38 4H10v40l14-10 14 10V4z"/>
                     </svg>
-                    <span className="count">{formatCount(video.bookmarks)}</span>
+                    <span className="count">{formatCount(videoStats[video.id]?.bookmarks ?? video.bookmarks)}</span>
                   </div>
                   <div className="action-button" onClick={() => toggleVolume(video.id)}>
                     <svg className="action-icon" viewBox="0 0 48 48" fill="white">
