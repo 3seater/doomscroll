@@ -1208,9 +1208,10 @@ a.dock-app {
   opacity: 1 !important;
   transform: translateZ(1000px) !important;
   min-height: 0 !important;
-  max-height: calc(100% - 220px) !important;
+  max-height: calc(100vh - 220px) !important;
   margin-bottom: 110px !important;
   box-sizing: border-box;
+  height: 100%;
 }
 
 .messages-list::-webkit-scrollbar {
@@ -1253,8 +1254,9 @@ a.dock-app {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  overflow: hidden;
+  overflow: visible;
   box-sizing: border-box;
+  align-items: flex-start;
 }
 
 .message-bubble.user {
@@ -1273,13 +1275,14 @@ a.dock-app {
   max-width: 100%;
   width: auto;
   height: auto;
-  max-height: 400px;
+  max-height: min(250px, 40vh, calc(100vh - 350px));
   border-radius: 12px;
   object-fit: contain;
   cursor: pointer;
   transition: transform 0.2s ease;
   display: block;
   margin: 0;
+  align-self: flex-start;
 }
 
 .message-image:hover {

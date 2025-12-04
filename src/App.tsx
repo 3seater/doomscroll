@@ -1451,6 +1451,11 @@ function App() {
       console.log('Image message sent:', newMessage)
       
       setMessageInput('') // Clear caption
+      
+      // Scroll to bottom after sending
+      setTimeout(() => {
+        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' })
+      }, 200)
     } catch (error) {
       console.error('Error uploading image:', error)
       const errorMessage = error instanceof Error ? error.message : 'Unknown error'
@@ -1491,6 +1496,11 @@ function App() {
       await push(messagesRef, newMessage)
       console.log('Message sent successfully:', newMessage)
       setMessageInput('')
+      
+      // Scroll to bottom after sending
+      setTimeout(() => {
+        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' })
+      }, 200)
     } catch (error) {
       console.error('Error sending message:', error)
       alert(`Error sending message: ${error instanceof Error ? error.message : 'Unknown error'}. Check console for details.`)
@@ -1540,9 +1550,14 @@ function App() {
     return () => unsubscribe()
   }, [showMessages])
 
-  // Scroll to bottom of messages
+  // Scroll to bottom of messages when new messages arrive
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+    if (messages.length > 0 && messagesEndRef.current) {
+      // Use setTimeout to ensure DOM is updated
+      setTimeout(() => {
+        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' })
+      }, 100)
+    }
   }, [messages])
 
   // Load comments for current video from Firebase
