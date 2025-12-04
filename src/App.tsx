@@ -1031,8 +1031,9 @@ function App() {
     }
   }
 
-  const openComments = (videoId: number) => {
-    setCurrentVideoComments(videoId)
+  const openComments = (videoUrl: string) => {
+    const fileNumber = getVideoFileNumber(videoUrl)
+    setCurrentVideoComments(fileNumber)
     setShowComments(true)
   }
 
@@ -1159,7 +1160,7 @@ function App() {
 
   const postComment = async () => {
     if (!commentInput.trim() || !currentVideoComments) {
-      console.log('Cannot post: missing input or video ID')
+      console.log('Cannot post: missing input or video file number')
       return
     }
     
@@ -1453,7 +1454,7 @@ function App() {
     }
 
     try {
-      const commentsRef = ref(database!, `comments/video_${currentVideoComments}`)
+      const commentsRef = ref(database!, `comments/video_file_${currentVideoComments}`)
       const commentsQuery = query(commentsRef, orderByChild('timestamp'))
       
       const unsubscribe = onValue(commentsQuery, (snapshot) => {
@@ -1768,7 +1769,7 @@ function App() {
                     </svg>
                     <span className="count">{formatCount(videoStats[getVideoFileNumber(video.videoUrl)]?.likes ?? video.likes)}</span>
                   </div>
-                  <div className="action-button" onClick={() => openComments(video.id)}>
+                  <div className="action-button" onClick={() => openComments(video.videoUrl)}>
                     <img src={commentsIcon} alt="Comments" className="action-icon-img comments-icon" />
                     <span className="count">{formatCount(videoStats[getVideoFileNumber(video.videoUrl)]?.comments ?? video.comments)}</span>
                   </div>
