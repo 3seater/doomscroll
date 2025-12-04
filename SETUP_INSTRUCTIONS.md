@@ -101,14 +101,13 @@ service firebase.storage {
   match /b/{bucket}/o {
     match /chat-images/{allPaths=**} {
       allow read: if true;
-      allow write: if request.resource.size < 10 * 1024 * 1024 
-                   && request.resource.contentType.matches('image/.*');
+      allow write: if true;
     }
   }
 }
 ```
 
-**Note:** These rules allow anyone to read/write images under 10MB. For production, you may want to add authentication.
+**Note:** These rules allow anyone to read/write images. For production, you may want to add size/contentType restrictions.
 
 3. Click **"Publish"**
 

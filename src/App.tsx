@@ -1358,6 +1358,10 @@ function App() {
       return downloadURL
     } catch (error) {
       console.error('Error in uploadImage function:', error)
+      // Check if it's a CORS error
+      if (error instanceof Error && error.message.includes('CORS')) {
+        throw new Error('CORS not configured. Please configure CORS in Google Cloud Console. See FIX_CORS.md for instructions.')
+      }
       throw error
     }
   }
