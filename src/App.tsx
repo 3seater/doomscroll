@@ -819,14 +819,24 @@ function App() {
 
   // Handle like toggle with Firebase sync
   const toggleLike = async (videoId: number) => {
-    if (!database) {
-      console.error('Firebase not initialized')
-      return
-    }
-
     const currentUser = getUserName()
     if (!currentUser) {
       alert('Please set a username first')
+      return
+    }
+
+    if (!database) {
+      console.error('Firebase not initialized - using local state only')
+      // Still allow local state update even if Firebase isn't working
+      setLikedVideos(prev => {
+        const newLiked = new Set(prev)
+        if (newLiked.has(videoId)) {
+          newLiked.delete(videoId)
+        } else {
+          newLiked.add(videoId)
+        }
+        return newLiked
+      })
       return
     }
 
@@ -880,14 +890,24 @@ function App() {
 
   // Handle bookmark toggle with Firebase sync
   const toggleBookmark = async (videoId: number) => {
-    if (!database) {
-      console.error('Firebase not initialized')
-      return
-    }
-
     const currentUser = getUserName()
     if (!currentUser) {
       alert('Please set a username first')
+      return
+    }
+
+    if (!database) {
+      console.error('Firebase not initialized - using local state only')
+      // Still allow local state update even if Firebase isn't working
+      setBookmarkedVideos(prev => {
+        const newBookmarked = new Set(prev)
+        if (newBookmarked.has(videoId)) {
+          newBookmarked.delete(videoId)
+        } else {
+          newBookmarked.add(videoId)
+        }
+        return newBookmarked
+      })
       return
     }
 
@@ -1165,7 +1185,7 @@ function App() {
       setReplyingTo(null)
     } catch (error) {
       console.error('Error posting comment:', error)
-      alert('Error posting comment. Check console.')
+      alert(`Error posting comment: ${error instanceof Error ? error.message : 'Unknown error'}. Check console for details.`)
     }
   }
 
@@ -1308,7 +1328,7 @@ function App() {
       setMessageInput('') // Clear caption
     } catch (error) {
       console.error('Error uploading image:', error)
-      alert('Error uploading image. Please try again.')
+      alert(`Error uploading image: ${error instanceof Error ? error.message : 'Unknown error'}. Please try again.`)
     } finally {
       setUploadingImage(false)
       // Reset the file input
@@ -1320,27 +1340,33 @@ function App() {
   const sendMessage = async () => {
     if (!messageInput.trim()) return
     
+    const username = getUserName()
+    if (!username) {
+      alert('Please set a username first')
+      return
+    }
+    
     if (!database) {
       console.error('Firebase not initialized')
-      alert('Chat is temporarily unavailable')
+      alert('Chat is temporarily unavailable. Please check your Firebase configuration.')
       return
     }
     
     const newMessage = {
       text: messageInput,
-      username: getUserName(),
+      username: username,
       timestamp: Date.now()
     }
     
     try {
       // Push to Firebase Realtime Database
-      const messagesRef = ref(database!, 'messages')
+      const messagesRef = ref(database, 'messages')
       await push(messagesRef, newMessage)
-      console.log('Message sent:', newMessage)
+      console.log('Message sent successfully:', newMessage)
       setMessageInput('')
     } catch (error) {
       console.error('Error sending message:', error)
-      alert('Error sending message. Check console.')
+      alert(`Error sending message: ${error instanceof Error ? error.message : 'Unknown error'}. Check console for details.`)
     }
   }
 

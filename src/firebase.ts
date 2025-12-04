@@ -20,12 +20,31 @@ let database: Database | undefined;
 let storage: FirebaseStorage | undefined;
 
 try {
-  const app = initializeApp(firebaseConfig);
-  database = getDatabase(app);
-  storage = getStorage(app);
-  console.log('Firebase initialized successfully');
+  // Check if all required environment variables are present
+  const requiredVars = [
+    'VITE_FIREBASE_API_KEY',
+    'VITE_FIREBASE_AUTH_DOMAIN',
+    'VITE_FIREBASE_DATABASE_URL',
+    'VITE_FIREBASE_PROJECT_ID',
+    'VITE_FIREBASE_STORAGE_BUCKET',
+    'VITE_FIREBASE_MESSAGING_SENDER_ID',
+    'VITE_FIREBASE_APP_ID'
+  ];
+
+  const missingVars = requiredVars.filter(varName => !import.meta.env[varName]);
+  
+  if (missingVars.length > 0) {
+    console.warn('Missing Firebase environment variables:', missingVars);
+    console.warn('Firebase features will not work. Please create a .env file with your Firebase credentials.');
+  } else {
+    const app = initializeApp(firebaseConfig);
+    database = getDatabase(app);
+    storage = getStorage(app);
+    console.log('Firebase initialized successfully');
+  }
 } catch (error) {
   console.error('Firebase initialization error:', error);
+  console.error('Please check your Firebase configuration in .env file');
 }
 
 export { database, storage };
