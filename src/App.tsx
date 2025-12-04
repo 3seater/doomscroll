@@ -1,12 +1,8 @@
 import { useState, useRef, useEffect } from 'react'
 import './App.css'
 import { database, storage } from './firebase'
-import { ref, push, onValue, query, orderByChild, limitToLast, get, update, set } from 'firebase/database'
+import { ref, push, onValue, query, orderByChild, limitToLast, get, update, remove, set } from 'firebase/database'
 import { ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage'
-import Grain from './components/Grain'
-
-// Placeholder image data URL (dark gray placeholder)
-const placeholderImage = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjcwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMWExYTFhIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyNCIgZmlsbD0iI2ZmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkRPT01TQ1JPTC5OT1c8L3RleHQ+PC9zdmc+'
 
 // Import new TikTok videos
 import video1 from './assets/videos/1.mp4'
@@ -83,7 +79,6 @@ import messagesIcon from './assets/iphone icons/messages.png'
 
 // Import TikTok action icons
 import commentsIcon from './assets/tiktok icons/comments.svg'
-import forwardIcon from './assets/tiktok icons/forward.svg'
 
 // Import status bar icons
 import cellularIcon from './assets/iphone icons/🧩 Status Bar › Cellular Icon.svg'
@@ -163,10 +158,6 @@ const formatCount = (num: number): string => {
   return num.toString()
 }
 
-// Generate random count for engagement
-const randomCount = (min: number, max: number): number => {
-  return Math.floor(Math.random() * (max - min + 1)) + min
-}
 
 // Format time ago
 const formatTimeAgo = (date: Date): string => {
@@ -859,14 +850,14 @@ function App() {
       // Update Firebase
       if (isLiked) {
         // Unlike: remove user from likes and decrement count
-        await update(likeRef, null)
+        await remove(likeRef)
         const currentStats = videoStats[videoId] || { likes: 0, bookmarks: 0 }
         await update(statsRef, {
           likes: Math.max(0, currentStats.likes - 1)
         })
       } else {
         // Like: add user to likes and increment count
-        await update(likeRef, true)
+        await set(likeRef, true)
         const currentStats = videoStats[videoId] || { likes: 0, bookmarks: 0 }
         await update(statsRef, {
           likes: currentStats.likes + 1
@@ -920,14 +911,14 @@ function App() {
       // Update Firebase
       if (isBookmarked) {
         // Unbookmark: remove user from bookmarks and decrement count
-        await update(bookmarkRef, null)
+        await remove(bookmarkRef)
         const currentStats = videoStats[videoId] || { likes: 0, bookmarks: 0 }
         await update(statsRef, {
           bookmarks: Math.max(0, currentStats.bookmarks - 1)
         })
       } else {
         // Bookmark: add user to bookmarks and increment count
-        await update(bookmarkRef, true)
+        await set(bookmarkRef, true)
         const currentStats = videoStats[videoId] || { likes: 0, bookmarks: 0 }
         await update(statsRef, {
           bookmarks: currentStats.bookmarks + 1
