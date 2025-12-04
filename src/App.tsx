@@ -1565,16 +1565,17 @@ function App() {
 
   // Scroll to bottom of messages when new messages arrive
   useEffect(() => {
-    if (messages.length > 0 && messagesEndRef.current) {
+    if (messages.length > 0 && messagesListRef.current) {
       // Use setTimeout to ensure DOM is updated, especially for images
-      setTimeout(() => {
-        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' })
-      }, 150)
+      const scrollToBottom = () => {
+        if (messagesListRef.current) {
+          messagesListRef.current.scrollTop = messagesListRef.current.scrollHeight
+        }
+      }
       
-      // Also scroll after images have time to load
-      setTimeout(() => {
-        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' })
-      }, 500)
+      setTimeout(scrollToBottom, 100)
+      setTimeout(scrollToBottom, 300)
+      setTimeout(scrollToBottom, 600)
     }
   }, [messages])
 
