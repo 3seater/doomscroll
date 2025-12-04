@@ -1331,38 +1331,71 @@ function App() {
     })
   }
 
-  // Upload image to Firebase Storage
-  const uploadImage = async (file: File): Promise<string> => {
-    if (!storage) {
-      throw new Error('Firebase Storage not initialized')
-    }
-
-    try {
-      // Compress the image first
-      console.log('Compressing image file:', file.name, file.size, 'bytes')
-      const compressedBlob = await compressImage(file)
-      console.log('Image compressed, new size:', compressedBlob.size, 'bytes')
-      
-      // Create a unique filename
-      const filename = `chat-images/${Date.now()}_${Math.random().toString(36).substring(7)}.jpg`
-      const imageRef = storageRef(storage, filename)
-      console.log('Uploading to Firebase Storage:', filename)
-      
-      // Upload the compressed image
-      await uploadBytes(imageRef, compressedBlob)
-      console.log('Upload complete, getting download URL...')
-      
-      // Get the download URL
-      const downloadURL = await getDownloadURL(imageRef)
-      console.log('Download URL obtained:', downloadURL)
-      return downloadURL
-    } catch (error) {
-      console.error('Error in uploadImage function:', error)
-      // Check if it's a CORS error
-      if (error instanceof Error && error.message.includes('CORS')) {
-        throw new Error('CORS not configured. Please configure CORS in Google Cloud Console. See FIX_CORS.md for instructions.')
+  // Convert image to base64 (fallback when Storage fails)
+  const convertToBase64 = (file: File | Blob): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader()
+      reader.onload = () => {
+        const result = reader.result as string
+        // Check size (Firebase Realtime Database has 1MB limit per value)
+        const base64Size = result.length * 0.75 // Approximate
+        if (base64Size > 900 * 1024) { // 900KB to be safe
+          reject(new Error('Image too large for base64. Please configure CORS in Google Cloud Console to use Firebase Storage. See STEP_BY_STEP_CORS_FIX.md'))
+          return
+        }
+        resolve(result)
       }
-      throw error
+      reader.onerror = reject
+      reader.readAsDataURL(file)
+    })
+  }
+
+  // Upload image to Firebase Storage (with fallback to base64)
+  const uploadImage = async (file: File): Promise<string> => {
+    let compressedBlob: Blob | null = null
+    
+    // Try Firebase Storage first
+    if (storage) {
+      try {
+        // Compress the image first
+        console.log('Compressing image file:', file.name, file.size, 'bytes')
+        compressedBlob = await compressImage(file)
+        console.log('Image compressed, new size:', compressedBlob.size, 'bytes')
+        
+        // Create a unique filename
+        const filename = `chat-images/${Date.now()}_${Math.random().toString(36).substring(7)}.jpg`
+        const imageRef = storageRef(storage, filename)
+        console.log('Uploading to Firebase Storage:', filename)
+        
+        // Upload the compressed image
+        await uploadBytes(imageRef, compressedBlob)
+        console.log('Upload complete, getting download URL...')
+        
+        // Get the download URL
+        const downloadURL = await getDownloadURL(imageRef)
+        console.log('Download URL obtained:', downloadURL)
+        return downloadURL
+      } catch (error) {
+        console.warn('Firebase Storage upload failed, falling back to base64:', error)
+        // If it's a CORS error or storage fails, fall back to base64
+        const errorMessage = error instanceof Error ? error.message : String(error)
+        if (errorMessage.includes('CORS') || errorMessage.includes('network') || errorMessage.includes('Failed') || errorMessage.includes('ERR_FAILED')) {
+          console.log('Using base64 fallback due to CORS/network error')
+          // Use compressed blob if available, otherwise original file
+          return await convertToBase64(compressedBlob || file)
+        }
+        // For other errors, still try base64 as fallback
+        return await convertToBase64(compressedBlob || file)
+      }
+    }
+    
+    // If storage not initialized, compress and use base64
+    console.log('Storage not initialized, compressing and using base64')
+    try {
+      compressedBlob = await compressImage(file)
+      return await convertToBase64(compressedBlob)
+    } catch {
+      return await convertToBase64(file)
     }
   }
 
