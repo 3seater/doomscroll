@@ -194,6 +194,12 @@ const shuffleArray = <T,>(array: T[]): T[] => {
 }
 
 
+// Helper function to get video file number from videoUrl (1-31)
+const getVideoFileNumber = (videoUrl: string): number => {
+  const index = availableVideos.indexOf(videoUrl)
+  return index + 1 // video1 = 1, video2 = 2, etc. Returns 0 if not found
+}
+
 function App() {
   const [videos] = useState<VideoItem[]>(() => {
     // Captions mapped to video file numbers (1-31)
@@ -290,7 +296,8 @@ function App() {
   const [currentVideoIndex, setCurrentVideoIndex] = useState(1) // Start at first real video (index 1 because of duplicate)
   const [likedVideos, setLikedVideos] = useState<Set<number>>(new Set())
   const [bookmarkedVideos, setBookmarkedVideos] = useState<Set<number>>(new Set())
-  const [videoStats, setVideoStats] = useState<{ [videoId: number]: { likes: number; bookmarks: number; comments: number } }>({})
+  // videoStats uses file numbers (1-31) as keys, not video IDs
+  const [videoStats, setVideoStats] = useState<{ [fileNumber: number]: { likes: number; bookmarks: number; comments: number } }>({})
   const [pausedVideos, setPausedVideos] = useState<Set<number>>(new Set())
   const [mutedVideos, setMutedVideos] = useState<Set<number>>(new Set())
   const [glowColor, setGlowColor] = useState('100, 150, 255')
@@ -825,6 +832,13 @@ function App() {
       return
     }
 
+    // Find the video to get its file number
+    const video = circularVideos.find(v => v.id === videoId) || videos.find(v => v.id === videoId)
+    if (!video) return
+    
+    const fileNumber = getVideoFileNumber(video.videoUrl)
+    if (fileNumber === 0) return // Invalid video
+
     if (!database) {
       console.error('Firebase not initialized - using local state only')
       // Still allow local state update even if Firebase isn't working
@@ -841,7 +855,7 @@ function App() {
     }
 
     const isLiked = likedVideos.has(videoId)
-    const videoKey = `video_${videoId}`
+    const videoKey = `video_file_${fileNumber}`
     const likeRef = ref(database, `videoLikes/${videoKey}/${currentUser}`)
     const statsRef = ref(database, `videoStats/${videoKey}`)
 
@@ -861,14 +875,14 @@ function App() {
       if (isLiked) {
         // Unlike: remove user from likes and decrement count
         await remove(likeRef)
-        const currentStats = videoStats[videoId] || { likes: 0, bookmarks: 0 }
+        const currentStats = videoStats[fileNumber] || { likes: 0, bookmarks: 0, comments: 0 }
         await update(statsRef, {
           likes: Math.max(0, currentStats.likes - 1)
         })
       } else {
         // Like: add user to likes and increment count
         await set(likeRef, true)
-        const currentStats = videoStats[videoId] || { likes: 0, bookmarks: 0 }
+        const currentStats = videoStats[fileNumber] || { likes: 0, bookmarks: 0, comments: 0 }
         await update(statsRef, {
           likes: currentStats.likes + 1
         })
@@ -911,8 +925,15 @@ function App() {
       return
     }
 
+    // Find the video to get its file number
+    const video = circularVideos.find(v => v.id === videoId) || videos.find(v => v.id === videoId)
+    if (!video) return
+    
+    const fileNumber = getVideoFileNumber(video.videoUrl)
+    if (fileNumber === 0) return // Invalid video
+
     const isBookmarked = bookmarkedVideos.has(videoId)
-    const videoKey = `video_${videoId}`
+    const videoKey = `video_file_${fileNumber}`
     const bookmarkRef = ref(database, `videoBookmarks/${videoKey}/${currentUser}`)
     const statsRef = ref(database, `videoStats/${videoKey}`)
 
@@ -932,14 +953,14 @@ function App() {
       if (isBookmarked) {
         // Unbookmark: remove user from bookmarks and decrement count
         await remove(bookmarkRef)
-        const currentStats = videoStats[videoId] || { likes: 0, bookmarks: 0 }
+        const currentStats = videoStats[fileNumber] || { likes: 0, bookmarks: 0, comments: 0 }
         await update(statsRef, {
           bookmarks: Math.max(0, currentStats.bookmarks - 1)
         })
       } else {
         // Bookmark: add user to bookmarks and increment count
         await set(bookmarkRef, true)
-        const currentStats = videoStats[videoId] || { likes: 0, bookmarks: 0 }
+        const currentStats = videoStats[fileNumber] || { likes: 0, bookmarks: 0, comments: 0 }
         await update(statsRef, {
           bookmarks: currentStats.bookmarks + 1
         })
@@ -1090,7 +1111,7 @@ function App() {
     if (!currentUser) return // User must be logged in to like
 
     try {
-      const commentRef = ref(database, `comments/video_${currentVideoComments}/${commentFirebaseId}`)
+      const commentRef = ref(database, `comments/video_file_${currentVideoComments}/${commentFirebaseId}`)
       const commentSnapshot = await get(commentRef)
 
       if (commentSnapshot.exists()) {
@@ -1160,7 +1181,7 @@ function App() {
     }
 
     try {
-      const commentsRef = ref(database, `comments/video_${currentVideoComments}`)
+      const commentsRef = ref(database, `comments/video_file_${currentVideoComments}`)
       
       const commentData: any = {
         username: username.startsWith('@') ? username : `@${username}`,
@@ -1181,7 +1202,7 @@ function App() {
       await push(commentsRef, commentData)
       
       // Update comment count in videoStats
-      const statsRef = ref(database, `videoStats/video_${currentVideoComments}`)
+      const statsRef = ref(database, `videoStats/video_file_${currentVideoComments}`)
       const currentStats = videoStats[currentVideoComments] || { likes: 0, bookmarks: 0, comments: 0 }
       await update(statsRef, {
         comments: currentStats.comments + 1
@@ -1485,7 +1506,7 @@ function App() {
 
             // Update comment count in videoStats (count all comments including replies)
             const totalCommentCount = allComments.length
-            const statsRef = ref(database!, `videoStats/video_${currentVideoComments}`)
+            const statsRef = ref(database!, `videoStats/video_file_${currentVideoComments}`)
             update(statsRef, {
               comments: totalCommentCount
             }).catch(err => {
@@ -1553,16 +1574,22 @@ function App() {
     const currentUser = getUserName()
     if (!currentUser) return
 
-    // Load user's liked videos
+    // Load user's liked videos (map file numbers to current video IDs)
     const likesRef = ref(database, 'videoLikes')
     const likesUnsubscribe = onValue(likesRef, (snapshot) => {
       const data = snapshot.val()
       if (data) {
         const userLikedVideos = new Set<number>()
         Object.keys(data).forEach(videoKey => {
-          const videoId = parseInt(videoKey.replace('video_', ''))
-          if (data[videoKey] && data[videoKey][currentUser]) {
-            userLikedVideos.add(videoId)
+          const fileNumber = parseInt(videoKey.replace('video_file_', ''))
+          if (fileNumber > 0 && data[videoKey] && data[videoKey][currentUser]) {
+            // Find all videos with this file number and mark them as liked
+            videos.forEach(video => {
+              const videoFileNum = getVideoFileNumber(video.videoUrl)
+              if (videoFileNum === fileNumber) {
+                userLikedVideos.add(video.id)
+              }
+            })
           }
         })
         setLikedVideos(userLikedVideos)
@@ -1571,16 +1598,22 @@ function App() {
       console.error('Error loading likes:', error)
     })
 
-    // Load user's bookmarked videos
+    // Load user's bookmarked videos (map file numbers to current video IDs)
     const bookmarksRef = ref(database, 'videoBookmarks')
     const bookmarksUnsubscribe = onValue(bookmarksRef, (snapshot) => {
       const data = snapshot.val()
       if (data) {
         const userBookmarkedVideos = new Set<number>()
         Object.keys(data).forEach(videoKey => {
-          const videoId = parseInt(videoKey.replace('video_', ''))
-          if (data[videoKey] && data[videoKey][currentUser]) {
-            userBookmarkedVideos.add(videoId)
+          const fileNumber = parseInt(videoKey.replace('video_file_', ''))
+          if (fileNumber > 0 && data[videoKey] && data[videoKey][currentUser]) {
+            // Find all videos with this file number and mark them as bookmarked
+            videos.forEach(video => {
+              const videoFileNum = getVideoFileNumber(video.videoUrl)
+              if (videoFileNum === fileNumber) {
+                userBookmarkedVideos.add(video.id)
+              }
+            })
           }
         })
         setBookmarkedVideos(userBookmarkedVideos)
@@ -1589,18 +1622,20 @@ function App() {
       console.error('Error loading bookmarks:', error)
     })
 
-    // Load video stats (like/bookmark/comment counts)
+    // Load video stats (like/bookmark/comment counts) - uses file numbers as keys
     const statsRef = ref(database, 'videoStats')
     const statsUnsubscribe = onValue(statsRef, (snapshot) => {
       const data = snapshot.val()
       if (data) {
-        const stats: { [videoId: number]: { likes: number; bookmarks: number; comments: number } } = {}
+        const stats: { [fileNumber: number]: { likes: number; bookmarks: number; comments: number } } = {}
         Object.keys(data).forEach(videoKey => {
-          const videoId = parseInt(videoKey.replace('video_', ''))
-          stats[videoId] = {
-            likes: data[videoKey].likes || 0,
-            bookmarks: data[videoKey].bookmarks || 0,
-            comments: data[videoKey].comments || 0
+          const fileNumber = parseInt(videoKey.replace('video_file_', ''))
+          if (fileNumber > 0) {
+            stats[fileNumber] = {
+              likes: data[videoKey].likes || 0,
+              bookmarks: data[videoKey].bookmarks || 0,
+              comments: data[videoKey].comments || 0
+            }
           }
         })
         setVideoStats(stats)
@@ -1614,7 +1649,7 @@ function App() {
       bookmarksUnsubscribe()
       statsUnsubscribe()
     }
-  }, [database])
+  }, [database, videos])
 
   return (
     <div className="app-container">
@@ -1731,11 +1766,11 @@ function App() {
                     <svg className="action-icon" viewBox="0 0 48 48" fill={likedVideos.has(video.id) ? '#fe2c55' : 'white'}>
                       <path d="M34.6 3.1c-4.5 0-7.9 1.8-10.6 5.6-2.7-3.7-6.1-5.5-10.6-5.5C6 3.1 0 9.6 0 17.6c0 7.3 5.4 12 10.6 16.5.6.5 1.3 1.1 1.9 1.7l2.3 2c4.4 3.9 6.6 5.9 7.6 6.5.5.3 1.1.5 1.6.5s1.1-.2 1.6-.5c1-.6 2.8-2.2 7.8-6.8l2-1.8c.7-.6 1.3-1.2 2-1.7C42.7 29.6 48 25 48 17.6c0-8-6-14.5-13.4-14.5z"></path>
                     </svg>
-                    <span className="count">{formatCount(videoStats[video.id]?.likes ?? video.likes)}</span>
+                    <span className="count">{formatCount(videoStats[getVideoFileNumber(video.videoUrl)]?.likes ?? video.likes)}</span>
                   </div>
                   <div className="action-button" onClick={() => openComments(video.id)}>
                     <img src={commentsIcon} alt="Comments" className="action-icon-img comments-icon" />
-                    <span className="count">{formatCount(videoStats[video.id]?.comments ?? video.comments)}</span>
+                    <span className="count">{formatCount(videoStats[getVideoFileNumber(video.videoUrl)]?.comments ?? video.comments)}</span>
                   </div>
                   <div 
                     className={`action-button bookmark-button ${bookmarkedVideos.has(video.id) ? 'bookmarked' : ''}`}
@@ -1744,7 +1779,7 @@ function App() {
                     <svg className="action-icon" viewBox="0 0 48 48" fill={bookmarkedVideos.has(video.id) ? '#fe2c55' : 'white'}>
                       <path d="M38 4H10v40l14-10 14 10V4z"/>
                     </svg>
-                    <span className="count">{formatCount(videoStats[video.id]?.bookmarks ?? video.bookmarks)}</span>
+                    <span className="count">{formatCount(videoStats[getVideoFileNumber(video.videoUrl)]?.bookmarks ?? video.bookmarks)}</span>
                   </div>
                   <div className="action-button" onClick={() => toggleVolume(video.id)}>
                     <svg className="action-icon" viewBox="0 0 48 48" fill="white">
