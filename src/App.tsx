@@ -310,6 +310,7 @@ function App() {
   const [usernameInput, setUsernameInput] = useState('')
   const [isInitialLoading, setIsInitialLoading] = useState(true)
   const messagesEndRef = useRef<HTMLDivElement>(null)
+  const messagesListRef = useRef<HTMLDivElement>(null)
   const [hasInteracted, setHasInteracted] = useState(false)
   const [showComments, setShowComments] = useState(false)
   const [currentVideoComments, setCurrentVideoComments] = useState<number | null>(null)
@@ -1453,14 +1454,15 @@ function App() {
       setMessageInput('') // Clear caption
       
       // Scroll to bottom after sending - wait for image to load
-      setTimeout(() => {
-        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' })
-      }, 300)
+      const scrollToBottom = () => {
+        if (messagesListRef.current) {
+          messagesListRef.current.scrollTop = messagesListRef.current.scrollHeight
+        }
+      }
       
-      // Also scroll after a longer delay to ensure image is rendered
-      setTimeout(() => {
-        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' })
-      }, 600)
+      setTimeout(scrollToBottom, 200)
+      setTimeout(scrollToBottom, 400)
+      setTimeout(scrollToBottom, 700)
     } catch (error) {
       console.error('Error uploading image:', error)
       const errorMessage = error instanceof Error ? error.message : 'Unknown error'
@@ -1503,14 +1505,15 @@ function App() {
       setMessageInput('')
       
       // Scroll to bottom after sending - wait for image to load
-      setTimeout(() => {
-        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' })
-      }, 300)
+      const scrollToBottom = () => {
+        if (messagesListRef.current) {
+          messagesListRef.current.scrollTop = messagesListRef.current.scrollHeight
+        }
+      }
       
-      // Also scroll after a longer delay to ensure image is rendered
-      setTimeout(() => {
-        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' })
-      }, 600)
+      setTimeout(scrollToBottom, 200)
+      setTimeout(scrollToBottom, 400)
+      setTimeout(scrollToBottom, 700)
     } catch (error) {
       console.error('Error sending message:', error)
       alert(`Error sending message: ${error instanceof Error ? error.message : 'Unknown error'}. Check console for details.`)
@@ -2017,7 +2020,7 @@ function App() {
               </div>
 
               {/* Messages List */}
-              <div className="messages-list">
+              <div className="messages-list" ref={messagesListRef}>
                 {messages.map((msg) => (
                   <div key={msg.id} className={`message-wrapper ${msg.isUser ? 'user' : 'other'}`}>
                     {!msg.isUser && <div className="message-sender">{msg.username}</div>}
