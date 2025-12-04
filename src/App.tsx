@@ -290,7 +290,7 @@ function App() {
   const [currentVideoIndex, setCurrentVideoIndex] = useState(1) // Start at first real video (index 1 because of duplicate)
   const [likedVideos, setLikedVideos] = useState<Set<number>>(new Set())
   const [bookmarkedVideos, setBookmarkedVideos] = useState<Set<number>>(new Set())
-  const [videoStats, setVideoStats] = useState<{ [videoId: number]: { likes: number; bookmarks: number } }>({})
+  const [videoStats, setVideoStats] = useState<{ [videoId: number]: { likes: number; bookmarks: number; comments: number } }>({})
   const [pausedVideos, setPausedVideos] = useState<Set<number>>(new Set())
   const [mutedVideos, setMutedVideos] = useState<Set<number>>(new Set())
   const [glowColor, setGlowColor] = useState('100, 150, 255')
@@ -1180,6 +1180,13 @@ function App() {
       
       await push(commentsRef, commentData)
       
+      // Update comment count in videoStats
+      const statsRef = ref(database, `videoStats/video_${currentVideoComments}`)
+      const currentStats = videoStats[currentVideoComments] || { likes: 0, bookmarks: 0, comments: 0 }
+      await update(statsRef, {
+        comments: currentStats.comments + 1
+      })
+      
       console.log('Comment posted successfully!')
       setCommentInput('')
       setReplyingTo(null)
@@ -1476,6 +1483,15 @@ function App() {
               [currentVideoComments]: topLevelComments
             }))
 
+            // Update comment count in videoStats (count all comments including replies)
+            const totalCommentCount = allComments.length
+            const statsRef = ref(database!, `videoStats/video_${currentVideoComments}`)
+            update(statsRef, {
+              comments: totalCommentCount
+            }).catch(err => {
+              console.error('Error updating comment count:', err)
+            })
+
             // Update liked comments state based on current user's likes
             const currentUser = getUserName()
             if (currentUser) {
@@ -1573,17 +1589,18 @@ function App() {
       console.error('Error loading bookmarks:', error)
     })
 
-    // Load video stats (like/bookmark counts)
+    // Load video stats (like/bookmark/comment counts)
     const statsRef = ref(database, 'videoStats')
     const statsUnsubscribe = onValue(statsRef, (snapshot) => {
       const data = snapshot.val()
       if (data) {
-        const stats: { [videoId: number]: { likes: number; bookmarks: number } } = {}
+        const stats: { [videoId: number]: { likes: number; bookmarks: number; comments: number } } = {}
         Object.keys(data).forEach(videoKey => {
           const videoId = parseInt(videoKey.replace('video_', ''))
           stats[videoId] = {
             likes: data[videoKey].likes || 0,
-            bookmarks: data[videoKey].bookmarks || 0
+            bookmarks: data[videoKey].bookmarks || 0,
+            comments: data[videoKey].comments || 0
           }
         })
         setVideoStats(stats)
@@ -1718,7 +1735,7 @@ function App() {
                   </div>
                   <div className="action-button" onClick={() => openComments(video.id)}>
                     <img src={commentsIcon} alt="Comments" className="action-icon-img comments-icon" />
-                    <span className="count">{formatCount(video.comments)}</span>
+                    <span className="count">{formatCount(videoStats[video.id]?.comments ?? video.comments)}</span>
                   </div>
                   <div 
                     className={`action-button bookmark-button ${bookmarkedVideos.has(video.id) ? 'bookmarked' : ''}`}
