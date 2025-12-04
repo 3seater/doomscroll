@@ -99,15 +99,68 @@ VITE_FIREBASE_MEASUREMENT_ID=G-3493G004PD
 rules_version = '2';
 service firebase.storage {
   match /b/{bucket}/o {
-    match /messages/{messageId}/{fileName} {
+    match /chat-images/{allPaths=**} {
       allow read: if true;
-      allow write: if request.resource.size < 5 * 1024 * 1024; // 5MB max
+      allow write: if request.resource.size < 10 * 1024 * 1024 
+                   && request.resource.contentType.matches('image/.*');
     }
   }
 }
 ```
 
+**Note:** These rules allow anyone to read/write images under 10MB. For production, you may want to add authentication.
+
 3. Click **"Publish"**
+
+### Storage CORS Configuration (IMPORTANT for image uploads!)
+
+Firebase Storage requires CORS to be configured for your domain. You need to set this up using the Google Cloud Console:
+
+**Option 1: Using gsutil (Recommended)**
+
+1. Install [Google Cloud SDK](https://cloud.google.com/sdk/docs/install) if you don't have it
+2. Run this command (replace `doomscroll-1d2ce` with your project ID if different):
+
+```bash
+gsutil cors set cors.json gs://doomscroll-1d2ce.firebasestorage.app
+```
+
+3. Create a file named `cors.json` in your project root with this content:
+
+```json
+[
+  {
+    "origin": ["https://doomscroll.now", "https://*.doomscroll.now", "http://localhost:*"],
+    "method": ["GET", "POST", "PUT", "DELETE", "HEAD"],
+    "maxAgeSeconds": 3600,
+    "responseHeader": ["Content-Type", "Authorization"]
+  }
+]
+```
+
+**Option 2: Using Google Cloud Console**
+
+1. Go to [Google Cloud Console](https://console.cloud.google.com/)
+2. Select project: **doomscroll-1d2ce**
+3. Go to **Cloud Storage** → **Buckets**
+4. Click on your storage bucket: `doomscroll-1d2ce.firebasestorage.app`
+5. Go to **Configuration** tab
+6. Scroll to **CORS** section
+7. Click **Edit CORS configuration**
+8. Add this JSON:
+
+```json
+[
+  {
+    "origin": ["https://doomscroll.now", "https://*.doomscroll.now", "http://localhost:*"],
+    "method": ["GET", "POST", "PUT", "DELETE", "HEAD"],
+    "maxAgeSeconds": 3600,
+    "responseHeader": ["Content-Type", "Authorization"]
+  }
+]
+```
+
+9. Click **Save**
 
 ## ✅ Step 5: Test It!
 
@@ -120,6 +173,7 @@ service firebase.storage {
    - **Bookmarking a video** - should sync to Firebase
    - **Sending a message** - should appear in Firebase
    - **Commenting on a video** - should appear in Firebase
+   - **Uploading an image** - should upload and send in messages (requires CORS setup below)
 
 ## 🎉 Done!
 
@@ -182,4 +236,12 @@ doomscroll-1d2ce-db
 **Counts not updating:**
 - Check `videoStats` in Firebase Console
 - Make sure database rules allow read/write on `videoStats`
+
+**Image upload CORS errors:**
+- **This is the most common issue!** You MUST configure CORS for Firebase Storage
+- Follow the "Storage CORS Configuration" steps above (Step 4)
+- The `cors.json` file is already created in your project root
+- Run: `gsutil cors set cors.json gs://doomscroll-1d2ce.firebasestorage.app`
+- Or configure it in Google Cloud Console (see instructions above)
+- After configuring CORS, refresh your browser and try uploading again
 
