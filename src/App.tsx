@@ -1251,117 +1251,178 @@ function App() {
   // Compress image before upload
   const compressImage = (file: File, maxWidth: number = 800, quality: number = 0.7): Promise<Blob> => {
     return new Promise((resolve, reject) => {
-      const reader = new FileReader()
-      reader.readAsDataURL(file)
-      reader.onload = (event) => {
-        const img = new Image()
-        img.src = event.target?.result as string
-        img.onload = () => {
-          const canvas = document.createElement('canvas')
-          let width = img.width
-          let height = img.height
-
-          // Calculate new dimensions
-          if (width > height) {
-            if (width > maxWidth) {
-              height = (height * maxWidth) / width
-              width = maxWidth
-            }
-          } else {
-            if (height > maxWidth) {
-              width = (width * maxWidth) / height
-              height = maxWidth
-            }
-          }
-
-          canvas.width = width
-          canvas.height = height
-
-          const ctx = canvas.getContext('2d')
-          ctx?.drawImage(img, 0, 0, width, height)
-
-          canvas.toBlob(
-            (blob) => {
-              if (blob) {
-                resolve(blob)
-              } else {
-                reject(new Error('Canvas toBlob failed'))
-              }
-            },
-            'image/jpeg',
-            quality
-          )
+      try {
+        const reader = new FileReader()
+        
+        reader.onerror = () => {
+          reject(new Error('Failed to read image file'))
         }
-        img.onerror = reject
+        
+        reader.onload = (event) => {
+          try {
+            const img = new Image()
+            
+            img.onerror = () => {
+              reject(new Error('Failed to load image'))
+            }
+            
+            img.onload = () => {
+              try {
+                const canvas = document.createElement('canvas')
+                let width = img.width
+                let height = img.height
+
+                // Calculate new dimensions
+                if (width > height) {
+                  if (width > maxWidth) {
+                    height = (height * maxWidth) / width
+                    width = maxWidth
+                  }
+                } else {
+                  if (height > maxWidth) {
+                    width = (width * maxWidth) / height
+                    height = maxWidth
+                  }
+                }
+
+                canvas.width = width
+                canvas.height = height
+
+                const ctx = canvas.getContext('2d')
+                if (!ctx) {
+                  reject(new Error('Failed to get canvas context'))
+                  return
+                }
+                
+                ctx.drawImage(img, 0, 0, width, height)
+
+                canvas.toBlob(
+                  (blob) => {
+                    if (blob) {
+                      resolve(blob)
+                    } else {
+                      reject(new Error('Canvas toBlob failed'))
+                    }
+                  },
+                  'image/jpeg',
+                  quality
+                )
+              } catch (error) {
+                reject(error instanceof Error ? error : new Error('Error processing image'))
+              }
+            }
+            
+            const result = event.target?.result
+            if (!result || typeof result !== 'string') {
+              reject(new Error('Invalid file read result'))
+              return
+            }
+            
+            img.src = result
+          } catch (error) {
+            reject(error instanceof Error ? error : new Error('Error loading image'))
+          }
+        }
+        
+        reader.readAsDataURL(file)
+      } catch (error) {
+        reject(error instanceof Error ? error : new Error('Error initializing file reader'))
       }
-      reader.onerror = reject
     })
   }
 
   // Upload image to Firebase Storage
   const uploadImage = async (file: File): Promise<string> => {
-    if (!storage || !database) {
-      throw new Error('Firebase not initialized')
+    if (!storage) {
+      throw new Error('Firebase Storage not initialized')
     }
 
-    // Compress the image first
-    const compressedBlob = await compressImage(file)
-    
-    // Create a unique filename
-    const filename = `chat-images/${Date.now()}_${Math.random().toString(36).substring(7)}.jpg`
-    const imageRef = storageRef(storage, filename)
-    
-    // Upload the compressed image
-    await uploadBytes(imageRef, compressedBlob)
-    
-    // Get the download URL
-    const downloadURL = await getDownloadURL(imageRef)
-    return downloadURL
+    try {
+      // Compress the image first
+      console.log('Compressing image file:', file.name, file.size, 'bytes')
+      const compressedBlob = await compressImage(file)
+      console.log('Image compressed, new size:', compressedBlob.size, 'bytes')
+      
+      // Create a unique filename
+      const filename = `chat-images/${Date.now()}_${Math.random().toString(36).substring(7)}.jpg`
+      const imageRef = storageRef(storage, filename)
+      console.log('Uploading to Firebase Storage:', filename)
+      
+      // Upload the compressed image
+      await uploadBytes(imageRef, compressedBlob)
+      console.log('Upload complete, getting download URL...')
+      
+      // Get the download URL
+      const downloadURL = await getDownloadURL(imageRef)
+      console.log('Download URL obtained:', downloadURL)
+      return downloadURL
+    } catch (error) {
+      console.error('Error in uploadImage function:', error)
+      throw error
+    }
   }
 
   // Handle image selection
   const handleImageSelect = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
-    if (!file) return
+    if (!file) {
+      // Reset the file input even if no file
+      event.target.value = ''
+      return
+    }
 
     // Check if it's an image
     if (!file.type.startsWith('image/')) {
       alert('Please select an image file')
+      event.target.value = ''
       return
     }
 
     // Check file size (max 10MB)
     if (file.size > 10 * 1024 * 1024) {
       alert('Image is too large. Please select an image under 10MB')
+      event.target.value = ''
       return
     }
 
+    // Store the current input value before clearing
+    const captionText = messageInput.trim()
+    
     setUploadingImage(true)
+    console.log('Starting image upload...')
 
     try {
       // Upload image and get URL
+      console.log('Compressing image...')
       const imageUrl = await uploadImage(file)
+      console.log('Image uploaded successfully, URL:', imageUrl)
+      
+      if (!database) {
+        throw new Error('Firebase database not initialized')
+      }
       
       // Send message with image
       const newMessage = {
-        text: messageInput.trim() || '', // Optional caption
+        text: captionText || '', // Optional caption
         username: getUserName(),
         timestamp: Date.now(),
         imageUrl: imageUrl
       }
 
-      const messagesRef = ref(database!, 'messages')
+      const messagesRef = ref(database, 'messages')
       await push(messagesRef, newMessage)
       console.log('Image message sent:', newMessage)
       
       setMessageInput('') // Clear caption
     } catch (error) {
       console.error('Error uploading image:', error)
-      alert(`Error uploading image: ${error instanceof Error ? error.message : 'Unknown error'}. Please try again.`)
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error'
+      alert(`Error uploading image: ${errorMessage}. Please try again.`)
     } finally {
       setUploadingImage(false)
       // Reset the file input
       event.target.value = ''
+      console.log('Image upload process completed')
     }
   }
 
@@ -1947,7 +2008,6 @@ function App() {
                     onKeyPress={(e) => {
                       if (e.key === 'Enter' && !uploadingImage) sendMessage()
                     }}
-                    disabled={uploadingImage}
                   />
                   <button 
                     className="send-button" 
