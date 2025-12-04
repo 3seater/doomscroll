@@ -1198,7 +1198,7 @@ a.dock-app {
   overflow-y: auto;
   overflow-x: hidden;
   padding: 16px;
-  padding-bottom: 24px;
+  padding-bottom: 16px;
   display: flex !important;
   flex-direction: column;
   gap: 8px;
@@ -1209,9 +1209,8 @@ a.dock-app {
   opacity: 1 !important;
   transform: translateZ(1000px) !important;
   min-height: 0 !important;
-  height: calc(100vh - 200px) !important;
-  max-height: calc(100vh - 200px) !important;
-  margin-bottom: 0 !important;
+  max-height: calc(100vh - 220px) !important;
+  margin-bottom: 110px !important;
   box-sizing: border-box;
 }
 
