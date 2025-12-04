@@ -1452,10 +1452,15 @@ function App() {
       
       setMessageInput('') // Clear caption
       
-      // Scroll to bottom after sending
+      // Scroll to bottom after sending - wait for image to load
       setTimeout(() => {
-        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' })
-      }, 200)
+        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' })
+      }, 300)
+      
+      // Also scroll after a longer delay to ensure image is rendered
+      setTimeout(() => {
+        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' })
+      }, 600)
     } catch (error) {
       console.error('Error uploading image:', error)
       const errorMessage = error instanceof Error ? error.message : 'Unknown error'
@@ -1497,10 +1502,15 @@ function App() {
       console.log('Message sent successfully:', newMessage)
       setMessageInput('')
       
-      // Scroll to bottom after sending
+      // Scroll to bottom after sending - wait for image to load
       setTimeout(() => {
-        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' })
-      }, 200)
+        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' })
+      }, 300)
+      
+      // Also scroll after a longer delay to ensure image is rendered
+      setTimeout(() => {
+        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' })
+      }, 600)
     } catch (error) {
       console.error('Error sending message:', error)
       alert(`Error sending message: ${error instanceof Error ? error.message : 'Unknown error'}. Check console for details.`)
@@ -1553,10 +1563,15 @@ function App() {
   // Scroll to bottom of messages when new messages arrive
   useEffect(() => {
     if (messages.length > 0 && messagesEndRef.current) {
-      // Use setTimeout to ensure DOM is updated
+      // Use setTimeout to ensure DOM is updated, especially for images
       setTimeout(() => {
-        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' })
-      }, 100)
+        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' })
+      }, 150)
+      
+      // Also scroll after images have time to load
+      setTimeout(() => {
+        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' })
+      }, 500)
     }
   }, [messages])
 
