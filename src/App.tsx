@@ -1785,7 +1785,9 @@ function App() {
   }, [database, videos])
 
   return (
-    <div className="app-container">
+    <>
+      <div className="site-overlay"></div>
+      <div className="app-container">
       {/* Loading Screen */}
       <div className={`loading-screen ${!isInitialLoading ? 'hidden' : ''}`}>
         <div className="loading-content">
