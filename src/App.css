@@ -34,6 +34,8 @@ body {
   min-height: 100dvh; /* Dynamic Viewport Height - accounts for Safari bar */
   height: 100vh; /* Fallback */
   height: 100dvh; /* Dynamic height - ONLY visible area above Safari bar */
+  background: linear-gradient(to right, #00d9ff 0%, #00d9ff 30%, #ffffff 50%, #ff006e 70%, #ff006e 100%);
+  background-attachment: fixed;
 }
 
 .app-container {
@@ -44,7 +46,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #000000;
+  background: transparent;
   position: fixed;
   top: 0;
   left: 0;
