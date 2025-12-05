@@ -1955,7 +1955,7 @@ function App() {
           {/* Bottom Dock - Always show except when comments open */}
           {!showComments && (
             <div className="dock">
-              <a href="https://pump.fun" target="_blank" rel="noopener noreferrer" className="dock-app">
+              <a href="https://pump.fun/coin/AZ1xD9VVqhehcqLukQ957hMjVo9NM5zqAF8YdPSipump" target="_blank" rel="noopener noreferrer" className="dock-app">
                 <div className="app-icon">
                   <img src={pumpfunIcon} alt="Pumpfun" className="app-icon-img" />
                 </div>
@@ -1982,7 +1982,7 @@ function App() {
             <>
             {/* Bottom Dock - Always show in messages */}
             <div className="dock">
-              <a href="https://pump.fun" target="_blank" rel="noopener noreferrer" className="dock-app">
+              <a href="https://pump.fun/coin/AZ1xD9VVqhehcqLukQ957hMjVo9NM5zqAF8YdPSipump" target="_blank" rel="noopener noreferrer" className="dock-app">
                 <div className="app-icon">
                   <img src={pumpfunIcon} alt="Pumpfun" className="app-icon-img" />
                 </div>
