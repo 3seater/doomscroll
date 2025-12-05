@@ -73,6 +73,7 @@ function createShuffledVideoArray(videoCount: number): string[] {
 
 // Import app icons
 import pumpfunIcon from './assets/iphone icons/pumpfun.png'
+import backgroundImage from './assets/bg/bgdasdsad 22.png'
 import tiktokIcon from './assets/iphone icons/tiktok.png'
 import xIcon from './assets/iphone icons/x.png'
 import messagesIcon from './assets/iphone icons/messages.png'
@@ -1783,6 +1784,14 @@ function App() {
       statsUnsubscribe()
     }
   }, [database, videos])
+
+  useEffect(() => {
+    document.body.style.backgroundImage = `url(${backgroundImage})`
+    document.body.style.backgroundSize = 'cover'
+    document.body.style.backgroundPosition = 'center'
+    document.body.style.backgroundRepeat = 'no-repeat'
+    document.body.style.backgroundAttachment = 'fixed'
+  }, [])
 
   return (
     <div className="app-container">
