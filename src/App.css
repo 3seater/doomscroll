@@ -34,7 +34,10 @@ body {
   min-height: 100dvh; /* Dynamic Viewport Height - accounts for Safari bar */
   height: 100vh; /* Fallback */
   height: 100dvh; /* Dynamic height - ONLY visible area above Safari bar */
-  background: linear-gradient(to right, #00d9ff 0%, #00d9ff 30%, #ffffff 50%, #ff006e 70%, #ff006e 100%);
+  background-image: url('/src/assets/bg/bgdasdsad 22.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   background-attachment: fixed;
 }
 
