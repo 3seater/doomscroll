@@ -72,6 +72,7 @@ function createShuffledVideoArray(videoCount: number): string[] {
 }
 
 // Import app icons
+import pumpfunIcon from './assets/iphone icons/pumpfun.png'
 import tiktokIcon from './assets/iphone icons/tiktok.png'
 import xIcon from './assets/iphone icons/x.png'
 import messagesIcon from './assets/iphone icons/messages.png'
@@ -1956,7 +1957,7 @@ function App() {
                   <div className="dock">
                     <div className="dock-app" onClick={() => { setShowMessages(false); setShowComments(false); }}>
                       <div className="app-icon">
-                        <img src={tiktokIcon} alt="TikTok" className="app-icon-img" />
+                        <img src={pumpfunIcon} alt="Pump.fun" className="app-icon-img" />
                       </div>
                     </div>
                     <a href="https://twitter.com/tryDoomscroll" target="_blank" rel="noopener noreferrer" className="dock-app">
@@ -1978,7 +1979,7 @@ function App() {
                 <div className="dock">
                   <div className="dock-app" onClick={() => { setShowMessages(false); setShowComments(false); }}>
                     <div className="app-icon">
-                      <img src={tiktokIcon} alt="TikTok" className="app-icon-img" />
+                      <img src={pumpfunIcon} alt="Pump.fun" className="app-icon-img" />
                     </div>
                   </div>
                   <a href="https://twitter.com/tryDoomscroll" target="_blank" rel="noopener noreferrer" className="dock-app">
