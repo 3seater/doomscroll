@@ -5,8 +5,11 @@
 .comment-thread:last-child {
   margin-bottom: 0;
 }
+
 /* Universal box-sizing for cross-platform compatibility */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -19,7 +22,8 @@ html {
   touch-action: manipulation;
   margin: 0;
   padding: 0;
-  height: -webkit-fill-available; /* iOS specific fix - stops content going under Safari bar */
+  height: -webkit-fill-available;
+  /* iOS specific fix - stops content going under Safari bar */
 }
 
 body {
@@ -28,20 +32,29 @@ body {
   overflow: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  touch-action: none; /* Disable all touch scrolling on mobile */
-  overscroll-behavior: none; /* Prevent pull-to-refresh */
-  min-height: 100vh; /* Fallback for browsers that don't support dvh */
-  min-height: 100dvh; /* Dynamic Viewport Height - accounts for Safari bar */
-  height: 100vh; /* Fallback */
-  height: 100dvh; /* Dynamic height - ONLY visible area above Safari bar */
+  touch-action: none;
+  /* Disable all touch scrolling on mobile */
+  overscroll-behavior: none;
+  /* Prevent pull-to-refresh */
+  min-height: 100vh;
+  /* Fallback for browsers that don't support dvh */
+  min-height: 100dvh;
+  /* Dynamic Viewport Height - accounts for Safari bar */
+  height: 100vh;
+  /* Fallback */
+  height: 100dvh;
+  /* Dynamic height - ONLY visible area above Safari bar */
   background-color: #000000;
 }
 
 .app-container {
   width: 100vw;
-  height: 100vh; /* Fallback */
-  height: 100dvh; /* Dynamic Viewport Height - ONLY the visible area */
-  min-height: -webkit-fill-available; /* Safari mobile friendly */
+  height: 100vh;
+  /* Fallback */
+  height: 100dvh;
+  /* Dynamic Viewport Height - ONLY the visible area */
+  min-height: -webkit-fill-available;
+  /* Safari mobile friendly */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -49,22 +62,11 @@ body {
   position: fixed;
   top: 0;
   left: 0;
-}
-
-.site-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  height: 100dvh;
-  background-color: #000000;
-  z-index: 99999;
-  pointer-events: none;
-}
   overflow: hidden;
-  touch-action: none; /* Disable all touch scrolling */
-  overscroll-behavior: none; /* Prevent bounce/pull-to-refresh */
+  touch-action: none;
+  /* Disable all touch scrolling */
+  overscroll-behavior: none;
+  /* Prevent bounce/pull-to-refresh */
   /* Ensure content is always visible */
   opacity: 1;
   visibility: visible;
@@ -129,7 +131,7 @@ body {
   margin: 0;
   position: relative;
   /* Chromatic aberration effect - TikTok style */
-  text-shadow: 
+  text-shadow:
     /* Blue stroke on left */
     -2px -1px 0 #00ffff,
     -1px -1px 0 #00ffff,
@@ -157,8 +159,7 @@ body {
   display: block;
   animation: logoFadeIn 1.5s ease-out;
   opacity: 0;
-  filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.3)) 
-          drop-shadow(0 0 12px rgba(255, 255, 255, 0.15));
+  filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.3)) drop-shadow(0 0 12px rgba(255, 255, 255, 0.15));
   /* Logo fades out with EXACT same timing as loading screen */
   transition: opacity 0.08s linear;
 }
@@ -167,6 +168,7 @@ body {
   0% {
     opacity: 0;
   }
+
   100% {
     opacity: 1;
   }
@@ -220,7 +222,7 @@ body {
 .side {
   background: #000;
   border-radius: 60em;
-  box-shadow: 
+  box-shadow:
     inset 0 0 1em 1em #252525,
     0em 0em 1em 2em rgba(255, 255, 255, 1) inset,
     0em 0em 1em 5em rgba(120, 120, 120, 0.8) inset,
@@ -303,7 +305,7 @@ body {
 
 .volume-button {
   background-color: #606060;
-  box-shadow: 
+  box-shadow:
     inset 0 0 1em 0.5em #252525,
     0em 0em 3em 2em rgba(255, 255, 255, 0.4) inset;
   border-top-left-radius: 1.5em;
@@ -321,7 +323,7 @@ body {
   content: '';
   position: absolute;
   background-color: #606060;
-  box-shadow: 
+  box-shadow:
     inset 0 0 1em 0.5em #252525,
     0em 0em 3em 2em rgba(255, 255, 255, 0.4) inset;
   border-top-left-radius: 1.5em;
@@ -341,7 +343,7 @@ body {
 
 .power-button {
   background-color: #606060;
-  box-shadow: 
+  box-shadow:
     inset 0 0 1em 0.5em #252525,
     0em 0em 3em 2em rgba(255, 255, 255, 0.4) inset;
   border-top-right-radius: 1.5em;
@@ -465,13 +467,15 @@ body {
   width: 100%;
   height: 100%;
   overflow-y: scroll;
-  scroll-snap-type: y mandatory; /* Changed from proximity for better snap */
+  scroll-snap-type: y mandatory;
+  /* Changed from proximity for better snap */
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
   -ms-overflow-style: none;
   overscroll-behavior-y: contain;
   scroll-padding: 0;
-  will-change: transform; /* GPU acceleration */
+  will-change: transform;
+  /* GPU acceleration */
   cursor: grab;
   user-select: none;
   -webkit-user-select: none;
@@ -590,13 +594,33 @@ body {
 }
 
 @keyframes likeBounce {
-  0% { transform: scale(1); }
-  15% { transform: scale(1.3); }
-  30% { transform: scale(0.95); }
-  45% { transform: scale(1.15); }
-  60% { transform: scale(0.98); }
-  75% { transform: scale(1.05); }
-  100% { transform: scale(1); }
+  0% {
+    transform: scale(1);
+  }
+
+  15% {
+    transform: scale(1.3);
+  }
+
+  30% {
+    transform: scale(0.95);
+  }
+
+  45% {
+    transform: scale(1.15);
+  }
+
+  60% {
+    transform: scale(0.98);
+  }
+
+  75% {
+    transform: scale(1.05);
+  }
+
+  100% {
+    transform: scale(1);
+  }
 }
 
 .bookmark-button.bookmarked .action-icon {
@@ -604,13 +628,33 @@ body {
 }
 
 @keyframes bookmarkBounce {
-  0% { transform: scale(1); }
-  15% { transform: scale(1.3); }
-  30% { transform: scale(0.95); }
-  45% { transform: scale(1.15); }
-  60% { transform: scale(0.98); }
-  75% { transform: scale(1.05); }
-  100% { transform: scale(1); }
+  0% {
+    transform: scale(1);
+  }
+
+  15% {
+    transform: scale(1.3);
+  }
+
+  30% {
+    transform: scale(0.95);
+  }
+
+  45% {
+    transform: scale(1.15);
+  }
+
+  60% {
+    transform: scale(0.98);
+  }
+
+  75% {
+    transform: scale(1.05);
+  }
+
+  100% {
+    transform: scale(1);
+  }
 }
 
 .action-button:active {
@@ -756,59 +800,59 @@ body {
     z-index: 10000 !important;
     border: 1px solid rgba(255, 255, 255, 0.3) !important;
   }
-  
+
   .dock-app {
     display: flex !important;
     visibility: visible !important;
     opacity: 1 !important;
   }
-  
+
   .app-icon {
     display: block !important;
     visibility: visible !important;
     opacity: 1 !important;
   }
-  
+
   .app-icon-img {
     display: block !important;
     visibility: visible !important;
     opacity: 1 !important;
   }
-  
+
   /* iMessage UI fixes */
   .imessage-container {
     display: flex !important;
   }
-  
+
   .imessage-header {
     display: flex !important;
   }
-  
+
   .chat-info {
     display: flex !important;
     flex: 1 !important;
   }
-  
+
   .chat-name,
   .chat-members {
     display: block !important;
     visibility: visible !important;
     opacity: 1 !important;
   }
-  
+
   .messages-list {
     display: flex !important;
   }
-  
+
   .message-input-container {
     display: block !important;
     visibility: visible !important;
   }
-  
+
   .input-wrapper {
     display: flex !important;
   }
-  
+
   .send-button {
     display: flex !important;
     visibility: visible !important;
@@ -849,7 +893,7 @@ a.dock-app {
   border-radius: 16px;
   cursor: pointer;
   transition: transform 0.15s ease-out;
-  box-shadow: 
+  box-shadow:
     0 4px 16px rgba(0, 0, 0, 0.25),
     0 2px 4px rgba(0, 0, 0, 0.15);
   position: relative;
@@ -915,6 +959,7 @@ a.dock-app {
 
 /* Mobile optimizations */
 @media (max-width: 768px) {
+
   /* Hide grain on mobile for performance */
   .grain-wrapper {
     display: none !important;
@@ -924,38 +969,42 @@ a.dock-app {
     width: min(410px, 70vw);
     height: auto;
     aspect-ratio: 410 / 830;
-    max-height: 75dvh; /* Use dvh - viewport is now correctly sized above Safari bar */
+    max-height: 75dvh;
+    /* Use dvh - viewport is now correctly sized above Safari bar */
     font-size: clamp(0.5px, 0.14vw, 0.8px);
   }
-  
+
   .dock {
     padding: 0 8px;
     gap: 6px;
-    justify-content: space-evenly; /* Ensure even spacing */
+    justify-content: space-evenly;
+    /* Ensure even spacing */
   }
-  
+
   .dock-app {
     width: 48px;
-    flex-shrink: 0; /* Prevent shrinking */
+    flex-shrink: 0;
+    /* Prevent shrinking */
   }
-  
+
   .app-icon {
     width: 48px;
     height: 48px;
     border-radius: 12px;
   }
-  
+
   .side-actions {
     bottom: clamp(110px, 14vh, 130px);
     gap: 18px;
   }
-  
+
   .video-info {
     bottom: 95px;
   }
 }
 
 @media (max-width: 480px) {
+
   /* Hide grain on mobile for performance */
   .grain-wrapper {
     display: none !important;
@@ -965,45 +1014,48 @@ a.dock-app {
     width: 70vw;
     height: auto;
     aspect-ratio: 410 / 830;
-    max-height: 78dvh; /* Use dvh - viewport correctly sized for visible area */
+    max-height: 78dvh;
+    /* Use dvh - viewport correctly sized for visible area */
     font-size: clamp(0.45px, 0.12vw, 0.7px);
   }
-  
+
   .dock {
     padding: 0 6px;
     gap: 4px;
     height: 75px !important;
-    justify-content: space-evenly; /* Ensure even spacing */
+    justify-content: space-evenly;
+    /* Ensure even spacing */
   }
-  
+
   .dock-app {
     width: 42px;
     gap: 2px;
-    flex-shrink: 0; /* Prevent shrinking */
+    flex-shrink: 0;
+    /* Prevent shrinking */
   }
-  
+
   .app-icon {
     width: 42px;
     height: 42px;
     border-radius: 11px;
   }
-  
+
   .side-actions {
     bottom: clamp(100px, 13vh, 120px);
     gap: 16px;
     right: 10px;
   }
-  
+
   .action-icon {
     width: 28px;
     height: 28px;
   }
-  
+
   .avatar {
     width: 42px;
     height: 42px;
   }
-  
+
   .video-info {
     bottom: 85px;
   }
@@ -1011,6 +1063,7 @@ a.dock-app {
 
 /* Extra small devices */
 @media (max-width: 360px) {
+
   /* Hide grain on mobile for performance */
   .grain-wrapper {
     display: none !important;
@@ -1020,49 +1073,52 @@ a.dock-app {
     width: 75vw;
     height: auto;
     aspect-ratio: 410 / 830;
-    max-height: 80dvh; /* Use dvh - viewport correctly sized for visible area */
+    max-height: 80dvh;
+    /* Use dvh - viewport correctly sized for visible area */
     font-size: 0.5px;
   }
-  
+
   .dock {
     padding: 0 4px;
     gap: 3px;
     height: 70px !important;
-    justify-content: space-evenly; /* Ensure even spacing */
+    justify-content: space-evenly;
+    /* Ensure even spacing */
   }
-  
+
   .dock-app {
     width: 38px;
     gap: 1px;
-    flex-shrink: 0; /* Prevent shrinking */
+    flex-shrink: 0;
+    /* Prevent shrinking */
   }
-  
+
   .app-icon {
     width: 38px;
     height: 38px;
     border-radius: 10px;
   }
-  
+
   .side-actions {
     bottom: clamp(90px, 12vh, 110px);
     gap: 14px;
     right: 8px;
   }
-  
+
   .action-icon {
     width: 26px;
     height: 26px;
   }
-  
+
   .avatar {
     width: 38px;
     height: 38px;
   }
-  
+
   .video-info {
     bottom: 75px;
   }
-  
+
   .count {
     font-size: 11px;
   }
@@ -1438,6 +1494,7 @@ a.dock-app {
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -1461,6 +1518,7 @@ a.dock-app {
     opacity: 0;
     transform: scale(0.95) translateY(20px);
   }
+
   to {
     opacity: 1;
     transform: scale(1) translateY(0);
@@ -1579,6 +1637,7 @@ a.dock-app {
   from {
     transform: translateY(100%);
   }
+
   to {
     transform: translateY(0);
   }

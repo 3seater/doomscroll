@@ -49,10 +49,10 @@ const availableVideos = [
 function createShuffledVideoArray(videoCount: number): string[] {
   // First, shuffle all available videos to randomize the order on user load
   const shuffledAllVideos = shuffleArray([...availableVideos])
-  
+
   // Calculate how many full cycles we need
   const cycles = Math.ceil(videoCount / shuffledAllVideos.length)
-  
+
   // Create array with shuffled videos repeated enough times
   const repeatedVideos: string[] = []
   for (let i = 0; i < cycles; i++) {
@@ -64,10 +64,10 @@ function createShuffledVideoArray(videoCount: number): string[] {
       repeatedVideos.push(...shuffleArray([...availableVideos]))
     }
   }
-  
+
   // Take only the number we need
   const videosToUse = repeatedVideos.slice(0, videoCount)
-  
+
   return videosToUse
 }
 
@@ -161,18 +161,18 @@ const formatCount = (num: number): string => {
 // Format time ago
 const formatTimeAgo = (date: Date): string => {
   const seconds = Math.floor((new Date().getTime() - date.getTime()) / 1000)
-  
+
   if (seconds < 60) return 'just now'
-  
+
   const minutes = Math.floor(seconds / 60)
   if (minutes < 60) return `${minutes}m ago`
-  
+
   const hours = Math.floor(minutes / 60)
   if (hours < 24) return `${hours}h ago`
-  
+
   const days = Math.floor(hours / 24)
   if (days < 7) return `${days}d ago`
-  
+
   const weeks = Math.floor(days / 7)
   return `${weeks}w ago`
 }
@@ -235,16 +235,16 @@ function App() {
       30: 'congratulations you are getting deported',
       31: 'ching chong ping pong'
     }
-    
+
     // Create shuffled video array (no duplicates until all videos are shown)
     const shuffledVideoUrls = createShuffledVideoArray(33)
-    
+
     // Function to get video number from video URL by finding its index in availableVideos
     const getVideoNumber = (videoUrl: string): number => {
       const index = availableVideos.indexOf(videoUrl)
       return index + 1 // video1 = 1, video2 = 2, etc.
     }
-    
+
     // Create initial video array with shuffled videos, matching captions to file numbers
     const initialVideos = [
       { id: 1, username: '@rizzgoblin', caption: captionsByVideoNumber[getVideoNumber(shuffledVideoUrls[0])] || '', videoUrl: shuffledVideoUrls[0], avatarUrl: profile1, likes: 0, comments: 0, bookmarks: 0, shares: 0 },
@@ -290,7 +290,7 @@ function App() {
     ...videos,
     videos[0] // First video at end (for wrap-down)
   ]
-  
+
   const scrollContainerRef = useRef<HTMLDivElement>(null)
   const [currentVideoIndex, setCurrentVideoIndex] = useState(1) // Start at first real video (index 1 because of duplicate)
   const [likedVideos, setLikedVideos] = useState<Set<number>>(new Set())
@@ -339,7 +339,7 @@ function App() {
   useEffect(() => {
     const container = scrollContainerRef.current
     if (!container) return
-    
+
     // Set initial scroll position to first real video (index 1)
     const videoHeight = container.clientHeight
     container.scrollTo({
@@ -354,7 +354,7 @@ function App() {
     videoElements.forEach((video, index) => {
       // Skip if it's an image (img element)
       if (video.tagName === 'IMG') return
-      
+
       const videoEl = video as HTMLVideoElement
       // Unmute after first interaction for audio, keep muted initially for autoplay
       const videoData = circularVideos[index]
@@ -387,7 +387,7 @@ function App() {
       // Returning to TikTok - pause ALL videos first, then play current
       setTimeout(() => {
         const videoElements = document.querySelectorAll('.video-player')
-        
+
         // First, pause and reset ALL videos (skip images)
         videoElements.forEach((video) => {
           if (video.tagName === 'IMG') return
@@ -395,7 +395,7 @@ function App() {
           videoEl.pause()
           videoEl.currentTime = 0
         })
-        
+
         // Then play only the current video (if not manually paused and it's a video)
         const currentVideo = videoElements[currentVideoIndex]
         if (currentVideo && currentVideo.tagName === 'VIDEO') {
@@ -403,7 +403,7 @@ function App() {
           const videoEl = currentVideo as HTMLVideoElement
           videoEl.muted = !hasInteracted || mutedVideos.has(currentVideoData.id)
           videoEl.currentTime = 0
-          
+
           // Only play if user hasn't manually paused this video
           if (!pausedVideos.has(currentVideoData.id)) {
             videoEl.play().catch(() => {
@@ -432,9 +432,9 @@ function App() {
       const firstVideo = videoElements[0]
       // Skip if it's an image
       if (firstVideo.tagName === 'IMG') return
-      
+
       const videoEl = firstVideo as HTMLVideoElement
-      
+
       const attemptPlay = () => {
         videoEl.muted = true // Start muted for Chrome autoplay
         videoEl.currentTime = 0
@@ -466,7 +466,7 @@ function App() {
   useEffect(() => {
     // Don't sample video colors when showing messages
     if (showMessages) return
-    
+
     const canvas = document.createElement('canvas')
     const ctx = canvas.getContext('2d', { willReadFrequently: true })
     if (!ctx) return
@@ -475,29 +475,29 @@ function App() {
       const videoElements = document.querySelectorAll('.video-player')
       // Use currentVideoIndex which now points to circular buffer
       const currentVideo = videoElements[currentVideoIndex]
-      
+
       // Skip if it's an image or not a video element
       if (!currentVideo || currentVideo.tagName === 'IMG') return
-      
+
       const videoEl = currentVideo as HTMLVideoElement
       if (videoEl.readyState < 2) return
 
       canvas.width = 80
       canvas.height = 80
-      
+
       try {
         ctx.drawImage(videoEl, 0, 0, 80, 80)
         const imageData = ctx.getImageData(0, 0, 80, 80).data
-        
+
         let r = 0, g = 0, b = 0, count = 0
-        
+
         // Sample pixels, ignoring very dark ones to get more vibrant colors
         for (let i = 0; i < imageData.length; i += 4) {
           const red = imageData[i]
           const green = imageData[i + 1]
           const blue = imageData[i + 2]
           const brightness = (red + green + blue) / 3
-          
+
           // Skip very dark pixels (black areas don't contribute to glow)
           if (brightness > 30) {
             r += red
@@ -506,17 +506,17 @@ function App() {
             count++
           }
         }
-        
+
         if (count > 0) {
           r = Math.floor(r / count)
           g = Math.floor(g / count)
           b = Math.floor(b / count)
-          
+
           // Boost saturation for more vibrant glow
           const max = Math.max(r, g, b)
           const min = Math.min(r, g, b)
           const saturation = max === 0 ? 0 : (max - min) / max
-          
+
           if (saturation > 0.1) {
             // Amplify the dominant color
             const boost = 1.4
@@ -524,7 +524,7 @@ function App() {
             g = Math.min(255, Math.floor(g * boost))
             b = Math.min(255, Math.floor(b * boost))
           }
-          
+
           setGlowColor(`${r}, ${g}, ${b}`)
         }
       } catch (e) {
@@ -535,7 +535,7 @@ function App() {
     const interval = setInterval(sampleColors, 50) // More frequent updates
     return () => clearInterval(interval)
   }, [currentVideoIndex, showMessages])
-  
+
   // Update glow color for messages screen
   useEffect(() => {
     if (showMessages) {
@@ -556,13 +556,13 @@ function App() {
       const scrollTop = container.scrollTop
       const videoHeight = container.clientHeight
       let index = Math.round(scrollTop / videoHeight)
-      
+
       // Clamp index to circular buffer range
       index = Math.max(0, Math.min(index, circularVideos.length - 1))
-      
+
       // Seamless wrap when snapped to duplicate videos
       const isSnapped = Math.abs(scrollTop - (index * videoHeight)) < 1 // Within 1px of snap position
-      
+
       if (isSnapped) {
         if (index === 0) {
           // Snapped to first duplicate (showing last video), instantly jump to real last video
@@ -584,7 +584,7 @@ function App() {
           return
         }
       }
-      
+
       setCurrentVideoIndex(index)
 
       // Update opacity for all video overlays
@@ -592,17 +592,17 @@ function App() {
       videoContainers.forEach((videoContainer, i) => {
         const sideActions = videoContainer.querySelector('.side-actions') as HTMLElement
         const videoInfo = videoContainer.querySelector('.video-info') as HTMLElement
-        
+
         if (sideActions && videoInfo) {
           // Calculate how far this video is from its centered position
           const videoTop = i * videoHeight
           const distanceFromCenter = Math.abs(scrollTop - videoTop)
           const fadeDistance = videoHeight * 0.4 // Fade over 40% of video height
-          
+
           // Calculate opacity: 1 when centered, fades to 0.2 as you scroll away
           let opacity = 1 - (distanceFromCenter / fadeDistance)
           opacity = Math.max(0.2, Math.min(1, opacity)) // Clamp between 0.2 and 1
-          
+
           sideActions.style.opacity = String(opacity)
           videoInfo.style.opacity = String(opacity)
         }
@@ -618,7 +618,7 @@ function App() {
     updateCurrentVideo()
 
     container.addEventListener('scroll', handleScroll, { passive: true })
-    
+
     return () => {
       container.removeEventListener('scroll', handleScroll)
       cancelAnimationFrame(animationFrameId)
@@ -655,24 +655,24 @@ function App() {
     const onEnd = () => {
       if (!isDragging) return
       isDragging = false
-      
+
       container.classList.remove('dragging')
       container.classList.add('snapping')
-      
+
       // Snap to nearest video
       const videoHeight = container.clientHeight
       const currentPos = container.scrollTop
       let nearest = Math.round(currentPos / videoHeight)
-      
+
       // Clamp to valid range
       nearest = Math.max(0, Math.min(nearest, circularVideos.length - 1))
-      
+
       // Snap to the nearest video
       container.scrollTo({
         top: nearest * videoHeight,
         behavior: 'smooth'
       })
-      
+
       // Remove snapping class after animation
       setTimeout(() => {
         container.classList.remove('snapping')
@@ -683,58 +683,58 @@ function App() {
     let wheelTimeout: number
     const handleWheel = (e: WheelEvent) => {
       e.preventDefault()
-      
+
       clearTimeout(wheelTimeout)
       wheelTimeout = window.setTimeout(() => {
         const videoHeight = container.clientHeight
         const currentPos = container.scrollTop
         const currentIndex = Math.round(currentPos / videoHeight)
-        
+
         let targetIndex = currentIndex
         if (e.deltaY > 0) {
           targetIndex = currentIndex + 1
         } else if (e.deltaY < 0) {
           targetIndex = currentIndex - 1
         }
-        
+
         // Clamp to circular buffer range
         targetIndex = Math.max(0, Math.min(targetIndex, circularVideos.length - 1))
-        
+
         container.scrollTo({
           top: targetIndex * videoHeight,
           behavior: 'smooth'
         })
       }, 50)
     }
-    
+
     // Handle arrow keys - snap to next/prev video
     let isKeyScrolling = false
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key !== 'ArrowUp' && e.key !== 'ArrowDown') return
       if (isKeyScrolling) return // Prevent multiple key presses while scrolling
-      
+
       e.preventDefault()
       isKeyScrolling = true
-      
+
       const videoHeight = container.clientHeight
       const currentPos = container.scrollTop
       const currentIndex = Math.round(currentPos / videoHeight)
-      
+
       let targetIndex = currentIndex
       if (e.key === 'ArrowDown') {
         targetIndex = currentIndex + 1
       } else if (e.key === 'ArrowUp') {
         targetIndex = currentIndex - 1
       }
-      
+
       // Clamp to circular buffer range
       targetIndex = Math.max(0, Math.min(targetIndex, circularVideos.length - 1))
-      
+
       container.scrollTo({
         top: targetIndex * videoHeight,
         behavior: 'smooth'
       })
-      
+
       // Re-enable key scrolling after animation
       setTimeout(() => {
         isKeyScrolling = false
@@ -759,12 +759,12 @@ function App() {
       // Check if touch is on action buttons - if so, don't prevent default or start scrolling
       const target = e.target as HTMLElement
       const isActionButton = target.closest('.action-button') || target.closest('.side-actions')
-      
+
       if (isActionButton) {
         // Don't interfere with button clicks - let the onClick handler work
         return
       }
-      
+
       e.preventDefault() // Only prevent default for video scrolling, not action buttons
       onStart(e.touches[0].clientY)
     }
@@ -781,7 +781,7 @@ function App() {
     let supportsPassive = false
     try {
       const opts = Object.defineProperty({}, 'passive', {
-        get: function() {
+        get: function () {
           supportsPassive = true
           return false
         }
@@ -798,15 +798,15 @@ function App() {
     } catch {
       container.addEventListener('wheel', handleWheel)
     }
-    
+
     // Keyboard
     window.addEventListener('keydown', handleKeyDown, supportsPassive ? { passive: false } : false as any)
-    
+
     // Mouse
     container.addEventListener('mousedown', mouseDown, supportsPassive ? { passive: true } : false as any)
     window.addEventListener('mousemove', mouseMove, supportsPassive ? { passive: false } : false as any)
     window.addEventListener('mouseup', mouseUp, supportsPassive ? { passive: true } : false as any)
-    
+
     // Touch
     container.addEventListener('touchstart', touchStart, supportsPassive ? { passive: false } : false as any)
     container.addEventListener('touchmove', touchMove, supportsPassive ? { passive: false } : false as any)
@@ -835,7 +835,7 @@ function App() {
     // Find the video to get its file number
     const video = circularVideos.find(v => v.id === videoId) || videos.find(v => v.id === videoId)
     if (!video) return
-    
+
     const fileNumber = getVideoFileNumber(video.videoUrl)
     if (fileNumber === 0) return // Invalid video
 
@@ -928,7 +928,7 @@ function App() {
     // Find the video to get its file number
     const video = circularVideos.find(v => v.id === videoId) || videos.find(v => v.id === videoId)
     if (!video) return
-    
+
     const fileNumber = getVideoFileNumber(video.videoUrl)
     if (fileNumber === 0) return // Invalid video
 
@@ -1008,10 +1008,10 @@ function App() {
   const toggleVideoPlayPause = (e: React.MouseEvent<HTMLVideoElement>, videoId: number) => {
     e.stopPropagation() // Prevent event bubbling
     const video = e.currentTarget
-    
+
     // Only handle video elements, not images
     if (video.tagName !== 'VIDEO') return
-    
+
     if (video.paused) {
       video.play().catch(() => {
         // Handle play error silently
@@ -1163,12 +1163,12 @@ function App() {
       console.log('Cannot post: missing input or video file number')
       return
     }
-    
+
     const username = getUserName()
     const avatar = getUserAvatar()
-    
+
     console.log('Posting comment with username:', username, 'avatar:', avatar)
-    
+
     if (!username || !avatar) {
       console.error('Missing username or avatar')
       alert('Please set your username first')
@@ -1183,7 +1183,7 @@ function App() {
 
     try {
       const commentsRef = ref(database, `comments/video_file_${currentVideoComments}`)
-      
+
       const commentData: any = {
         username: username.startsWith('@') ? username : `@${username}`,
         avatar: avatar,
@@ -1191,24 +1191,24 @@ function App() {
         likes: 0,
         timestamp: new Date().toISOString()
       }
-      
+
       // If replying to a comment, add parent ID
       if (replyingTo) {
         commentData.parentId = replyingTo.firebaseId
         console.log('Posting reply to:', replyingTo.firebaseId)
       }
-      
+
       console.log('Posting comment data:', commentData)
-      
+
       await push(commentsRef, commentData)
-      
+
       // Update comment count in videoStats
       const statsRef = ref(database, `videoStats/video_file_${currentVideoComments}`)
       const currentStats = videoStats[currentVideoComments] || { likes: 0, bookmarks: 0, comments: 0 }
       await update(statsRef, {
         comments: currentStats.comments + 1
       })
-      
+
       console.log('Comment posted successfully!')
       setCommentInput('')
       setReplyingTo(null)
@@ -1237,11 +1237,11 @@ function App() {
   const setUsername = () => {
     const trimmed = usernameInput.trim()
     if (!trimmed) return
-    
+
     // Pick a random profile picture from available ones
     const profilePictures = getAllProfilePictures()
     const randomAvatar = profilePictures[Math.floor(Math.random() * profilePictures.length)]
-    
+
     localStorage.setItem('genuinely_username', trimmed)
     localStorage.setItem('genuinely_avatar', randomAvatar)
     setShowUsernameSetup(false)
@@ -1253,19 +1253,19 @@ function App() {
     return new Promise((resolve, reject) => {
       try {
         const reader = new FileReader()
-        
+
         reader.onerror = () => {
           reject(new Error('Failed to read image file'))
         }
-        
+
         reader.onload = (event) => {
           try {
             const img = new Image()
-            
+
             img.onerror = () => {
               reject(new Error('Failed to load image'))
             }
-            
+
             img.onload = () => {
               try {
                 const canvas = document.createElement('canvas')
@@ -1293,7 +1293,7 @@ function App() {
                   reject(new Error('Failed to get canvas context'))
                   return
                 }
-                
+
                 ctx.drawImage(img, 0, 0, width, height)
 
                 canvas.toBlob(
@@ -1311,19 +1311,19 @@ function App() {
                 reject(error instanceof Error ? error : new Error('Error processing image'))
               }
             }
-            
+
             const result = event.target?.result
             if (!result || typeof result !== 'string') {
               reject(new Error('Invalid file read result'))
               return
             }
-            
+
             img.src = result
           } catch (error) {
             reject(error instanceof Error ? error : new Error('Error loading image'))
           }
         }
-        
+
         reader.readAsDataURL(file)
       } catch (error) {
         reject(error instanceof Error ? error : new Error('Error initializing file reader'))
@@ -1353,7 +1353,7 @@ function App() {
   // Upload image to Firebase Storage (with fallback to base64)
   const uploadImage = async (file: File): Promise<string> => {
     let compressedBlob: Blob | null = null
-    
+
     // Try Firebase Storage first
     if (storage) {
       try {
@@ -1361,16 +1361,16 @@ function App() {
         console.log('Compressing image file:', file.name, file.size, 'bytes')
         compressedBlob = await compressImage(file)
         console.log('Image compressed, new size:', compressedBlob.size, 'bytes')
-        
+
         // Create a unique filename
         const filename = `chat-images/${Date.now()}_${Math.random().toString(36).substring(7)}.jpg`
         const imageRef = storageRef(storage, filename)
         console.log('Uploading to Firebase Storage:', filename)
-        
+
         // Upload the compressed image
         await uploadBytes(imageRef, compressedBlob)
         console.log('Upload complete, getting download URL...')
-        
+
         // Get the download URL
         const downloadURL = await getDownloadURL(imageRef)
         console.log('Download URL obtained:', downloadURL)
@@ -1388,7 +1388,7 @@ function App() {
         return await convertToBase64(compressedBlob || file)
       }
     }
-    
+
     // If storage not initialized, compress and use base64
     console.log('Storage not initialized, compressing and using base64')
     try {
@@ -1424,7 +1424,7 @@ function App() {
 
     // Store the current input value before clearing
     const captionText = messageInput.trim()
-    
+
     setUploadingImage(true)
     console.log('Starting image upload...')
 
@@ -1433,11 +1433,11 @@ function App() {
       console.log('Compressing image...')
       const imageUrl = await uploadImage(file)
       console.log('Image uploaded successfully, URL:', imageUrl)
-      
+
       if (!database) {
         throw new Error('Firebase database not initialized')
       }
-      
+
       // Send message with image
       const newMessage = {
         text: captionText || '', // Optional caption
@@ -1449,16 +1449,16 @@ function App() {
       const messagesRef = ref(database, 'messages')
       await push(messagesRef, newMessage)
       console.log('Image message sent:', newMessage)
-      
+
       setMessageInput('') // Clear caption
-      
+
       // Scroll to bottom after sending - wait for image to load
       const scrollToBottom = () => {
         if (messagesListRef.current) {
           messagesListRef.current.scrollTop = messagesListRef.current.scrollHeight
         }
       }
-      
+
       setTimeout(scrollToBottom, 200)
       setTimeout(scrollToBottom, 400)
       setTimeout(scrollToBottom, 700)
@@ -1477,39 +1477,39 @@ function App() {
   // Send message
   const sendMessage = async () => {
     if (!messageInput.trim()) return
-    
+
     const username = getUserName()
     if (!username) {
       alert('Please set a username first')
       return
     }
-    
+
     if (!database) {
       console.error('Firebase not initialized')
       alert('Chat is temporarily unavailable. Please check your Firebase configuration.')
       return
     }
-    
+
     const newMessage = {
       text: messageInput,
       username: username,
       timestamp: Date.now()
     }
-    
+
     try {
       // Push to Firebase Realtime Database
       const messagesRef = ref(database, 'messages')
       await push(messagesRef, newMessage)
       console.log('Message sent successfully:', newMessage)
       setMessageInput('')
-      
+
       // Scroll to bottom after sending - wait for image to load
       const scrollToBottom = () => {
         if (messagesListRef.current) {
           messagesListRef.current.scrollTop = messagesListRef.current.scrollHeight
         }
       }
-      
+
       setTimeout(scrollToBottom, 200)
       setTimeout(scrollToBottom, 400)
       setTimeout(scrollToBottom, 700)
@@ -1524,18 +1524,18 @@ function App() {
     if (!database || !showMessages) {
       return
     }
-    
+
     const userUsername = getUserName()
     console.log('User username:', userUsername)
-    
+
     if (!userUsername) {
       console.warn('No username set')
       return
     }
-    
+
     const messagesRef = ref(database!, 'messages')
     const messagesQuery = query(messagesRef, orderByChild('timestamp'), limitToLast(100))
-    
+
     const unsubscribe = onValue(messagesQuery, (snapshot) => {
       const data = snapshot.val()
       console.log('Firebase data received:', data)
@@ -1558,7 +1558,7 @@ function App() {
     }, (error) => {
       console.error('Firebase read error:', error)
     })
-    
+
     return () => unsubscribe()
   }, [showMessages])
 
@@ -1571,7 +1571,7 @@ function App() {
           messagesListRef.current.scrollTop = messagesListRef.current.scrollHeight
         }
       }
-      
+
       setTimeout(scrollToBottom, 100)
       setTimeout(scrollToBottom, 300)
       setTimeout(scrollToBottom, 600)
@@ -1587,7 +1587,7 @@ function App() {
     try {
       const commentsRef = ref(database!, `comments/video_file_${currentVideoComments}`)
       const commentsQuery = query(commentsRef, orderByChild('timestamp'))
-      
+
       const unsubscribe = onValue(commentsQuery, (snapshot) => {
         try {
           const data = snapshot.val()
@@ -1595,7 +1595,7 @@ function App() {
             // First, parse all comments with their parent IDs
             const allComments = Object.entries(data).map(([id, comment]: [string, any]) => {
               const numericId = parseInt(id.replace(/[^0-9]/g, '').slice(-10), 10) || Math.floor(Math.random() * 1000000000)
-              
+
               return {
                 id: numericId,
                 firebaseId: id,
@@ -1608,16 +1608,16 @@ function App() {
                 replies: []
               }
             })
-            
+
             // Organize into threaded structure
             const commentMap = new Map<string, Comment>()
             const topLevelComments: Comment[] = []
-            
+
             // First pass: add all comments to map
             allComments.forEach(comment => {
               commentMap.set(comment.firebaseId, comment)
             })
-            
+
             // Second pass: organize into threads
             allComments.forEach(comment => {
               if (comment.parentId && commentMap.has(comment.parentId)) {
@@ -1630,7 +1630,7 @@ function App() {
                 topLevelComments.push(comment)
               }
             })
-            
+
             setVideoComments(prev => ({
               ...prev,
               [currentVideoComments]: topLevelComments
@@ -1686,7 +1686,7 @@ function App() {
         // Clear liked comments state on error
         setLikedComments(new Set())
       })
-      
+
       return () => {
         try {
           unsubscribe()
@@ -1784,9 +1784,7 @@ function App() {
   }, [database, videos])
 
   return (
-    <>
-      <div className="site-overlay"></div>
-      <div className="app-container">
+    <div className="app-container">
       {/* Loading Screen */}
       <div className={`loading-screen ${!isInitialLoading ? 'hidden' : ''}`}>
         <div className="loading-content">
@@ -1797,8 +1795,8 @@ function App() {
       {/* Animated grain overlay for gradient banding fix */}
       {/* DISABLED: Uncomment below to re-enable grain/noise effect */}
       {/* <Grain opacity={0.03} blendMode="screen" /> */}
-      
-      <div 
+
+      <div
         className="iphone-frame"
         style={{
           filter: `
@@ -1815,384 +1813,382 @@ function App() {
         {/* Side Buttons */}
         <div className="volume-button"></div>
         <div className="power-button"></div>
-        
+
         <div className="side">
           <div className="line"></div>
-          
+
           {/* Notch with sensors */}
           <div className="header">
             <div className="sensor-1"></div>
             <div className="sensor-2"></div>
           </div>
-          
+
           {/* Screen Content */}
-          <div 
-            className="iphone-screen" 
+          <div
+            className="iphone-screen"
             ref={screenRef}
           >
-          {!showMessages ? (
-            <>
-          {/* TikTok Status Bar */}
-          <div className="status-bar">
-            <span className="time">7:08</span>
-            <div className="status-icons">
-              {/* Cellular Signal */}
-              <img src={cellularIcon} alt="cellular" className="status-icon" />
-              {/* WiFi */}
-              <img src={wifiIcon} alt="wifi" className="status-icon" />
-              {/* Battery */}
-              <img src={batteryIcon} alt="battery" className="status-icon" />
-            </div>
-          </div>
+            {!showMessages ? (
+              <>
+                {/* TikTok Status Bar */}
+                <div className="status-bar">
+                  <span className="time">7:08</span>
+                  <div className="status-icons">
+                    {/* Cellular Signal */}
+                    <img src={cellularIcon} alt="cellular" className="status-icon" />
+                    {/* WiFi */}
+                    <img src={wifiIcon} alt="wifi" className="status-icon" />
+                    {/* Battery */}
+                    <img src={batteryIcon} alt="battery" className="status-icon" />
+                  </div>
+                </div>
 
-          {/* Top Navigation */}
-          <div className="top-nav">
-            <button className="nav-item">Following</button>
-            <button className="nav-item active">For You</button>
-          </div>
+                {/* Top Navigation */}
+                <div className="top-nav">
+                  <button className="nav-item">Following</button>
+                  <button className="nav-item active">For You</button>
+                </div>
 
-          {/* Scrollable Video Feed */}
-          <div className="video-feed" ref={scrollContainerRef}>
-            {circularVideos.map((video, index) => {
-              // Only preload current video for faster mobile loading
-              const isCurrent = index === currentVideoIndex;
-              
-              return (
-              <div key={`${video.id}-${index}`} className="video-container">
-                {video.imageUrl ? (
-                  <img 
-                    className="video-player"
-                    src={video.imageUrl}
-                    alt={video.caption}
-                    style={{ objectFit: 'cover', width: '100%', height: '100%', pointerEvents: 'none' }}
-                  />
-                ) : (
-                  <video 
-                    className={`video-player ${pausedVideos.has(video.id) ? 'paused' : ''}`}
-                    src={video.videoUrl}
-                    loop
-                    playsInline
-                    preload={isCurrent ? "auto" : "none"}
-                    crossOrigin="anonymous"
-                    onClick={(e) => toggleVideoPlayPause(e, video.id)}
-                  />
-                )}
-                
-                {/* Play Button Overlay - only show for videos */}
-                {!video.imageUrl && pausedVideos.has(video.id) && (
-                  <div className="play-button-overlay">
-                    <svg viewBox="0 0 24 24" fill="white">
-                      <path d="M8 5v14l11-7z"/>
-                    </svg>
-                  </div>
-                )}
-                
-                {/* Right Side Actions */}
-                <div className="side-actions">
-                  <div className="action-button avatar-section">
-                    <img src={video.avatarUrl} alt={video.username} className="avatar" />
-                    <div className="plus-button">+</div>
-                  </div>
-                  <div 
-                    className={`action-button like-button ${likedVideos.has(video.id) ? 'liked' : ''}`}
-                    onClick={() => toggleLike(video.id)}
-                  >
-                    <svg className="action-icon" viewBox="0 0 48 48" fill={likedVideos.has(video.id) ? '#fe2c55' : 'white'}>
-                      <path d="M34.6 3.1c-4.5 0-7.9 1.8-10.6 5.6-2.7-3.7-6.1-5.5-10.6-5.5C6 3.1 0 9.6 0 17.6c0 7.3 5.4 12 10.6 16.5.6.5 1.3 1.1 1.9 1.7l2.3 2c4.4 3.9 6.6 5.9 7.6 6.5.5.3 1.1.5 1.6.5s1.1-.2 1.6-.5c1-.6 2.8-2.2 7.8-6.8l2-1.8c.7-.6 1.3-1.2 2-1.7C42.7 29.6 48 25 48 17.6c0-8-6-14.5-13.4-14.5z"></path>
-                    </svg>
-                    <span className="count">{formatCount(videoStats[getVideoFileNumber(video.videoUrl)]?.likes ?? video.likes)}</span>
-                  </div>
-                  <div className="action-button" onClick={() => openComments(video.videoUrl)}>
-                    <img src={commentsIcon} alt="Comments" className="action-icon-img comments-icon" />
-                    <span className="count">{formatCount(videoStats[getVideoFileNumber(video.videoUrl)]?.comments ?? video.comments)}</span>
-                  </div>
-                  <div 
-                    className={`action-button bookmark-button ${bookmarkedVideos.has(video.id) ? 'bookmarked' : ''}`}
-                    onClick={() => toggleBookmark(video.id)}
-                  >
-                    <svg className="action-icon" viewBox="0 0 48 48" fill={bookmarkedVideos.has(video.id) ? '#fe2c55' : 'white'}>
-                      <path d="M38 4H10v40l14-10 14 10V4z"/>
-                    </svg>
-                    <span className="count">{formatCount(videoStats[getVideoFileNumber(video.videoUrl)]?.bookmarks ?? video.bookmarks)}</span>
-                  </div>
-                  <div className="action-button" onClick={() => toggleVolume(video.id)}>
-                    <svg className="action-icon" viewBox="0 0 48 48" fill="white">
-                      {/* Speaker cone */}
-                      <path d="M6 16h8l10-10v36L14 32H6V16z"/>
-                      {/* Sound waves */}
-                      {!mutedVideos.has(video.id) && (
-                        <>
-                          <path d="M28 18c2 2 2 10 0 12" stroke="white" strokeWidth="2.5" fill="none" strokeLinecap="round"/>
-                          <path d="M32 14c4 4 4 16 0 20" stroke="white" strokeWidth="2.5" fill="none" strokeLinecap="round"/>
-                          <path d="M36 10c6 6 6 22 0 28" stroke="white" strokeWidth="2.5" fill="none" strokeLinecap="round"/>
-                        </>
-                      )}
-                      {/* Mute slash */}
-                      {mutedVideos.has(video.id) && (
-                        <path d="M8 40L40 8" stroke="white" strokeWidth="3" strokeLinecap="round"/>
-                      )}
-                    </svg>
-                  </div>
-                  {/* DISABLED: Forward/share action button - Uncomment below to re-enable */}
-                  {/* <div className="action-button">
+                {/* Scrollable Video Feed */}
+                <div className="video-feed" ref={scrollContainerRef}>
+                  {circularVideos.map((video, index) => {
+                    // Only preload current video for faster mobile loading
+                    const isCurrent = index === currentVideoIndex;
+
+                    return (
+                      <div key={`${video.id}-${index}`} className="video-container">
+                        {video.imageUrl ? (
+                          <img
+                            className="video-player"
+                            src={video.imageUrl}
+                            alt={video.caption}
+                            style={{ objectFit: 'cover', width: '100%', height: '100%', pointerEvents: 'none' }}
+                          />
+                        ) : (
+                          <video
+                            className={`video-player ${pausedVideos.has(video.id) ? 'paused' : ''}`}
+                            src={video.videoUrl}
+                            loop
+                            playsInline
+                            preload={isCurrent ? "auto" : "none"}
+                            crossOrigin="anonymous"
+                            onClick={(e) => toggleVideoPlayPause(e, video.id)}
+                          />
+                        )}
+
+                        {/* Play Button Overlay - only show for videos */}
+                        {!video.imageUrl && pausedVideos.has(video.id) && (
+                          <div className="play-button-overlay">
+                            <svg viewBox="0 0 24 24" fill="white">
+                              <path d="M8 5v14l11-7z" />
+                            </svg>
+                          </div>
+                        )}
+
+                        {/* Right Side Actions */}
+                        <div className="side-actions">
+                          <div className="action-button avatar-section">
+                            <img src={video.avatarUrl} alt={video.username} className="avatar" />
+                            <div className="plus-button">+</div>
+                          </div>
+                          <div
+                            className={`action-button like-button ${likedVideos.has(video.id) ? 'liked' : ''}`}
+                            onClick={() => toggleLike(video.id)}
+                          >
+                            <svg className="action-icon" viewBox="0 0 48 48" fill={likedVideos.has(video.id) ? '#fe2c55' : 'white'}>
+                              <path d="M34.6 3.1c-4.5 0-7.9 1.8-10.6 5.6-2.7-3.7-6.1-5.5-10.6-5.5C6 3.1 0 9.6 0 17.6c0 7.3 5.4 12 10.6 16.5.6.5 1.3 1.1 1.9 1.7l2.3 2c4.4 3.9 6.6 5.9 7.6 6.5.5.3 1.1.5 1.6.5s1.1-.2 1.6-.5c1-.6 2.8-2.2 7.8-6.8l2-1.8c.7-.6 1.3-1.2 2-1.7C42.7 29.6 48 25 48 17.6c0-8-6-14.5-13.4-14.5z"></path>
+                            </svg>
+                            <span className="count">{formatCount(videoStats[getVideoFileNumber(video.videoUrl)]?.likes ?? video.likes)}</span>
+                          </div>
+                          <div className="action-button" onClick={() => openComments(video.videoUrl)}>
+                            <img src={commentsIcon} alt="Comments" className="action-icon-img comments-icon" />
+                            <span className="count">{formatCount(videoStats[getVideoFileNumber(video.videoUrl)]?.comments ?? video.comments)}</span>
+                          </div>
+                          <div
+                            className={`action-button bookmark-button ${bookmarkedVideos.has(video.id) ? 'bookmarked' : ''}`}
+                            onClick={() => toggleBookmark(video.id)}
+                          >
+                            <svg className="action-icon" viewBox="0 0 48 48" fill={bookmarkedVideos.has(video.id) ? '#fe2c55' : 'white'}>
+                              <path d="M38 4H10v40l14-10 14 10V4z" />
+                            </svg>
+                            <span className="count">{formatCount(videoStats[getVideoFileNumber(video.videoUrl)]?.bookmarks ?? video.bookmarks)}</span>
+                          </div>
+                          <div className="action-button" onClick={() => toggleVolume(video.id)}>
+                            <svg className="action-icon" viewBox="0 0 48 48" fill="white">
+                              {/* Speaker cone */}
+                              <path d="M6 16h8l10-10v36L14 32H6V16z" />
+                              {/* Sound waves */}
+                              {!mutedVideos.has(video.id) && (
+                                <>
+                                  <path d="M28 18c2 2 2 10 0 12" stroke="white" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+                                  <path d="M32 14c4 4 4 16 0 20" stroke="white" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+                                  <path d="M36 10c6 6 6 22 0 28" stroke="white" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+                                </>
+                              )}
+                              {/* Mute slash */}
+                              {mutedVideos.has(video.id) && (
+                                <path d="M8 40L40 8" stroke="white" strokeWidth="3" strokeLinecap="round" />
+                              )}
+                            </svg>
+                          </div>
+                          {/* DISABLED: Forward/share action button - Uncomment below to re-enable */}
+                          {/* <div className="action-button">
                     <img src={forwardIcon} alt="Forward" className="action-icon-img" />
                     <span className="count">{formatCount(video.shares)}</span>
                   </div> */}
+                        </div>
+
+                        {/* Bottom Info */}
+                        <div className="video-info">
+                          <div className="username">{video.username}</div>
+                          <div className="caption">{video.caption}</div>
+                          <div className="audio-info">
+                            <span>🎵 Original Audio - {video.username}</span>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
 
-                {/* Bottom Info */}
-                <div className="video-info">
-                  <div className="username">{video.username}</div>
-                  <div className="caption">{video.caption}</div>
-                  <div className="audio-info">
-                    <span>🎵 Original Audio - {video.username}</span>
-                  </div>
-                </div>
-              </div>
-              );
-            })}
-          </div>
-
-          {/* Bottom Dock - Always show except when comments open */}
-          {!showComments && (
-            <div className="dock">
-              <div className="dock-app" onClick={() => { setShowMessages(false); setShowComments(false); }}>
-                <div className="app-icon">
-                  <img src={tiktokIcon} alt="TikTok" className="app-icon-img" />
-                </div>
-              </div>
-              <a href="https://twitter.com/tryDoomscroll" target="_blank" rel="noopener noreferrer" className="dock-app">
-                <div className="app-icon">
-                  <img src={xIcon} alt="X" className="app-icon-img" />
-                </div>
-              </a>
-              <div className="dock-app" onClick={openMessages}>
-                <div className="app-icon">
-                  <img src={messagesIcon} alt="Messages" className="app-icon-img" />
-                </div>
-              </div>
-            </div>
-          )}
-          </>
-          ) : (
-            <>
-            {/* Bottom Dock - Always show in messages */}
-            <div className="dock">
-              <div className="dock-app" onClick={() => { setShowMessages(false); setShowComments(false); }}>
-                <div className="app-icon">
-                  <img src={tiktokIcon} alt="TikTok" className="app-icon-img" />
-                </div>
-              </div>
-              <a href="https://twitter.com/tryDoomscroll" target="_blank" rel="noopener noreferrer" className="dock-app">
-                <div className="app-icon">
-                  <img src={xIcon} alt="X" className="app-icon-img" />
-                </div>
-              </a>
-              <div className="dock-app" onClick={openMessages}>
-                <div className="app-icon">
-                  <img src={messagesIcon} alt="Messages" className="app-icon-img" />
-                </div>
-              </div>
-            </div>
-
-            {/* iMessage UI */}
-            <div className="imessage-container">
-              {/* Messages Header */}
-              <div className="imessage-header">
-                <button className="back-button" onClick={() => setShowMessages(false)}>
-                  <svg width="14" height="22" viewBox="0 0 12 20" fill="none">
-                    <path d="M10 2L2 10L10 18" stroke="#007AFF" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                </button>
-                <div className="chat-info">
-                  <div className="chat-name">doomscrollers</div>
-                  <div className="chat-members">{messages.length} messages</div>
-                </div>
-                <div className="header-spacer"></div>
-              </div>
-
-              {/* Messages List */}
-              <div className="messages-list" ref={messagesListRef}>
-                {messages.map((msg) => (
-                  <div key={msg.id} className={`message-wrapper ${msg.isUser ? 'user' : 'other'}`}>
-                    {!msg.isUser && <div className="message-sender">{msg.username}</div>}
-                    <div className={`message-bubble ${msg.isUser ? 'user' : 'other'}`}>
-                      {msg.imageUrl && (
-                        <img 
-                          src={msg.imageUrl} 
-                          alt="Shared image" 
-                          className="message-image"
-                          loading="lazy"
-                        />
-                      )}
-                      {msg.text && <div className="message-text">{msg.text}</div>}
+                {/* Bottom Dock - Always show except when comments open */}
+                {!showComments && (
+                  <div className="dock">
+                    <div className="dock-app" onClick={() => { setShowMessages(false); setShowComments(false); }}>
+                      <div className="app-icon">
+                        <img src={tiktokIcon} alt="TikTok" className="app-icon-img" />
+                      </div>
+                    </div>
+                    <a href="https://twitter.com/tryDoomscroll" target="_blank" rel="noopener noreferrer" className="dock-app">
+                      <div className="app-icon">
+                        <img src={xIcon} alt="X" className="app-icon-img" />
+                      </div>
+                    </a>
+                    <div className="dock-app" onClick={openMessages}>
+                      <div className="app-icon">
+                        <img src={messagesIcon} alt="Messages" className="app-icon-img" />
+                      </div>
                     </div>
                   </div>
-                ))}
-                <div ref={messagesEndRef} />
-              </div>
+                )}
+              </>
+            ) : (
+              <>
+                {/* Bottom Dock - Always show in messages */}
+                <div className="dock">
+                  <div className="dock-app" onClick={() => { setShowMessages(false); setShowComments(false); }}>
+                    <div className="app-icon">
+                      <img src={tiktokIcon} alt="TikTok" className="app-icon-img" />
+                    </div>
+                  </div>
+                  <a href="https://twitter.com/tryDoomscroll" target="_blank" rel="noopener noreferrer" className="dock-app">
+                    <div className="app-icon">
+                      <img src={xIcon} alt="X" className="app-icon-img" />
+                    </div>
+                  </a>
+                  <div className="dock-app" onClick={openMessages}>
+                    <div className="app-icon">
+                      <img src={messagesIcon} alt="Messages" className="app-icon-img" />
+                    </div>
+                  </div>
+                </div>
+
+                {/* iMessage UI */}
+                <div className="imessage-container">
+                  {/* Messages Header */}
+                  <div className="imessage-header">
+                    <button className="back-button" onClick={() => setShowMessages(false)}>
+                      <svg width="14" height="22" viewBox="0 0 12 20" fill="none">
+                        <path d="M10 2L2 10L10 18" stroke="#007AFF" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    </button>
+                    <div className="chat-info">
+                      <div className="chat-name">doomscrollers</div>
+                      <div className="chat-members">{messages.length} messages</div>
+                    </div>
+                    <div className="header-spacer"></div>
+                  </div>
+
+                  {/* Messages List */}
+                  <div className="messages-list" ref={messagesListRef}>
+                    {messages.map((msg) => (
+                      <div key={msg.id} className={`message-wrapper ${msg.isUser ? 'user' : 'other'}`}>
+                        {!msg.isUser && <div className="message-sender">{msg.username}</div>}
+                        <div className={`message-bubble ${msg.isUser ? 'user' : 'other'}`}>
+                          {msg.imageUrl && (
+                            <img
+                              src={msg.imageUrl}
+                              alt="Shared image"
+                              className="message-image"
+                              loading="lazy"
+                            />
+                          )}
+                          {msg.text && <div className="message-text">{msg.text}</div>}
+                        </div>
+                      </div>
+                    ))}
+                    <div ref={messagesEndRef} />
+                  </div>
 
 
-              {/* Message Input */}
-              <div className="message-input-container">
-                <div className="input-wrapper">
-                  {/* Image Upload Button */}
-                  <label className="image-upload-button" title="Upload image">
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={handleImageSelect}
-                      disabled={uploadingImage}
-                      style={{ display: 'none' }}
-                    />
-                    {uploadingImage ? (
-                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <circle cx="12" cy="12" r="10" opacity="0.25"/>
-                        <path d="M12 2 A10 10 0 0 1 22 12" strokeLinecap="round">
-                          <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="1s" repeatCount="indefinite"/>
-                        </path>
-                      </svg>
-                    ) : (
-                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-                        <circle cx="8.5" cy="8.5" r="1.5"/>
-                        <polyline points="21 15 16 10 5 21"/>
-                      </svg>
-                    )}
-                  </label>
-                  
+                  {/* Message Input */}
+                  <div className="message-input-container">
+                    <div className="input-wrapper">
+                      {/* Image Upload Button */}
+                      <label className="image-upload-button" title="Upload image">
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={handleImageSelect}
+                          disabled={uploadingImage}
+                          style={{ display: 'none' }}
+                        />
+                        {uploadingImage ? (
+                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <circle cx="12" cy="12" r="10" opacity="0.25" />
+                            <path d="M12 2 A10 10 0 0 1 22 12" strokeLinecap="round">
+                              <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="1s" repeatCount="indefinite" />
+                            </path>
+                          </svg>
+                        ) : (
+                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                            <circle cx="8.5" cy="8.5" r="1.5" />
+                            <polyline points="21 15 16 10 5 21" />
+                          </svg>
+                        )}
+                      </label>
+
+                      <input
+                        type="text"
+                        className="message-input"
+                        placeholder="iMessage"
+                        value={messageInput}
+                        onChange={(e) => setMessageInput(e.target.value)}
+                        onKeyPress={(e) => {
+                          if (e.key === 'Enter' && !uploadingImage) sendMessage()
+                        }}
+                      />
+                      <button
+                        className="send-button"
+                        onClick={sendMessage}
+                        disabled={!messageInput.trim() || uploadingImage}
+                      >
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                          <path d="M2 12L22 2L16 22L11 13L2 12Z" fill="currentColor" />
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </>
+            )}
+
+            {/* Username Setup Modal */}
+            {showUsernameSetup && (
+              <div className="username-modal-overlay">
+                <div className="username-modal">
+                  <h2>Welcome to doomscroll.now</h2>
+                  <p>Choose your username to get started</p>
                   <input
                     type="text"
-                    className="message-input"
-                    placeholder="iMessage"
-                    value={messageInput}
-                    onChange={(e) => setMessageInput(e.target.value)}
+                    className="username-input"
+                    placeholder="Enter username..."
+                    value={usernameInput}
+                    onChange={(e) => setUsernameInput(e.target.value)}
                     onKeyPress={(e) => {
-                      if (e.key === 'Enter' && !uploadingImage) sendMessage()
+                      if (e.key === 'Enter' && usernameInput.trim()) setUsername()
                     }}
+                    autoFocus
+                    maxLength={20}
                   />
-                  <button 
-                    className="send-button" 
-                    onClick={sendMessage}
-                    disabled={!messageInput.trim() || uploadingImage}
-                  >
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                      <path d="M2 12L22 2L16 22L11 13L2 12Z" fill="currentColor"/>
-                    </svg>
-                  </button>
-                </div>
-              </div>
-            </div>
-            </>
-          )}
-
-          {/* Username Setup Modal */}
-          {showUsernameSetup && (
-            <div className="username-modal-overlay">
-              <div className="username-modal">
-                <h2>Welcome to doomscroll.now</h2>
-                <p>Choose your username to get started</p>
-                <input
-                  type="text"
-                  className="username-input"
-                  placeholder="Enter username..."
-                  value={usernameInput}
-                  onChange={(e) => setUsernameInput(e.target.value)}
-                  onKeyPress={(e) => {
-                    if (e.key === 'Enter' && usernameInput.trim()) setUsername()
-                  }}
-                  autoFocus
-                  maxLength={20}
-                />
-                <div className="username-modal-buttons">
-                  <button 
-                    className="username-submit-btn username-submit-full"
-                    onClick={setUsername}
-                    disabled={!usernameInput.trim()}
-                  >
-                    Continue
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* Comments Overlay */}
-          {showComments && currentVideoComments && (
-            <div className="comments-overlay">
-              <div className="comments-container">
-                {/* Header */}
-                <div className="comments-header">
-                  <span className="comments-count">
-                    {videoComments[currentVideoComments]?.length || 0} comments
-                  </span>
-                  <button className="comments-close" onClick={closeComments}>
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
-                    </svg>
-                  </button>
-                </div>
-
-                {/* Comments List */}
-                <div className="comments-list">
-                  {(!videoComments[currentVideoComments] || videoComments[currentVideoComments].length === 0) ? (
-                    <div className="comments-empty">
-                      <p>No comments yet</p>
-                      <span>Be the first to comment!</span>
-                    </div>
-                  ) : (
-                    videoComments[currentVideoComments].map((comment) => (
-                      <div key={`thread-${comment.firebaseId}`} className="comment-thread">
-                        {renderCommentContent(comment)}
-                        {comment.replies && comment.replies.length > 0 && (
-                          <div className="comment-replies">
-                            {renderRepliesFlat(comment.replies)}
-                          </div>
-                        )}
-                      </div>
-                    ))
-                  )}
-                </div>
-
-                {/* Comment Input */}
-                <div className="comment-input-container">
-                  {replyingTo && (
-                    <div className="replying-to">
-                      Replying to {replyingTo.username}
-                      <button onClick={() => setReplyingTo(null)}>✕</button>
-                    </div>
-                  )}
-                  <div style={{ display: 'flex', gap: '12px', width: '100%' }}>
-                    <input
-                      ref={commentInputRef}
-                      type="text"
-                      className="comment-input"
-                      placeholder={replyingTo ? `Reply to ${replyingTo.username}...` : "Add comment..."}
-                      value={commentInput}
-                      onChange={(e) => setCommentInput(e.target.value)}
-                      onKeyPress={(e) => {
-                        if (e.key === 'Enter' && commentInput.trim()) postComment()
-                      }}
-                    />
-                    <button 
-                      className="comment-post-btn" 
-                      disabled={!commentInput.trim()}
-                      onClick={postComment}
+                  <div className="username-modal-buttons">
+                    <button
+                      className="username-submit-btn username-submit-full"
+                      onClick={setUsername}
+                      disabled={!usernameInput.trim()}
                     >
-                      Post
+                      Continue
                     </button>
                   </div>
                 </div>
               </div>
-            </div>
-          )}
+            )}
+
+            {/* Comments Overlay */}
+            {showComments && currentVideoComments && (
+              <div className="comments-overlay">
+                <div className="comments-container">
+                  {/* Header */}
+                  <div className="comments-header">
+                    <span className="comments-count">
+                      {videoComments[currentVideoComments]?.length || 0} comments
+                    </span>
+                    <button className="comments-close" onClick={closeComments}>
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
+                      </svg>
+                    </button>
+                  </div>
+
+                  {/* Comments List */}
+                  <div className="comments-list">
+                    {(!videoComments[currentVideoComments] || videoComments[currentVideoComments].length === 0) ? (
+                      <div className="comments-empty">
+                        <p>No comments yet</p>
+                        <span>Be the first to comment!</span>
+                      </div>
+                    ) : (
+                      videoComments[currentVideoComments].map((comment) => (
+                        <div key={`thread-${comment.firebaseId}`} className="comment-thread">
+                          {renderCommentContent(comment)}
+                          {comment.replies && comment.replies.length > 0 && (
+                            <div className="comment-replies">
+                              {renderRepliesFlat(comment.replies)}
+                            </div>
+                          )}
+                        </div>
+                      ))
+                    )}
+                  </div>
+
+                  {/* Comment Input */}
+                  <div className="comment-input-container">
+                    {replyingTo && (
+                      <div className="replying-to">
+                        Replying to {replyingTo.username}
+                        <button onClick={() => setReplyingTo(null)}>✕</button>
+                      </div>
+                    )}
+                    <div style={{ display: 'flex', gap: '12px', width: '100%' }}>
+                      <input
+                        ref={commentInputRef}
+                        type="text"
+                        className="comment-input"
+                        placeholder={replyingTo ? `Reply to ${replyingTo.username}...` : "Add comment..."}
+                        value={commentInput}
+                        onChange={(e) => setCommentInput(e.target.value)}
+                        onKeyPress={(e) => {
+                          if (e.key === 'Enter' && commentInput.trim()) postComment()
+                        }}
+                      />
+                      <button
+                        className="comment-post-btn"
+                        disabled={!commentInput.trim()}
+                        onClick={postComment}
+                      >
+                        Post
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
-      </div>
-    </div>
-    </>
-  )
+      )
 }
 
-export default App
+      export default App
 
