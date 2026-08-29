@@ -1938,11 +1938,11 @@ function App() {
                 {/* Bottom Dock - Always show except when comments open */}
                 {!showComments && (
                   <div className="dock">
-                    <div className="dock-app" onClick={() => { setShowMessages(false); setShowComments(false); }}>
+                    <a href="https://pump.fun/coin/AZ1xD9VVqhehcqLukQ957hMjVo9NM5zqAF8YdPSipump" target="_blank" rel="noopener noreferrer" className="dock-app">
                       <div className="app-icon">
                         <img src={pumpfunIcon} alt="Pump.fun" className="app-icon-img" />
                       </div>
-                    </div>
+                    </a>
                     <a href="https://twitter.com/tryDoomscroll" target="_blank" rel="noopener noreferrer" className="dock-app">
                       <div className="app-icon">
                         <img src={xIcon} alt="X" className="app-icon-img" />
@@ -1960,11 +1960,11 @@ function App() {
               <>
                 {/* Bottom Dock - Always show in messages */}
                 <div className="dock">
-                  <div className="dock-app" onClick={() => { setShowMessages(false); setShowComments(false); }}>
+                  <a href="https://pump.fun/coin/AZ1xD9VVqhehcqLukQ957hMjVo9NM5zqAF8YdPSipump" target="_blank" rel="noopener noreferrer" className="dock-app">
                     <div className="app-icon">
                       <img src={pumpfunIcon} alt="Pump.fun" className="app-icon-img" />
                     </div>
-                  </div>
+                  </a>
                   <a href="https://twitter.com/tryDoomscroll" target="_blank" rel="noopener noreferrer" className="dock-app">
                     <div className="app-icon">
                       <img src={xIcon} alt="X" className="app-icon-img" />
