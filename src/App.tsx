@@ -85,8 +85,7 @@ import cellularIcon from './assets/iphone icons/🧩 Status Bar › Cellular Ico
 import wifiIcon from './assets/iphone icons/🧩 Status Bar › Wi-Fi Icon.svg'
 import batteryIcon from './assets/iphone icons/🧩 Status Bar › Battery Icon.svg'
 
-// Import preloader logo
-import preloaderLogo from './assets/preloader/text white.png'
+
 
 // Import profile pictures
 import profile1 from './assets/profile pictures/06f0b02f4838a79ac9f58e5a0eaeb325.jpg'
@@ -308,7 +307,6 @@ function App() {
   const [uploadingImage, setUploadingImage] = useState(false)
   const [showUsernameSetup, setShowUsernameSetup] = useState(false)
   const [usernameInput, setUsernameInput] = useState('')
-  const [isInitialLoading, setIsInitialLoading] = useState(true)
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const messagesListRef = useRef<HTMLDivElement>(null)
   const [hasInteracted, setHasInteracted] = useState(false)
@@ -327,13 +325,7 @@ function App() {
       setShowUsernameSetup(true)
     }
 
-    // Hide loading screen after initial render - ensure content is ready
-    // Wait a bit longer to ensure content is fully rendered and visible
-    const timer = setTimeout(() => {
-      setIsInitialLoading(false)
-    }, 2500) // Show logo for 2.5s, then fade out
 
-    return () => clearTimeout(timer)
   }, [])
 
   // Initialize scroll position to first real video (skip duplicate at index 0)
@@ -1786,12 +1778,6 @@ function App() {
 
   return (
     <div className="app-container">
-      {/* Loading Screen */}
-      <div className={`loading-screen ${!isInitialLoading ? 'hidden' : ''}`}>
-        <div className="loading-content">
-          <img src={preloaderLogo} alt="doomscroll" className="preloader-logo" />
-        </div>
-      </div>
 
       {/* Animated grain overlay for gradient banding fix */}
       {/* DISABLED: Uncomment below to re-enable grain/noise effect */}
@@ -1805,10 +1791,7 @@ function App() {
             drop-shadow(0 0 100px rgba(${glowColor}, 0.29))
             drop-shadow(0 0 140px rgba(${glowColor}, 0.19))
             drop-shadow(0 0 200px rgba(${glowColor}, 0.14))
-          `,
-          opacity: isInitialLoading ? 1 : 1,
-          visibility: isInitialLoading ? 'visible' : 'visible',
-          display: isInitialLoading ? 'block' : 'block'
+          `
         }}
       >
         {/* Side Buttons */}
