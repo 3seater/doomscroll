@@ -376,7 +376,18 @@ function App() {
   // Handle video state when switching between messages/comments and TikTok
   useEffect(() => {
     if (!showMessages && !showComments) {
-      // Returning to TikTok - pause ALL videos first, then play current
+      // Returning to TikTok - re-snap scroll to current video first, then resume playback
+      const container = scrollContainerRef.current
+      if (container) {
+        const videoHeight = container.clientHeight
+        // Immediately snap scroll position so it's perfectly aligned — prevents the
+        // first wheel/swipe after returning from messages from targeting the wrong index
+        container.scrollTo({
+          top: currentVideoIndex * videoHeight,
+          behavior: 'auto'
+        })
+      }
+
       setTimeout(() => {
         const videoElements = document.querySelectorAll('.video-player')
 
@@ -553,7 +564,8 @@ function App() {
       index = Math.max(0, Math.min(index, circularVideos.length - 1))
 
       // Seamless wrap when snapped to duplicate videos
-      const isSnapped = Math.abs(scrollTop - (index * videoHeight)) < 1 // Within 1px of snap position
+      // Use a 5px threshold — 1px was too tight for momentum/inertia scrolling on mobile
+      const isSnapped = Math.abs(scrollTop - (index * videoHeight)) < 5
 
       if (isSnapped) {
         if (index === 0) {
@@ -672,7 +684,7 @@ function App() {
     }
 
     // Handle wheel scroll - snap to next/prev video
-    let wheelTimeout: number
+    let wheelTimeout: ReturnType<typeof setTimeout> | undefined
     const handleWheel = (e: WheelEvent) => {
       e.preventDefault()
 
@@ -805,6 +817,7 @@ function App() {
     container.addEventListener('touchend', touchEnd, supportsPassive ? { passive: true } : false as any)
 
     return () => {
+      clearTimeout(wheelTimeout)
       container.removeEventListener('wheel', handleWheel)
       window.removeEventListener('keydown', handleKeyDown)
       container.removeEventListener('mousedown', mouseDown)
@@ -1942,7 +1955,7 @@ function App() {
                         <img src={pumpfunIcon} alt="Pump.fun" className="app-icon-img" />
                       </div>
                     </div>
-                    <a href="https://twitter.com/tryDoomscroll" target="_blank" rel="noopener noreferrer" className="dock-app">
+                    <a href="https://x.com/useDoomscroll" target="_blank" rel="noopener noreferrer" className="dock-app">
                       <div className="app-icon">
                         <img src={xIcon} alt="X" className="app-icon-img" />
                       </div>
@@ -1964,7 +1977,7 @@ function App() {
                       <img src={pumpfunIcon} alt="Pump.fun" className="app-icon-img" />
                     </div>
                   </div>
-                  <a href="https://twitter.com/tryDoomscroll" target="_blank" rel="noopener noreferrer" className="dock-app">
+                  <a href="https://x.com/useDoomscroll" target="_blank" rel="noopener noreferrer" className="dock-app">
                     <div className="app-icon">
                       <img src={xIcon} alt="X" className="app-icon-img" />
                     </div>
