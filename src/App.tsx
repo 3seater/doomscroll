@@ -2084,7 +2084,7 @@ function App() {
             {showUsernameSetup && (
               <div className="username-modal-overlay">
                 <div className="username-modal">
-                  <h2>Welcome to doomscroll.now</h2>
+                  <h2>Welcome to doomscroll.cash</h2>
                   <p>Choose your username to get started</p>
                   <input
                     type="text"
