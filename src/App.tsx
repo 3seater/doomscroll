@@ -72,7 +72,7 @@ function createShuffledVideoArray(videoCount: number): string[] {
 }
 
 // Import app icons
-import pumpfunIcon from './assets/iphone icons/pumpfun.png'
+import pumpfunIcon from './assets/iphone icons/pons.png'
 import xIcon from './assets/iphone icons/x.png'
 import messagesIcon from './assets/iphone icons/messages.png'
 
