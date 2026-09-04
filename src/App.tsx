@@ -1950,11 +1950,11 @@ function App() {
                 {/* Bottom Dock - Always show except when comments open */}
                 {!showComments && (
                   <div className="dock">
-                    <a href="https://pump.fun/coin/4wcZdpFLdSGPKGnTaRfVpNdXfUVSV9pc1Ez8sevEpump" target="_blank" rel="noopener noreferrer" className="dock-app">
+                    <div className="dock-app">
                       <div className="app-icon">
                         <img src={pumpfunIcon} alt="Pump.fun" className="app-icon-img" />
                       </div>
-                    </a>
+                    </div>
                     <a href="https://x.com/useDoomscroll" target="_blank" rel="noopener noreferrer" className="dock-app">
                       <div className="app-icon">
                         <img src={xIcon} alt="X" className="app-icon-img" />
@@ -1972,11 +1972,11 @@ function App() {
               <>
                 {/* Bottom Dock - Always show in messages */}
                 <div className="dock">
-                  <a href="https://pump.fun/coin/4wcZdpFLdSGPKGnTaRfVpNdXfUVSV9pc1Ez8sevEpump" target="_blank" rel="noopener noreferrer" className="dock-app">
+                  <div className="dock-app">
                     <div className="app-icon">
                       <img src={pumpfunIcon} alt="Pump.fun" className="app-icon-img" />
                     </div>
-                  </a>
+                  </div>
                   <a href="https://x.com/useDoomscroll" target="_blank" rel="noopener noreferrer" className="dock-app">
                     <div className="app-icon">
                       <img src={xIcon} alt="X" className="app-icon-img" />
