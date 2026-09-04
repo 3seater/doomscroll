@@ -1955,7 +1955,7 @@ function App() {
                         <img src={pumpfunIcon} alt="Pump.fun" className="app-icon-img" />
                       </div>
                     </div>
-                    <a href="https://x.com/useDoomscroll" target="_blank" rel="noopener noreferrer" className="dock-app">
+                    <a href="https://x.com/doomscrollrh" target="_blank" rel="noopener noreferrer" className="dock-app">
                       <div className="app-icon">
                         <img src={xIcon} alt="X" className="app-icon-img" />
                       </div>
@@ -1977,7 +1977,7 @@ function App() {
                       <img src={pumpfunIcon} alt="Pump.fun" className="app-icon-img" />
                     </div>
                   </div>
-                  <a href="https://x.com/useDoomscroll" target="_blank" rel="noopener noreferrer" className="dock-app">
+                  <a href="https://x.com/doomscrollrh" target="_blank" rel="noopener noreferrer" className="dock-app">
                     <div className="app-icon">
                       <img src={xIcon} alt="X" className="app-icon-img" />
                     </div>
